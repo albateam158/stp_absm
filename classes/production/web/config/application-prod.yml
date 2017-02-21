@@ -14,16 +14,33 @@ spring:
     profiles:
         active: dev
     datasource:
-        dataSourceClassName: org.gjt.mm.mysql.Driver
-        url: jdbc:mysql://192.168.3.101:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
-        databaseName: wicrowd_db
-        serverName: wicrowd_db
-        username: wicrowd_front
-        password: wicrowd2016!@#$
-        validationQuery: SELECT 1
-        testOnBorrow: true
+        master:
+            dataSourceClassName: org.gjt.mm.mysql.Driver
+            #url: jdbc:mysql://172.31.11.200:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
+            #databaseName: wicrowd_db
+            url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            databaseName: ka_intra
+            serverName: kasset
+            username: root
+            password: K$asseti44
+            #password: wicrowd2016!@#$
+            validationQuery: SELECT 1
+            testOnBorrow: true
+        slave:
+            dataSourceClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#            dataSourceClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+            url: jdbc:sqlserver://192.168.120.50:3433;DatabaseName=dzicube;characterEncoding=utf8;useUnicode=true
+            databaseName: dzicube
+            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            #databaseName: ka_intra
+            serverName: dzicube
+            username: dzicube
+            #password: K$asseti44
+            password: ejwhs123$
+            validationQuery: SELECT 1
+            testOnBorrow: true
     jpa:
-        showSql: false
+        showSql: true
         properties:
             hibernate:
                 format_sql: true
@@ -32,20 +49,16 @@ spring:
         host: 127.0.0.1
         port: 6379
 
-    social:
-        facebook:
-            appId: '1756328654648068'
-            appSecret: '3aec46301589601ee327df72afc3d493'
-
-        kakao:
-            appId: cc5450a0dffc40e9f211445180b5aac6
-
-        google:
-            consumerKey: 1041993504838-o2p2ro14f6okt8kqtdfpqsb0g5nl6hoj.apps.googleusercontent.com
-            consumerSecret: U5SLegZYhEhfaqzQt6XKcece
-
     messages:
          basename: messages/messages
+
+    social:
+        twitter:
+            consumerKey: lor0w57qTyYaiv7OCkffqOwZV
+            consumerSecret: YO3guSJaRFJkpd2J8EPqSpv78I6g8fyMq3X8I3qs2uWSbbJrBI
+        facebook:
+            appId: '1865799810313126'
+            appSecret: 522f20a5760565c1461847eeb20772df
 
     mail:
         host: 119.206.195.229
@@ -53,24 +66,20 @@ spring:
         password: asdf6256
         port: 25
 
-    mvc:
-        favicon:
-           enabled: false
 xcrowdfund:
    restUrl: http://127.0.0.1:8070
 
 pdf:
-    projectDocument: /data/projectdata
-    cssfile: /data/projectdata/css/pdf.css
-    fontFile: /data/projectdata/font/malgun.ttf
-    zipmakerUrl: http://127.0.0.1:8082/add
-
+    projectDocument: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/testdata
+    cssfile: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/test.css
+    fontFile: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/testdata/font/MALGUN.TTF
+    zipmakerUrl: http://52.79.135.24:8080/add
 
 multipart:
     maxFileSize: 10Mb
     maxRequestSize: 30Mb
 
-develop: false
+develop: true
 
 upload:
     fileLocation: /
@@ -86,11 +95,12 @@ sms:
 
 social:
   facebook:
-      fbAppId: '1721550718128792'
+      fbAppId: '1865799810313126'
 
 admin:
-  email: wicrowd@kasset.co.kr
+  email: webmaster@kasset.co.kr
 
 subscribe:
-    has_encrypt: Y
-    hd_ep_type: SECUCERT
+    has_encrypt: N
+    hd_ep_type: CERT
+

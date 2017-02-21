@@ -208,10 +208,10 @@
 }
 
 // Box sizing
-@mixin box-sizing($boxmodel) {
-  -webkit-box-sizing: $boxmodel;
-     -moz-box-sizing: $boxmodel;
-          box-sizing: $boxmodel;
+@mixin box-sizing($bomodel) {
+  -webkit-box-sizing: $bomodel;
+     -moz-box-sizing: $bomodel;
+          box-sizing: $bomodel;
 }
 
 // User select

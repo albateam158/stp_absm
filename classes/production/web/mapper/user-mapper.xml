@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XUserMapper">
+<mapper namespace="XUserMapper">
 
     <!--========================================== INSERT ============================================== -->
 
@@ -12,28 +12,25 @@
 
     <!--========================================== SELECT ============================================== -->
     <sql id="selectUserSql">
-        SELECT user.*, ui.status, ui.realnmno, up.buzno, up.corpno
-          FROM wi_user user
-            LEFT JOIN wi_user_investor ui
-            ON ui.user_id = user.user_id
-              LEFT JOIN wi_user_publisher up
-              ON up.user_id = user.user_id
+        SELECT user.*
+          FROM kams_user user
          WHERE user.delete_date IS NULL
+            AND user.outed_date IS NULL
         <if test="userType != null and userType != ''">AND user_type = #{userType}</if>
-        <if test="regStDt != null and regStDt != ''">AND reg_date >= #{regStDt}</if>
-        <if test="regNdDt != null and regNdDt != ''">AND reg_date &lt;= #{regNdDt}</if>
-        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <if test="regStDt != null and regStDt != ''">AND user.reg_date >= #{regStDt}</if>
+        <if test="regNdDt != null and regNdDt != ''">AND user.reg_date &lt;= #{regNdDt}</if>
+        <!--<if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>-->
+        <if test="keyword != null and keyword != ''">AND (user.name = #{keyword} OR ui.realnmno = #{keyword})</if>
     </sql>
 
     <sql id="selectOutUserSql">
-        SELECT user.*, uo.content
-        FROM wi_user user
-            LEFT JOIN wi_user_out uo
-            ON uo.user_id = user.user_id
+        SELECT user.*
+        FROM kams_user user
         WHERE user.user_state IN ('out', 'outed')
         <if test="outStDt != null and outStDt != ''">AND out_date >= #{outStDt}</if>
         <if test="outNdDt != null and outNdDt != ''">AND out_date &lt;= #{outNdDt}</if>
-        <if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>
+        <!--<if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>-->
+        <if test="keyword != null and keyword != ''">AND (user.name = #{keyword} OR ui.realnmno = #{keyword})</if>
     </sql>
 
     <select id="selectUsersCount" parameterType="map" resultType="int">
@@ -46,38 +43,20 @@
         FROM (<include refid="selectOutUserSql"></include>) a
     </select>
 
-    <resultMap id="userMap" type="net.xenix.wicrowd.model.XUser">
+    <resultMap id="userMap" type="com.stp.absm.model.XUser">
         <id property="userId" column="user_id"/>
-        <result property="email" column="email"/>
+        <result property="empNo" column="emp_no"/>
         <result property="password" column="password"/>
-        <result property="name" column="name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="phone" column="phone" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="deptCd" column="dept_cd"/>
+        <result property="adminType" column="admin_type"/>
+        <result property="phone" column="phone"/>
         <result property="profileImageUrl" column="profile_image_url"/>
-        <result property="zipcode" column="zipcode" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="addr1" column="addr1" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="addr2" column="addr2" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="description" column="description" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="userType" column="user_type"/>
         <result property="userState" column="user_state"/>
-        <result property="snsType" column="sns_type"/>
-        <result property="recieve_news" column="recieveNews"/>
         <result property="regDate" column="reg_date"/>
         <result property="outDate" column="out_date"/>
         <result property="outedDate" column="outed_date"/>
-        <result property="content" column="content"/>
-
-        <association property="userInvestor" javaType="net.xenix.wicrowd.model.XUserInvestor">
-            <id property="userId" column="user_id"/>
-            <result property="realnmno" column="realnmno" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
-            <result property="status" column="status"></result>
-        </association>
-
-        <association property="userPublisher" javaType="net.xenix.wicrowd.model.XUserPublisher">
-            <id property="userId" column="user_id"/>
-            <result property="buzno" column="buzno"></result>
-            <result property="corpno" column="corpno"></result>
-        </association>
-
     </resultMap>
 
     <select id="selectUsers" parameterType="map" resultMap="userMap">
@@ -97,29 +76,6 @@
 
 
 
-    <resultMap id="userInvestorMap" type="net.xenix.wicrowd.model.XUserInvestor">
-        <id property="userId" column="user_id"/>
-        <result property="username" column="username" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="realnmno" column="realnmno" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="realnmnoTpcd" column="realnmno_tpcd"/>
-        <result property="buzno" column="buzno" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="corpName" column="corp_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="managerName" column="manager_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="managerPhone" column="manager_phone" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="managerEmail" column="manager_email" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
-        <result property="status" column="status"/>
-        <result property="regDate" column="reg_date"/>
-    </resultMap>
-
-    <select id="selectUserInvestors" parameterType="map" resultMap="userInvestorMap">
-        SELECT ui.*, u.name AS username
-        FROM wi_user_investor AS ui
-            INNER JOIN wi_user AS u
-            ON ui.user_id = u.user_id AND u.user_type = 'investor'
-        WHERE ui.status = 'approved'
-            AND u.delete_date IS NULL
-        GROUP BY ui.realnmno;
-    </select>
 
 
 </mapper>

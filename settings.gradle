@@ -1,5 +1,5 @@
 rootProject.name = 'stp_absm'
 include 'web'
 include 'common' 
-include 'batch'
+//include 'batch'
 

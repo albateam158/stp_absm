@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XCategoryMapper">
+<mapper namespace="KamsCategoryMapper">
 
     <!--========================================== INSERT ============================================== -->
 
@@ -13,7 +13,7 @@
     <!--========================================== SELECT ============================================== -->
     <sql id="selectCategorySql">
         SELECT *
-          FROM wi_category category
+          FROM kams_category category
          WHERE category_id != 0
            AND delete_date IS NULL
     </sql>
@@ -23,8 +23,9 @@
         FROM (<include refid="selectCategorySql"></include>) a
     </select>
 
-    <resultMap id="categoryMap" type="net.xenix.wicrowd.model.XCategory">
+    <resultMap id="categoryMap" type="com.stp.absm.model.XCategory">
         <id property="categoryId" column="category_id"/>
+        <result property="type" column="type"/>
         <result property="name" column="name"/>
         <result property="orderNo" column="order_no"/>
         <result property="parentCategoryId" column="parent_category_id"/>
@@ -34,24 +35,10 @@
         <result property="deleteDate" column="delete_date"/>
         <result property="projectCount" column="project_count"/>
 
-        <association property="project" javaType="net.xenix.wicrowd.model.XProject">
-            <id property="projectId" column="project_id"/>
-            <result property="name" column="project_name"/>
-            <result property="mainImageUrl" column="url"/>
-        </association>
 
     </resultMap>
 
     <select id="selectCategories" parameterType="map" resultMap="categoryMap">
-      SELECT category.*,
-              prj.project_id,
-              prj.name project_name,
-              pi.url,
-             (SELECT COUNT(project_id) FROM wi_project prj WHERE prj.category_id = category.category_id AND prj.delete_date IS NULL) project_count
-         FROM ( <include refid="selectCategorySql"></include> ) category
-            LEFT JOIN wi_project prj ON prj.project_id = category.featured_project_id
-            LEFT JOIN wi_project_image AS pi ON pi.project_id = prj.project_id AND pi.image_type = 'main'
-        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
     </select>
 
 
