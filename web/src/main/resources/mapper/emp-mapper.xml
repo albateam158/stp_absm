@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DzEmpMapper">
+
+
+
+    <resultMap id="empMap" type="com.stp.absm.model.dz.DzEmp">
+        <result property="coCd" column="CO_CD"/>
+        <result property="empCd" column="EMP_CD"/>
+        <result property="korNm" column="KOR_NM"/>
+        <result property="korNmk" column="KOR_NMK"/>
+        <result property="enlsNm" column="ENLS_NM"/>
+        <result property="brthDt" column="BRTH_DT"/>
+        <result property="lsclFg" column="LSCL_FG"/>
+        <result property="joinDt" column="JOIN_DT"/>
+        <result property="rtrDt" column="RTR_DT"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="sectNm" column="SECT_NM"/>
+        <result property="deptCd" column="dept_cd"/>
+        <result property="tel" column="TEL"/>
+        <result property="genderFg" column="GENDER_FG"/>
+        <result property="hclsCd" column="HCLS_CD"/>
+        <result property="hclsNm" column="HCLS_NM"/>
+        <result property="hrspCd" column="HRSP_CD"/>
+        <result property="hrspNm" column="HRSP_NM"/>
+        <result property="enrlFg" column="ENRL_FG"/>
+        <result property="enrlNm" column="ENRL_NM"/>
+        <result property="emalAdd" column="EMAL_ADD"/>
+        <result property="hp" column="HP"/>
+        <result property="insertDt" column="INSERT_DT"/>
+        <result property="modifyDt" column="MODIFY_DT"/>
+    </resultMap>
+
+    <resultMap id="deptMap" type="com.stp.absm.model.dz.DzDept">
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="coCd" column="CO_CD"/>
+        <result property="sectCd" column="SECT_CD"/>
+        <result property="sectNm" column="SECT_NM"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="deptNmk" column="DEPT_NMK"/>
+        <result property="divCd" column="DIV_CD"/>
+        <result property="regDt" column="REG_DT"/>
+        <result property="toDt" column="TO_DT"/>
+        <result property="insertDt" column="INSERT_DT"/>
+        <result property="modifyDt" column="MODIFY_DT"/>
+    </resultMap>
+
+    <resultMap id="crerMap" type="com.stp.absm.model.dz.DzHhmcrer">
+        <result property="coCd" column="CO_CD"/>
+        <result property="empCd" column="EMP_CD"/>
+        <result property="joinDt" column="JOIN_DT"/>
+        <result property="rtrDt" column="RTR_DT"/>
+        <result property="dutyDc" column="DUTY_DC"/>
+        <result property="hplcNm" column="HPLC_NM"/>
+        <result property="jbchDc" column="JBCH_DC"/>
+        <result property="hrtNm" column="HRT_NM"/>
+        <result property="payAm" column="PAY_AM"/>
+        <result property="rtrsDc" column="RTRS_DC"/>
+        <result property="longYn" column="LONG_YN"/>
+        <result property="memoCd" column="MEMO_CD"/>
+    </resultMap>
+
+    <!--<resultMap id="pictureMap" type="DzPicture">-->
+        <!--<result property="coCd" column="CO_CD"/>-->
+        <!--<result property="filename" column="FILENAME"/>-->
+        <!--<result property="image" column="IMAGE"/>-->
+        <!--<result property="description" column="DESCRIPTION"/>-->
+    <!--</resultMap>-->
+
+    <resultMap id="empSyncMap" type="com.stp.absm.model.dz.DzEmp">
+        <result property="coCd" column="CO_CD"/>
+        <result property="empCd" column="EMP_CD"/>
+        <result property="korNm" column="KOR_NM"/>
+        <result property="korNmk" column="KOR_NMK"/>
+        <result property="enlsNm" column="ENLS_NM"/>
+        <result property="brthDt" column="BRTH_DT"/>
+        <result property="lsclFg" column="LSCL_FG"/>
+        <result property="joinDt" column="JOIN_DT"/>
+        <result property="rtrDt" column="RTR_DT"/>
+        <result property="deptCd" column="dept_cd"/>
+        <result property="tel" column="TEL"/>
+        <result property="genderFg" column="GENDER_FG"/>
+        <result property="hclsCd" column="HCLS_CD"/>
+        <result property="hclsNm" column="HCLS_NM"/>
+        <result property="hrspCd" column="HRSP_CD"/>
+        <result property="hrspNm" column="HRSP_NM"/>
+        <result property="enrlFg" column="ENRL_FG"/>
+        <result property="enrlNm" column="ENRL_NM"/>
+        <result property="emalAdd" column="EMAL_ADD"/>
+        <result property="hp" column="HP"/>
+        <result property="insertDt" column="INSERT_DT"/>
+        <result property="modifyDt" column="MODIFY_DT"/>
+    </resultMap>
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+
+    <!--========================================== 사원관리 ============================================== -->
+
+    <sql id="selectEmpSql">
+        SELECT ROW_NUMBER() over (order by emp.emp_Cd) as ROW_NUMBER,
+                emp.*, dept.DEPT_NM, dept.SECT_NM
+        <if test="keyword1 != null and keyword1 != ''">
+        ,(select max(HPLC_NM) from HHMCRER where emp_cd = emp.EMP_CD
+        and hplc_nm like '%' + #{keyword1} + '%' ) HPLC_NM
+        </if>
+          FROM ZA_EMP_DAIKIN emp, ZA_DEPT_DAIKIN dept
+        where emp.DEPT_CD = dept.DEPT_CD
+        and emp.ENRL_FG = 'J01'
+        and emp.rtr_dt = ''
+        and emp.emp_cd > 10000
+        <if test="empCd != null and empCd != ''">AND emp.emp_Cd = #{empCd}</if>
+        <if test="deptCd != null and deptCd != ''">AND emp.dept_Cd = #{deptCd}</if>
+        <if test="joinStDt != null and joinStDt != ''">AND emp.join_dt >= #{joinStDt}</if>
+        <if test="joinNdDt != null and joinNdDt != ''">AND emp.join_dt &lt;= #{joinNdDt}</if>
+        <if test="keyword != null and keyword != ''">AND (emp.KOR_NM = #{keyword} OR emp.emp_Cd = #{keyword})</if>
+        <if test="keyword1 != null and keyword1 != ''">
+        AND exists( select 'X' from HHMCRER crer
+        where crer.emp_cd = emp.emp_cd
+        and crer.hplc_nm like '%' + #{keyword1} + '%' )
+        </if>
+    </sql>
+
+    <select id="selectEmpsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM (<include refid="selectEmpSql"></include>) a
+    </select>
+
+    <select id="selectEmps" parameterType="map" resultMap="empMap">
+        select *
+        from (
+        <include refid="selectEmpSql"></include>
+        ) A
+        where ROW_NUMBER between #{pageable.offset} + 1 and #{pageable.offset} + #{pageable.pageSize}
+        <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
+    </select>
+
+    <select id="selectSyncEmp" parameterType="map" resultMap="empSyncMap">
+        select emp.*
+        FROM ZA_EMP_DAIKIN emp
+        where 1=1
+        and emp.ENRL_FG = 'J01'
+        and emp.rtr_dt = ''
+        and emp.emp_cd > 10000
+        order by emp.emp_cd
+    </select>
+
+
+
+    <select id="selectEmp" parameterType="map" resultMap="empMap">
+        <include refid="selectEmpSql"></include>
+    </select>
+
+
+
+    <sql id="selectEmpCrerSql">
+        SELECT ROW_NUMBER() over (order by crer.join_dt) as ROW_NUMBER,
+        crer.*
+        FROM ZA_EMP_DAIKIN emp, HHMCRER crer
+        where emp.EMP_CD = crer.EMP_CD
+        and emp.ENRL_FG = 'J01'
+        <if test="empCd != null and empCd != ''">AND emp.EMP_CD = #{empCd}</if>
+        <if test="deptCd != null and deptCd != ''">AND emp.dept_Cd = #{deptCd}</if>
+        <if test="joinStDt != null and joinStDt != ''">AND crer.join_dt >= #{joinStDt}</if>
+        <if test="joinNdDt != null and joinNdDt != ''">AND crer.join_dt &lt;= #{joinNdDt}</if>
+        <if test="keyword != null and keyword != ''">AND (emp.KOR_NM = #{keyword} OR emp.emp_Cd = #{keyword})</if>
+    </sql>
+
+    <select id="selectEmpCrer" parameterType="map" resultMap="crerMap">
+        select *
+        from (
+        <include refid="selectEmpCrerSql"></include>
+        ) A
+        <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
+    </select>
+
+    <sql id="selectPictureSql">
+        SELECT pic.image
+        FROM PICTURE pic
+        where pic.DESCRIPTION = #{empCd}
+    </sql>
+    <sql id="selectPictureSql1">
+        SELECT pic.*
+        FROM PICTURE pic
+        where pic.DESCRIPTION = #{empCd}
+    </sql>
+
+    <select id="selectPicture" parameterType="map" resultType="java.util.Map">
+        <include refid="selectPictureSql"></include>
+    </select>
+
+
+    <!--========================================= 전화번호부 ============================================-->
+
+
+    <sql id="selectPhoneSql">
+        SELECT
+        emp.*, dept.DEPT_NM, dept.SECT_NM ,dept.sect_cd
+        FROM ZA_EMP_DAIKIN emp, ZA_DEPT_DAIKIN dept
+        where emp.DEPT_CD = dept.DEPT_CD
+        and emp.ENRL_FG = 'J01'
+        and emp.rtr_dt = ''
+        and emp.emp_cd > 10000
+        <if test="deptCd != null and deptCd != ''">AND emp.dept_Cd = #{deptCd}</if>
+
+    </sql>
+
+    <select id="selectPhoneCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectPhoneSql"></include>) a
+    </select>
+
+    <select id="selectPhone" parameterType="map" resultMap="empMap">
+        select *
+        from (
+        <include refid="selectPhoneSql"></include>
+        ) A
+        order by sect_cd , dept_cd ,case when HCLS_CD = '' then '999' ELSE HCLS_CD end , emp_cd;
+    </select>
+
+
+
+    <!--<select id="selectPicture1" parameterType="map" resultMap="pictureMap">-->
+        <!--<include refid="selectPictureSql"></include>-->
+    <!--</select>-->
+
+    <!--========================================== 부서관리 ============================================== -->
+
+    <sql id="selectDeptSql">
+        SELECT ROW_NUMBER() over (order by dept.dept_Cd) as ROW_NUMBER, dept.*
+        FROM ZA_DEPT_DAIKIN dept
+        where 1=1
+        and to_dt is null
+        <if test="deptCd != null and deptCd != ''">AND dept.dept_Cd = #{deptCd}</if>
+        <if test="regStDt != null and regStDt != ''">AND dept.reg_dt >= #{regStDt}</if>
+        <if test="regNdDt != null and regNdDt != ''">AND dept.reg_dt &lt;= #{regNdDt}</if>
+        <if test="keyword != null and keyword != ''">AND (dept.dept_NM = #{keyword} OR dept.sect_nm = #{keyword})</if>
+    </sql>
+
+
+    <select id="selectDeptsGrpByDeptCd" parameterType="map" resultMap="deptMap">
+        <include refid="selectDeptSql"></include>
+        ORDER BY CO_CD,DEPT_NM
+    </select>
+
+
+    <select id="selectDepts" parameterType="map" resultMap="deptMap">
+        select *
+        from (
+        <include refid="selectDeptSql"></include>
+        ) A
+        where ROW_NUMBER between #{pageable.offset} + 1 and #{pageable.offset} + #{pageable.pageSize}
+        <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
+    </select>
+
+
+</mapper>

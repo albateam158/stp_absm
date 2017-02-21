@@ -1,0 +1,96 @@
+server:
+    port: 8090
+    session:
+        timeout: 1800
+
+endpoints:
+    enabled: false
+    shutdown:
+        enabled: false
+    jmx:
+        enabled: false
+
+spring:
+    profiles:
+        active: dev
+    datasource:
+        dataSourceClassName: org.gjt.mm.mysql.Driver
+        url: jdbc:mysql://192.168.3.101:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
+        databaseName: wicrowd_db
+        serverName: wicrowd_db
+        username: wicrowd_front
+        password: wicrowd2016!@#$
+        validationQuery: SELECT 1
+        testOnBorrow: true
+    jpa:
+        showSql: false
+        properties:
+            hibernate:
+                format_sql: true
+
+    redis:
+        host: 127.0.0.1
+        port: 6379
+
+    social:
+        facebook:
+            appId: '1756328654648068'
+            appSecret: '3aec46301589601ee327df72afc3d493'
+
+        kakao:
+            appId: cc5450a0dffc40e9f211445180b5aac6
+
+        google:
+            consumerKey: 1041993504838-o2p2ro14f6okt8kqtdfpqsb0g5nl6hoj.apps.googleusercontent.com
+            consumerSecret: U5SLegZYhEhfaqzQt6XKcece
+
+    messages:
+         basename: messages/messages
+
+    mail:
+        host: 119.206.195.229
+        username: wicrowd@kasset.co.kr
+        password: asdf6256
+        port: 25
+
+    mvc:
+        favicon:
+           enabled: false
+xcrowdfund:
+   restUrl: http://127.0.0.1:8070
+
+pdf:
+    projectDocument: /data/projectdata
+    cssfile: /data/projectdata/css/pdf.css
+    fontFile: /data/projectdata/font/malgun.ttf
+    zipmakerUrl: http://127.0.0.1:8082/add
+
+
+multipart:
+    maxFileSize: 10Mb
+    maxRequestSize: 30Mb
+
+develop: false
+
+upload:
+    fileLocation: /
+
+logging:
+    config: classpath:logback.xml
+
+aeskey: M3OuXbwA3AcJq9oa-c_YRONCiYk8SiEd9KsRFaj1oTM
+
+sms:
+  from: '025506256'
+
+
+social:
+  facebook:
+      fbAppId: '1721550718128792'
+
+admin:
+  email: wicrowd@kasset.co.kr
+
+subscribe:
+    has_encrypt: Y
+    hd_ep_type: SECUCERT

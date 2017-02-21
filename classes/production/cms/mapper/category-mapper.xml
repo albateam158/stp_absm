@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.KamsCategoryMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectCategorySql">
+        SELECT *
+          FROM kams_category category
+         WHERE category_id != 0
+           AND delete_date IS NULL
+    </sql>
+
+    <select id="selectCategoriesCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectCategorySql"></include>) a
+    </select>
+
+    <resultMap id="categoryMap" type="net.xenix.wicrowd.model.XCategory">
+        <id property="categoryId" column="category_id"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="parentCategoryId" column="parent_category_id"/>
+        <result property="featuredProjectId" column="featured_project_id"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+        <result property="projectCount" column="project_count"/>
+
+
+    </resultMap>
+
+    <select id="selectCategories" parameterType="map" resultMap="categoryMap">
+    </select>
+
+
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XQnaMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectSql">
+        SELECT q.*, u.name user_name, c.code_name
+        FROM wi_qna AS q
+        INNER JOIN wi_user AS u
+        ON u.user_id = q.user_id
+        INNER JOIN wi_code AS c
+        ON c.code = q.qna_type
+        WHERE q.delete_date IS NULL
+        <if test="keyword != null and keyword != ''">AND (title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%'))</if>
+    </sql>
+    <select id="selectQnasCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectSql"></include>) a
+    </select>
+
+
+    <resultMap id="qnaMap" type="net.xenix.wicrowd.model.XQna">
+        <id property="qnaId" column="qna_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+    </resultMap>
+
+
+    <select id="selectQnas" parameterType="map" resultMap="qnaMap">
+        <include refid="selectSql"></include>
+        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+        LIMIT #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="selectQnasCountByUserId" parameterType="map" resultType="int">
+        SELECT COUNT(qna_id)
+        FROM wi_qna
+        WHERE delete_date is NULL
+        AND user_id = #{userId}
+    </select>
+
+    <select id="selectQnasByUserId" parameterType="map" resultMap="qnaListMap">
+        <include refid="selectSql"></include>
+        AND q.user_id = #{userId}
+        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+        LIMIT #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="selectQna" resultMap="qnaListMap">
+        <include refid="selectSql"></include>
+        WHERE qna_id = #{qnaId}
+    </select>
+
+
+    <select id="adminSelectQnaCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+        SELECT q.*, u.name, c.code_name
+        FROM wi_qna AS q
+        INNER JOIN wi_user AS u
+        ON u.user_id = q.user_id
+        INNER JOIN wi_code AS c
+        ON c.code = q.qna_type
+        WHERE q.delete_date IS NULL
+        <if test="keyword != null and keyword != ''">AND (q.title LIKE CONCAT('%', #{keyword}, '%') OR q.content LIKE CONCAT('%', #{keyword}, '%'))</if>
+        ) a
+    </select>
+
+
+    <resultMap id="qnaListMap" type="net.xenix.wicrowd.model.XQna">
+        <id property="qnaId" column="qna_id"/>
+        <result property="title" column="title"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="content" column="content"/>
+        <result property="answer" column="answer"/>
+        <result property="qnaType" column="qna_type"/>
+        <result property="codeName" column="code_name"/>
+        <result property="userName" column="user_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="answerDate" column="answer_date"/>
+    </resultMap>
+
+
+
+    <select id="adminSelectQna" parameterType="map" resultMap="qnaListMap">
+        SELECT q.*, u.name user_name, c.code_name
+        FROM wi_qna AS q
+        INNER JOIN wi_user AS u
+        ON u.user_id = q.user_id
+        INNER JOIN wi_code AS c
+        ON c.code = q.qna_type
+        WHERE q.delete_date IS NULL
+        <if test="keyword != null and keyword != ''">AND (q.title LIKE CONCAT('%', #{keyword}, '%') OR q.content LIKE CONCAT('%', #{keyword}, '%'))</if>
+        <if test="qnaId != null and qnaId != ''">AND qna_id = #{qnaId} </if>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <otherwise>
+                ORDER BY q.reg_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+</mapper>

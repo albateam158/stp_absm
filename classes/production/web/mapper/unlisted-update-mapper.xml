@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XUnlistedUpdateMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <select id="selectUnlistedUpdatesCount" parameterType="map" resultType="int">
+        SELECT COUNT(update_id)
+        FROM wi_unlisted_update
+        WHERE delete_date IS NULL
+    </select>
+
+    <resultMap id="updateMap" type="net.xenix.wicrowd.model.XUnlistedUpdate">
+        <id property="updateId" column="update_id"/>
+        <result property="userId" column="unlisted_user_id"/>
+        <result property="unlistedId" column="unlisted_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="adminDeleteDate" column="admin_delete_date"/>
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="unlisted_user_id"/>
+            <result property="name" column="name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+            <result property="profileImageUrl" column="profile_image_url"></result>
+            <result property="userType" column="user_type"></result>
+            <result property="invSortCd" column="inv_sort_cd"></result>
+        </association>
+
+        <collection property="comments" resultMap="commentMap" notNullColumn="comment_id"></collection>
+    </resultMap>
+
+    <resultMap id="commentMap" type="net.xenix.wicrowd.model.XUnlistedUpdateComment">
+
+        <id property="commentId" column="comment_id"/>
+        <result property="content" column="comment_content"></result>
+        <result property="regDate" column="comment_reg_date"/>
+        <result property="adminDeleteDate" column="comment_admin_delete_date"/>
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="comment_user_id"/>
+            <result property="name" column="commentuser_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+            <result property="profileImageUrl" column="commentuser_profile_image_url"></result>
+        </association>
+
+        <collection property="replies" resultMap="replyMap" notNullColumn="reply_comment_id"></collection>
+
+    </resultMap>
+
+    <resultMap id="replyMap" type="net.xenix.wicrowd.model.XUnlistedUpdateComment">
+
+        <id property="commentId" column="reply_comment_id"/>
+        <result property="content" column="reply_content"></result>
+        <result property="parentCommentId" column="reply_parent_comment_id"/>
+        <result property="regDate" column="reply_reg_date"/>
+        <result property="adminDeleteDate" column="reply_admin_delete_date"/>
+
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="reply_user_id"/>
+            <result property="name" column="reply_user_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+            <result property="profileImageUrl" column="reply_profile_image_url"></result>
+        </association>
+
+    </resultMap>
+
+    <select id="selectUnlistedUpdates" parameterType="map" resultMap="updateMap">
+        SELECT a.*,
+            ccomment.comment_id reply_comment_id,
+            ccomment.content reply_content,
+            ccomment.user_id reply_user_id,
+            ccomment.parent_comment_id reply_parent_comment_id,
+            ccomment.reg_date reply_reg_date,
+            ccomment.admin_delete_date reply_admin_delete_date,
+            cuser.name reply_user_name,
+            cuser.profile_image_url reply_profile_image_url
+        FROM (
+            SELECT uupdate.*,
+                comment.comment_id,
+                comment.content comment_content,
+                comment.reg_date comment_reg_date,
+                comment.admin_delete_date comment_admin_delete_date,
+                commentuser.user_id comment_user_id,
+                commentuser.name commentuser_name,
+                commentuser.profile_image_url commentuser_profile_image_url
+            FROM (
+                SELECT unlisted.unlisted_id,
+                    wuser.name,
+                    wuser.profile_image_url,
+                    wuser.user_type,
+                    iuser.inv_sort_cd,
+                    uupdate.update_id,
+                    uupdate.user_id unlisted_user_id,
+                    uupdate.title,
+                    uupdate.content,
+                    uupdate.comment_count,
+                    uupdate.reg_date,
+                    uupdate.admin_delete_date
+                FROM wi_unlisted_update uupdate
+                LEFT OUTER JOIN wi_unlisted unlisted ON uupdate.unlisted_id = unlisted.unlisted_id
+                LEFT OUTER JOIN wi_user wuser ON wuser.user_id = uupdate.user_id
+                LEFT OUTER JOIN wi_user_investor iuser ON iuser.user_id = uupdate.user_id
+                WHERE uupdate.delete_date IS NULL
+                <if test="unlistedId != null">AND uupdate.unlisted_id = #{unlistedId}</if>
+                <choose>
+                    <when test="pageable != null">
+                        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                        LIMIT #{pageable.offset}, #{pageable.pageSize}
+                    </when>
+                    <otherwise>
+                        ORDER BY uupdate.update_id DESC
+                    </otherwise>
+                </choose>
+            ) uupdate
+            LEFT OUTER JOIN wi_unlisted_update_comment comment ON uupdate.update_id = comment.update_id AND comment.delete_date IS NULL AND comment.comment_id = comment.parent_comment_id
+            LEFT OUTER JOIN wi_user commentuser ON comment.user_id = commentuser.user_id
+        ) a
+        LEFT OUTER JOIN wi_unlisted_update_comment ccomment ON a.comment_id = ccomment.parent_comment_id AND ccomment.comment_id != ccomment.parent_comment_id AND ccomment.delete_date IS NULL
+        LEFT OUTER JOIN wi_user cuser ON ccomment.user_id = cuser.user_id
+        ORDER BY update_id DESC, a.comment_id ASC, ccomment.comment_id ASC
+    </select>
+
+</mapper>

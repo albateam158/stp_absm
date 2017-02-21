@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XNoticeMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectNoticesSql">
+        SELECT *
+        FROM wi_notice
+        WHERE delete_date IS NULL
+        <if test="keyword != null and keyword != ''">AND (title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%'))</if>
+    </sql>
+    <select id="selectNoticesCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectNoticesSql"></include>) a
+    </select>
+
+
+    <resultMap id="noticesMap" type="net.xenix.wicrowd.model.XNotice1">
+        <id property="noticeId" column="notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+    </resultMap>
+
+
+    <select id="selectNotices" parameterType="map" resultMap="noticesMap">
+        <include refid="selectNoticesSql"></include>
+        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+        LIMIT #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="selectLatelyNotices" resultMap="noticesMap">
+        <include refid="selectNoticesSql"></include>
+        ORDER BY reg_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectNotice" resultMap="noticesMap">
+        <include refid="selectNoticesSql"></include>
+        WHERE notice_id = #{noticeId}
+    </select>
+
+
+
+</mapper>

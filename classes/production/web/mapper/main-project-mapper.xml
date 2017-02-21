@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XMainProjectMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectMainProjectSql">
+        SELECT mp.*, p.name
+        FROM wi_main_project AS mp
+          LEFT JOIN wi_project AS p
+          ON mp.project_id = p.project_id
+        WHERE 1=1
+         <if test="keyword != null and keyword != ''">AND title LIKE CONCAT('%', #{keyword}, '%')</if>
+    </sql>
+    <select id="selectMainProjectsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM (<include refid="selectMainProjectSql"></include>) a
+    </select>
+
+
+    <resultMap id="mainProjectsMap" type="net.xenix.wicrowd.model.XMainProject">
+        <id property="mainId" column="main_id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="url" column="url"/>
+        <result property="image" column="image"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+        <association property="project" javaType="net.xenix.wicrowd.model.XProject">
+            <id property="projectId" column="project_id"/>
+            <result property="name" column="name"></result>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectMainProjects" parameterType="map" resultMap="mainProjectsMap">
+        <include refid="selectMainProjectSql"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <otherwise>
+                ORDER BY prj.reg_date DESC
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+    <!-- Project 조회 -->
+    <select id="selectMainProject" parameterType="map" resultMap="mainProjectsMap">
+        SELECT *
+        FROM wi_main_project
+        WHERE main_id = #{mainId};
+    </select>
+</mapper>

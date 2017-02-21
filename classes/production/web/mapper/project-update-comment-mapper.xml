@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XProjectUpdateCommentMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <resultMap id="commentMap" type="net.xenix.wicrowd.model.XUpdateComment">
+
+        <id property="commentId" column="comment_id"/>
+        <result property="content" column="content"></result>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="adminDeleteDate" column="admin_delete_date"/>
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="comment_user_id"/>
+            <result property="name" column="commentuser_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+            <result property="profileImageUrl" column="commentuser_profile_image_url"></result>
+        </association>
+
+        <collection property="replies" resultMap="replyMap" notNullColumn="reply_comment_id"></collection>
+
+    </resultMap>
+
+
+    <resultMap id="replyMap" type="net.xenix.wicrowd.model.XUpdateComment">
+
+        <id property="commentId" column="reply_comment_id"/>
+        <result property="content" column="reply_content"></result>
+        <result property="parentCommentId" column="reply_parent_comment_id"/>
+        <result property="regDate" column="reply_reg_date"/>
+        <result property="adminDeleteDate" column="reply_admin_delete_date"/>
+
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="reply_user_id"/>
+            <result property="name" column="reply_user_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+            <result property="profileImageUrl" column="reply_profile_image_url"></result>
+        </association>
+
+    </resultMap>
+
+
+
+    <select id="selectProjectUpdateComments" parameterType="map" resultMap="commentMap">
+        SELECT pcomment.*,
+               ccomment.comment_id reply_comment_id,
+               ccomment.content reply_content,
+               ccomment.user_id reply_user_id,
+               ccomment.parent_comment_id reply_parent_comment_id,
+               ccomment.reg_date reply_reg_date,
+               ccomment.admin_delete_date reply_admin_delete_date,
+               cuser.name reply_user_name,
+               cuser.profile_image_url reply_profile_image_url
+        FROM (
+              SELECT pcomment.comment_id,
+                     pcomment.content,
+                     pcomment.user_id comment_user_id,
+                     pcomment.parent_comment_id,
+                     pcomment.reg_date,
+                     pcomment.admin_delete_date,
+                     puser.name commentuser_name,
+                     puser.profile_image_url commentuser_profile_image_url
+                FROM wi_update_comment pcomment,
+                     wi_user puser
+               WHERE pcomment.update_id = #{updateId}
+                 AND pcomment.comment_id = pcomment.parent_comment_id
+                 AND pcomment.delete_date IS NULL
+                 AND pcomment.user_id = puser.user_id
+            <choose>
+                <when test="pageable != null">
+                    ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                    LIMIT #{pageable.offset}, #{pageable.pageSize}
+                </when>
+                <otherwise>
+                    ORDER BY pcomment.comment_id DESC
+                </otherwise>
+            </choose> ) pcomment LEFT OUTER JOIN wi_update_comment ccomment ON ccomment.parent_comment_id = pcomment.comment_id AND  ccomment.comment_id != ccomment.parent_comment_id AND ccomment.delete_date IS NULL
+                                 LEFT OUTER JOIN wi_user cuser ON ccomment.user_id = cuser.user_id
+        ORDER BY pcomment.comment_id DESC, ccomment.comment_id ASC
+    </select>
+
+
+</mapper>

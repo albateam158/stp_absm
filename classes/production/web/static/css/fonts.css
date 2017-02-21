@@ -1,0 +1,21 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@font-face {
+  font-family: 'NanumBarunGothicLight';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nanum Barun Gothic Light'), local('Nanum Barun Gothic-Light'), local('NanumBarunGothic Light');
+  src: url('./webfont/NanumBarunGothicLight.eot');
+  src: url('./webfont/NanumBarunGothicLight.eot?#iefix') format('embedded-opentype'),
+       url('./webfont/NanumBarunGothicLight.woff') format('woff'),
+       url('./webfont/NanumBarunGothicLight.otf') format('truetype');
+}
+@font-face {
+  font-family: 'NanumBarunGothicUltraLight';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Nanum Barun Gothic Ultra Light'), local('Nanum Barun Gothic-Ultra Light'), local('NanumBarunGothic Ultra Light');
+  src: url('./webfont/NanumBarunGothicUltraLight.eot');
+  src: url('./webfont/NanumBarunGothicUltraLight.eot?#iefix') format('embedded-opentype'),
+       url('./webfont/NanumBarunGothicUltraLight.woff') format('woff'),
+       url('./webfont/NanumBarunGothicUltraLight.otf') format('truetype');
+}

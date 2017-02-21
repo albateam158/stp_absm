@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KamsNoticeMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectNoticeSql">
+        SELECT c.*, ca.name AS code_name
+        FROM kams_notice AS c
+            INNER JOIN kams_category AS ca
+            ON ca.category_id = c.category
+        WHERE c.delete_date IS NULL
+        <if test="keyword != null and keyword != ''">AND c.title LIKE CONCAT('%', #{keyword}, '%')</if>
+    </sql>
+
+
+    <select id="selectNoticesCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectNoticeSql"></include>) a
+    </select>
+
+
+    <select id="selectNotices" parameterType="map" resultMap="NoticeMap">
+        <include refid="selectNoticeSql"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY c.reg_date DESC
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <select id="selectNoticeComments" parameterType="map" resultMap="commentMap">
+        SELECT pcomment.*,
+        ccomment.comment_id reply_comment_id,
+        ccomment.content reply_content,
+        ccomment.user_id reply_user_id,
+        ccomment.parent_comment_id reply_parent_comment_id,
+        ccomment.reg_date reply_reg_date,
+        cuser.name reply_user_name,
+        cuser.profile_image_url reply_profile_image_url
+        FROM (
+            SELECT pcomment.comment_id,
+            pcomment.content comment_content,
+            pcomment.user_id comment_user_id,
+            pcomment.parent_comment_id,
+            pcomment.reg_date comment_reg_date,
+            pcomment.admin_delete_date comment_admin_delete_date,
+            puser.name commentuser_name,
+            puser.profile_image_url commentuser_profile_image_url
+            FROM kams_notice_comment pcomment,
+                  kams_user puser
+            WHERE pcomment.Notice_id = #{NoticeId}
+                AND pcomment.comment_id = pcomment.parent_comment_id
+                AND pcomment.delete_date IS NULL
+                AND pcomment.user_id = puser.user_id
+            <choose>
+                <when test="pageable != null">
+                    ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                    LIMIT #{pageable.offset}, #{pageable.pageSize}
+                </when>
+                <otherwise>
+                    ORDER BY pcomment.comment_id DESC
+                </otherwise>
+            </choose>
+        ) pcomment
+        LEFT OUTER JOIN kams_notice_comment ccomment ON ccomment.parent_comment_id = pcomment.comment_id AND  ccomment.comment_id != ccomment.parent_comment_id AND ccomment.delete_date IS NULL
+        LEFT OUTER JOIN kams_user cuser ON ccomment.user_id = cuser.user_id
+        ORDER BY pcomment.comment_id DESC, ccomment.comment_id ASC
+    </select>
+
+
+
+    <resultMap id="NoticeMap" type="com.stp.absm.model.XNotice">
+        <id property="NoticeId" column="Notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="category" column="code_name"/>
+
+    </resultMap>
+
+    <resultMap id="commentMap" type="com.stp.absm.model.XNoticeComment">
+
+        <id property="commentId" column="comment_id"/>
+        <result property="content" column="comment_content"></result>
+        <result property="regDate" column="comment_reg_date"/>
+        <result property="adminDeleteDate" column="comment_admin_delete_date"/>
+
+
+        <collection property="replies" resultMap="replyMap" notNullColumn="reply_comment_id"></collection>
+
+    </resultMap>
+
+    <resultMap id="replyMap" type="com.stp.absm.model.XNoticeComment">
+
+        <id property="commentId" column="reply_comment_id"/>
+        <result property="content" column="reply_content"></result>
+        <result property="parentCommentId" column="reply_parent_comment_id"/>
+        <result property="regDate" column="reply_reg_date"/>
+
+
+    </resultMap>
+
+
+    <select id="selectNoticeCount1" parameterType="map" resultType="int">
+        SELECT COUNT(Notice_id)
+          FROM kams_notice
+         WHERE delete_date IS NULL
+    </select>
+
+
+    <resultMap id="NoticeMap1" type="com.stp.absm.model.XNotice">
+        <id property="NoticeId" column="Notice_id"/>
+        <result property="title" column="title"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+
+
+        <collection property="comments" resultMap="commentMap" notNullColumn="comment_id"></collection>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XUserMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectUserSql">
+        SELECT user.*
+          FROM kams_user user
+         WHERE user.delete_date IS NULL
+            AND user.outed_date IS NULL
+        <if test="userType != null and userType != ''">AND user_type = #{userType}</if>
+        <if test="regStDt != null and regStDt != ''">AND user.reg_date >= #{regStDt}</if>
+        <if test="regNdDt != null and regNdDt != ''">AND user.reg_date &lt;= #{regNdDt}</if>
+        <!--<if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>-->
+        <if test="keyword != null and keyword != ''">AND (user.name = #{keyword} OR ui.realnmno = #{keyword})</if>
+    </sql>
+
+    <sql id="selectOutUserSql">
+        SELECT user.*
+        FROM kams_user user
+        WHERE user.user_state IN ('out', 'outed')
+        <if test="outStDt != null and outStDt != ''">AND out_date >= #{outStDt}</if>
+        <if test="outNdDt != null and outNdDt != ''">AND out_date &lt;= #{outNdDt}</if>
+        <!--<if test="keyword != null and keyword != ''">AND name LIKE CONCAT('%', #{keyword}, '%')</if>-->
+        <if test="keyword != null and keyword != ''">AND (user.name = #{keyword} OR ui.realnmno = #{keyword})</if>
+    </sql>
+
+    <select id="selectUsersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM (<include refid="selectUserSql"></include>) a
+    </select>
+
+    <select id="selectOutUsersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectOutUserSql"></include>) a
+    </select>
+
+    <resultMap id="userMap" type="net.xenix.wicrowd.model.XUser">
+        <id property="userId" column="user_id"/>
+        <result property="empNo" column="emp_no"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="deptCd" column="dept_cd"/>
+        <result property="adminType" column="admin_type"/>
+        <result property="phone" column="phone"/>
+        <result property="profileImageUrl" column="profile_image_url"/>
+        <result property="userState" column="user_state"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="outDate" column="out_date"/>
+        <result property="outedDate" column="outed_date"/>
+    </resultMap>
+
+    <select id="selectUsers" parameterType="map" resultMap="userMap">
+        <include refid="selectUserSql"></include>
+        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+        LIMIT #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="selectOutUsers" parameterType="map" resultMap="userMap">
+        <include refid="selectOutUserSql"></include>
+        ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+        LIMIT #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

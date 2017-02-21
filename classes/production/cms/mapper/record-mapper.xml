@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.KamsRecordMapper">
+
+    <resultMap id="plListMap" type="net.xenix.wicrowd.model.KPlList">
+        <result property="dt" column="DT"/>
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="acc" column="ACC"/>
+        <result property="accNm" column="ACC_NM"/>
+        <result property="contents" column="CONTENTS"/>
+        <result property="amt" column="AMT"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+        <result property="fixDeptCd" column="FIX_DEPT_CD"/>
+        <result property="fixDeptNm" column="FIX_DEPT_NM"/>
+        <result property="fixAmt" column="FIX_AMT"/>
+    </resultMap>
+
+    <resultMap id="plBalMap" type="net.xenix.wicrowd.model.KPlBal">
+        <result property="dt" column="DT"/>
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="amt" column="AMT"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+
+
+
+    <resultMap id="deptMap" type="net.xenix.wicrowd.model.dz.TbDzDept">
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="coCd" column="CO_CD"/>
+        <result property="sectCd" column="SECT_CD"/>
+        <result property="sectNm" column="SECT_NM"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="deptNmk" column="DEPT_NMK"/>
+        <result property="divCd" column="DIV_CD"/>
+        <result property="regDt" column="REG_DT"/>
+        <result property="toDt" column="TO_DT"/>
+        <result property="insertDt" column="INSERT_DT"/>
+        <result property="modifyDt" column="MODIFY_DT"/>
+    </resultMap>
+
+    <resultMap id="accMap" type="net.xenix.wicrowd.model.KAccCode">
+        <result property="acc" column="ACC"/>
+        <result property="sign" column="SIGN"/>
+        <result property="accNm" column="ACC_NM"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+
+
+    <resultMap id="prodMap" type="net.xenix.wicrowd.model.KProdCode">
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectPlListOne">
+        SELECT p.*
+        , pc.prod_nm AS prod_nm
+        , ac.acc_nm AS acc_nm
+        , dept.dept_nm AS dept_nm
+        , pl.fix_dept_cd AS fix_dept_cd
+        , dept2.dept_nm AS fix_dept_nm
+        , pl.amt AS fix_amt
+        FROM kams_pl_list AS p
+        INNER JOIN kams_PROD_CODE AS pc
+        ON p.prod = pc.prod
+        INNER JOIN kams_ACC_CODE AS ac
+        ON p.acc = ac.acc
+        INNER JOIN ZA_DEPT_DAIKIN AS dept
+        ON p.dept_cd = dept.dept_cd
+        LEFT OUTER JOIN (select id,dt,dept_cd,prod,fix_dept_cd,amt amt from kams_prepl_list
+        group by id,dt,dept_cd,prod,fix_dept_cd) AS pl
+        ON pl.id = p.pre_id
+        INNER JOIN ZA_DEPT_DAIKIN AS dept2
+        ON pl.fix_dept_cd = dept2.dept_cd
+        WHERE 1=1
+        <if test="id != null and id != ''">AND p.id = #{id}</if>
+        <if test="dt != null and dt != ''">AND p.dt = #{dt}</if>
+        <if test="deptCd != null and deptCd != ''">AND p.dept_cd = #{deptCd}</if>
+        <if test="prod != null and prod != ''">AND p.prod = #{prod}</if>
+        <if test="acc != null and acc != ''">AND p.acc = #{acc}</if>
+        <if test="contents != null and contents != ''">AND p.contents LIKE CONCAT('%', #{contents}, '%') </if>
+    </sql>
+
+
+    <select id="selectPlListCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectPlListOne"></include>) a
+    </select>
+
+    <select id="selectPlOne" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlListOne"></include>
+    </select>
+    <select id="selectPlList" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlListOne"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY p.reg_date DESC
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+
+
+
+
+    <sql id="selectTbDeptSql">
+        SELECT dept.*
+        FROM ZA_DEPT_DAIKIN dept
+        where 1=1
+        <if test="deptCd != null and deptCd != ''">AND dept.dept_Cd = #{deptCd}</if>
+        <if test="regStDt != null and regStDt != ''">AND dept.reg_dt >= #{regStDt}</if>
+        <if test="regNdDt != null and regNdDt != ''">AND dept.reg_dt &lt;= #{regNdDt}</if>
+        <if test="keyword != null and keyword != ''">AND (dept.dept_NM = #{keyword} OR dept.sect_nm = #{keyword})</if>
+    </sql>
+
+
+    <select id="selectTbDeptsGrpByDeptCd" parameterType="map" resultMap="deptMap">
+        <include refid="selectTbDeptSql"></include>
+        ORDER BY dept.dept_cd asc
+    </select>
+
+
+    <select id="selectTbDepts" parameterType="map" resultMap="deptMap">
+        <include refid="selectTbDeptSql"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY c.reg_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <sql id="selectTbAccSql">
+        SELECT acc.*
+        FROM kams_acc_code acc
+        where 1=1
+        <if test="acc != null and acc != ''">AND acc.acc = #{acc}</if>
+    </sql>
+
+
+    <select id="selectAccCdList" parameterType="map" resultMap="accMap">
+        <include refid="selectTbAccSql"></include>
+        ORDER BY acc.acc asc
+    </select>
+
+    <sql id="selectTbProdSql">
+        SELECT prod.*
+        FROM kams_prod_code prod
+        where 1=1
+        <if test="prod != null and prod != ''">AND prod.prod = #{prod}</if>
+    </sql>
+
+
+    <select id="selectProdCdList" parameterType="map" resultMap="prodMap">
+        <include refid="selectTbProdSql"></include>
+        ORDER BY prod.prod asc
+    </select>
+</mapper>

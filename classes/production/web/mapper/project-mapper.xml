@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xenix.wicrowd.mybatis.mapper.XProjectMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectProjectSql">
+        SELECT prj.*,
+              pi.url,
+              category.name category_name,
+              user.name user_name,
+              DATEDIFF(prj.sbsc_st_dt, NOW()) AS readyday,
+              DATEDIFF(prj.sbsc_nd_dt, NOW()) AS dday
+        FROM wi_project prj
+              LEFT JOIN wi_project_image AS pi
+              ON pi.project_id = prj.project_id AND pi.image_type = 'main',
+            wi_category category,
+            wi_user user
+        WHERE prj.category_id = category.category_id
+          AND prj.user_id = user.user_id
+          AND prj.delete_date IS NULL
+         <if test="status != null">AND prj.status = #{status}</if>
+         <if test="displayType != null">AND prj.display_type = #{displayType}</if>
+         <if test="categorySeq != null and categorySeq != ''">AND prj.category_id IN (${categorySeq})</if>
+         <if test="secnTpcd != null and secnTpcd != ''">AND prj.secn_tpcd IN (${secnTpcd})</if>
+         <if test="publisherStage != null and publisherStage != ''">AND prj.publisher_stage IN (${publisherStage})</if>
+         <if test="successState != null and successState != ''">
+            AND prj.success_state IN
+            <foreach collection="successState" item="state"   open="(" close=")" separator=",">
+                '${state}'
+            </foreach>
+         </if>
+         <if test="projectIds != null and projectIds != ''">AND prj.project_id NOT IN (${projectIds})</if>
+         <if test="sbscStDt != null and sbscStDt != ''">AND sbsc_st_dt >= #{sbscStDt}</if>
+         <if test="sbscNdDt != null and sbscNdDt != ''">AND sbsc_st_dt &lt;= #{sbscNdDt}</if>
+         <if test="keyword != null and keyword != ''">AND prj.sbsc_iss_nm LIKE CONCAT('%', #{keyword}, '%')</if>
+    </sql>
+    <select id="selectProjectsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM (<include refid="selectProjectSql"></include>) a
+    </select>
+
+
+    <resultMap id="projectsMap" type="net.xenix.wicrowd.model.XProject">
+        <id property="projectId" column="project_id"/>
+        <result property="name" column="name"/>
+        <result property="summary" column="summary"/>
+        <result property="mainImageUrl" column="url"/>
+        <result property="description" column="description"/>
+        <result property="mainImageUrl" column="url"/>
+        <result property="location" column="location"/>
+        <result property="companyValue" column="company_value"/>
+        <result property="managerName" column="manager_name"/>
+        <result property="managerPhone" column="manager_phone"/>
+        <result property="depositAccno" column="deposit_accno"/>
+        <result property="depositType" column="deposit_type"/>
+        <result property="assignType" column="assign_type"/>
+        <result property="sbscStDt" column="sbsc_st_dt"/>
+        <result property="sbscNdDt" column="sbsc_nd_dt"/>
+        <result property="isin" column="isin"/>
+        <result property="secnTpcd" column="secn_tpcd"/>
+        <result property="sbscIssNm" column="sbsc_iss_nm"/>
+        <result property="stockType" column="stock_type"/>
+        <result property="sbscCount" column="sbsc_count"/>
+        <result property="maxSbscCount" column="max_sbsc_count"/>
+        <result property="faceValue" column="face_value"/>
+        <result property="sbscAmt" column="sbsc_amt"/>
+        <result property="targetAmt" column="target_amt"/>
+        <result property="targetStockQty" column="target_stock_qty"/>
+        <result property="targetStockPrice" column="target_stock_price"/>
+        <result property="minSbscCount" column="min_sbsc_count"/>
+        <result property="publishDate" column="publish_date"/>
+        <result property="issueDate" column="issue_date"/>
+        <result property="deadlineDate" column="deadline_date"/>
+        <result property="content" column="content"/>
+        <result property="comment" column="comment"/>
+        <result property="display_type" column="displayType"/>
+        <result property="status" column="status"/>
+        <result property="successState" column="success_state"/>
+        <result property="publisherStage" column="publisher_stage"/>
+        <result property="business" column="business"/>
+        <result property="staff" column="staff"/>
+        <result property="address" column="address"/>
+        <result property="establishDate" column="establish_date"/>
+        <result property="orderno" column="orderno"/>
+        <result property="taxDeduction" column="tax_deduction"/>
+        <result property="subscribeType" column="subscribe_type"/>
+        <result property="updateCount" column="update_count"/>
+        <result property="feedbackCount" column="feedback_count"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="readyDay" column="readyday"/>
+        <result property="dday" column="dday"/>
+
+        <association property="category" javaType="net.xenix.wicrowd.model.XCategory">
+            <id property="categoryId" column="category_id"/>
+            <result property="name" column="category_name"></result>
+        </association>
+
+        <association property="user" javaType="net.xenix.wicrowd.model.XUser">
+            <id property="userId" column="user_id"/>
+            <result property="name" column="user_name" typeHandler="net.xenix.wicrowd.mybatis.EncryptStringTypeHandler"></result>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectProjects" parameterType="map" resultMap="projectsMap">
+        <include refid="selectProjectSql"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY prj.orderno ASC, prj.reg_date DESC
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+    <!-- Featured Project 조회 -->
+    <select id="selectFeaturedProject" parameterType="map" resultMap="projectsMap">
+        SELECT prj.*,
+               pi.url,
+               category.name category_name,
+               user.name user_name,
+               DATEDIFF(prj.sbsc_st_dt, NOW()) AS readyday,
+               DATEDIFF(prj.sbsc_nd_dt, NOW()) AS dday
+          FROM wi_project prj LEFT JOIN wi_project_image AS pi ON pi.project_id = prj.project_id AND pi.image_type = 'main',
+               wi_category category,
+               wi_user user
+         WHERE prj.category_id = category.category_id
+           AND prj.user_id = user.user_id
+           AND prj.delete_date IS NULL
+           AND prj.status = 'visible'
+        <if test="status != null">AND prj.status = #{status}</if>
+        <if test="categorySeq != null">AND category.category_id = #{categorySeq}</if>
+        GROUP BY prj.project_id
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+
+
+    <!-- Project 조회 -->
+    <select id="selectProject" parameterType="map" resultMap="projectsMap">
+        SELECT prj.*,
+        pi.url,
+        category.name category_name,
+        user.name user_name,
+        DATEDIFF(prj.sbsc_st_dt, NOW()) AS readyday,
+        DATEDIFF(prj.sbsc_nd_dt, NOW()) AS dday
+        FROM wi_project prj
+            LEFT JOIN wi_project_image AS pi
+            ON pi.project_id = prj.project_id AND pi.image_type = 'main',
+            wi_category category,
+            wi_user user
+        WHERE prj.user_id = user.user_id
+            AND category.delete_date IS NULL
+            AND prj.delete_date IS NULL
+            AND prj.project_id = #{projectId}
+    </select>
+
+
+
+    <!-- 크라우드펀딩청약신청자료 -->
+    <select id="selectSbsUsersForDownload" parameterType="map" resultType="hashmap">
+        SELECT investor.realnmno_tpcd,
+               investor.realnmno,
+               investor.buzno,
+               user.name,
+               sbsc.sbsc_id,
+               sbsc.pbl_acno,
+               sbsc.pbl_bnk_cd,
+               sbsc.inv_sort_cd,
+               sbsc.sbsc_qty,
+               sbsc.sbsc_amt,
+               sbsc.secuco_acopno,
+               sbsc.secuco_acopseq,
+               sbsc.secuco_acoacd,
+               sbsc.invstr_trsac_no,
+               sbsc.cancel_cd,
+               sbsc.reg_date,
+               prj.sbsc_iss_no,
+               prj.sbsc_iss_nm
+          FROM wi_project_sbsc sbsc
+                LEFT JOIN wi_project AS prj ON prj.project_id = sbsc.project_id,
+                wi_user_investor investor,
+                wi_user user
+         WHERE sbsc.project_id = #{projectId}
+           AND sbsc.user_id = user.user_id
+           AND investor.user_id = user.user_id
+           AND sbsc.state = #{state}
+           AND sbsc.delete_date IS NULL
+         ORDER BY sbsc.reg_date ASC
+    </select>
+</mapper>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.KamsBoardMapper">
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectBoardSql">
+        select * from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM kams_board_content AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        AND board_id = #{boardId}
+        <if test="keyword != null and keyword != ''">
+            AND (c.title LIKE CONCAT('%', #{keyword}, '%')
+            OR c.content LIKE CONCAT('%', #{keyword}, '%')
+            OR c.member_display LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        ) a
+        order by num desc
+    </sql>
+
+    <select id="selectBoardsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectBoardSql"></include>) a
+    </select>
+
+
+    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
+        <include refid="selectBoardSql"></include>
+        <choose>
+            <when test="pageable != null">
+                <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY c.uid DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="selectBoardComments" parameterType="map" resultMap="commentMap">
+        SELECT pcomment.*,
+        ccomment.comment_id reply_comment_id,
+        ccomment.content reply_content,
+        ccomment.user_id reply_user_id,
+        ccomment.parent_comment_id reply_parent_comment_id,
+        ccomment.reg_date reply_reg_date,
+        cuser.name reply_user_name,
+        cuser.profile_image_url reply_profile_image_url
+        FROM (
+            SELECT pcomment.comment_id,
+            pcomment.content comment_content,
+            pcomment.user_id comment_user_id,
+            pcomment.parent_comment_id,
+            pcomment.reg_date comment_reg_date,
+            pcomment.admin_delete_date comment_admin_delete_date,
+            puser.name commentuser_name,
+            puser.profile_image_url commentuser_profile_image_url
+            FROM kams_notice_comment pcomment,
+                  kams_user puser
+            WHERE pcomment.Notice_id = #{NoticeId}
+                AND pcomment.comment_id = pcomment.parent_comment_id
+                AND pcomment.delete_date IS NULL
+                AND pcomment.user_id = puser.user_id
+            <choose>
+                <when test="pageable != null">
+                    ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>
+                    LIMIT #{pageable.offset}, #{pageable.pageSize}
+                </when>
+                <otherwise>
+                    ORDER BY pcomment.comment_id DESC
+                </otherwise>
+            </choose>
+        ) pcomment
+        LEFT OUTER JOIN kams_notice_comment ccomment ON ccomment.parent_comment_id = pcomment.comment_id AND  ccomment.comment_id != ccomment.parent_comment_id AND ccomment.delete_date IS NULL
+        LEFT OUTER JOIN kams_user cuser ON ccomment.user_id = cuser.user_id
+        ORDER BY pcomment.comment_id DESC, ccomment.comment_id ASC
+    </select>
+
+
+
+    <resultMap id="BoardMap" type="com.stp.absm.model.KamsBoardContent">
+        <id property="uid" column="uid"/>
+        <result property="boardId" column="board_id"/>
+        <result property="parentUid" column="parent_uid"/>
+        <result property="memberUid" column="member_uid"/>
+        <result property="memberDisplay" column="member_display"/>
+        <result property="displayId" column="num"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="date" column="date"/>
+        <result property="update" column="update"/>
+        <result property="view" column="view"/>
+        <result property="comment" column="comment"/>
+        <result property="like" column="like"/>
+        <result property="unlike" column="unlike"/>
+        <result property="vote" column="vote"/>
+        <result property="thumbnailFile" column="thumbnail_file"/>
+        <result property="thumbnailName" column="thumbnail_name"/>
+        <result property="category1" column="category1"/>
+        <result property="category2" column="category2"/>
+        <result property="secret" column="secret"/>
+        <result property="notice" column="notice"/>
+        <result property="search" column="search"/>
+        <result property="status" column="status"/>
+        <result property="password" column="password"/>
+
+    </resultMap>
+
+    <resultMap id="commentMap" type="com.stp.absm.model.KamsBoardComments">
+
+        <id property="uid" column="uid"/>
+        <result property="contentUid" column="content_uid"/>
+        <result property="parentUid" column="parent_uid"/>
+        <result property="userUid" column="user_uid"/>
+        <result property="userDisplay" column="user_display"/>
+        <result property="content" column="content"/>
+        <result property="like" column="like"/>
+        <result property="unlike" column="unlike"/>
+        <result property="vote" column="vote"/>
+        <result property="created" column="created"/>
+        <result property="status" column="status"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <resultMap id="replyMap" type="com.stp.absm.model.KamsBoardComments">
+
+        <id property="commentId" column="reply_comment_id"/>
+        <result property="content" column="reply_content"></result>
+        <result property="parentCommentId" column="reply_parent_comment_id"/>
+        <result property="regDate" column="reply_reg_date"/>
+
+
+    </resultMap>
+
+
+    <select id="selectNoticeCount1" parameterType="map" resultType="int">
+        SELECT COUNT(Notice_id)
+          FROM kams_notice
+         WHERE delete_date IS NULL
+    </select>
+
+
+    <resultMap id="NoticeMap1" type="com.stp.absm.model.KamsBoardContent">
+        <id property="NoticeId" column="Notice_id"/>
+        <result property="title" column="title"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="reg_date"/>
+
+
+        <collection property="comments" resultMap="commentMap" notNullColumn="comment_id"></collection>
+    </resultMap>
+
+
+</mapper>

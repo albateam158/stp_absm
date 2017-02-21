@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KamsRecordMapper">
+
+    <resultMap id="plListMap" type="com.stp.absm.model.KPlList">
+        <result property="dt" column="DT"/>
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="acc" column="ACC"/>
+        <result property="accNm" column="ACC_NM"/>
+        <result property="sign" column="SIGN"/>
+        <result property="contents" column="CONTENTS"/>
+        <result property="amt" column="AMT"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+        <result property="fixDeptCd" column="FIX_DEPT_CD"/>
+        <result property="fixDeptNm" column="FIX_DEPT_NM"/>
+        <result property="fixAmt" column="FIX_AMT"/>
+        <result property="totAmt" column="TOT_AMT"/>
+        <result property="amt1" column="AMT1"/>
+        <result property="amt2" column="AMT2"/>
+        <result property="amt3" column="AMT3"/>
+        <result property="level" column="LEVEL"/>
+        <result property="sectCd" column="SECT_CD"/>
+        <result property="sectNm" column="SECT_NM"/>
+
+    </resultMap>
+
+    <resultMap id="plBalMap" type="com.stp.absm.model.KPlBal">
+        <result property="dt" column="DT"/>
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="amt" column="AMT"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+
+
+    <resultMap id="deptMap" type="com.stp.absm.model.dz.TbDzDept">
+        <result property="deptCd" column="DEPT_CD"/>
+        <result property="coCd" column="CO_CD"/>
+        <result property="sectCd" column="SECT_CD"/>
+        <result property="sectNm" column="SECT_NM"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="deptNmk" column="DEPT_NMK"/>
+        <result property="divCd" column="DIV_CD"/>
+        <result property="regDt" column="REG_DT"/>
+        <result property="toDt" column="TO_DT"/>
+        <result property="insertDt" column="INSERT_DT"/>
+        <result property="modifyDt" column="MODIFY_DT"/>
+    </resultMap>
+
+    <resultMap id="accMap" type="com.stp.absm.model.KAccCode">
+        <result property="acc" column="ACC"/>
+        <result property="sign" column="SIGN"/>
+        <result property="accNm" column="ACC_NM"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+
+
+    <resultMap id="prodMap" type="com.stp.absm.model.KProdCode">
+        <result property="prod" column="PROD"/>
+        <result property="prodNm" column="PROD_NM"/>
+        <result property="regEmp" column="REG_EMP"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="updateEmp" column="UPDATE_EMP"/>
+        <result property="updateDate" column="UPDATE_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+
+    <!--실적폼 조회-->
+    <sql id="selectPlListOne">
+        select A.id,A.dt,A.prod,A.dept_cd,A.acc
+        ,A.amt,A.pre_id, A.contents
+        ,A.prod_nm, A.acc_nm, A.sign
+        ,A.dept_nm
+        ,B.fix_amt
+        ,B.fix_dept_cd
+        ,B.fix_dept_nm FIX_DEPT_NM
+        from
+        (SELECT
+        p.id
+        , p.dt
+        , p.dept_cd
+        , p.prod
+        , p.acc
+        , p.amt
+        , p.pre_id
+        , p.contents
+        , pc.prod_nm AS prod_nm
+        , ac.acc_nm AS acc_nm
+        , ac.sign AS sign
+        , dept.dept_nm AS dept_nm
+        FROM kams_pl_list AS p
+        INNER JOIN kams_prod_code AS pc
+        ON p.prod = pc.prod
+        INNER JOIN kams_acc_code AS ac
+        ON p.acc = ac.acc
+        INNER JOIN kams_dept AS dept
+        ON p.dept_cd = dept.dept_cd
+        ) A
+        LEFT outer join
+        (
+        select pl.id,pl.dt,pl.dept_cd,pl.prod,pl.fix_dept_cd AS fix_dept_cd
+        , dept2.dept_nm AS fix_dept_nm
+        , amt AS fix_amt
+        from kams_prepl_list pl
+        INNER JOIN kams_dept AS dept2
+        ON pl.fix_dept_cd = dept2.dept_cd
+        ) B
+        on A.pre_id = B.id
+        WHERE 1=1
+        <if test="id != null and id != ''">AND A.id = #{id}</if>
+        <if test="dt != null and dt != ''">AND A.dt = #{dt}</if>
+        <if test="deptCd != null and deptCd != ''">AND A.dept_cd = #{deptCd}</if>
+        <if test="prod != null and prod != ''">AND A.prod = #{prod}</if>
+        <if test="acc != null and acc != ''">AND A.acc = #{acc}</if>
+        <if test="contents != null and contents != ''">AND A.contents LIKE CONCAT('%', #{contents}, '%')</if>
+    </sql>
+
+
+    <select id="selectPlListCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectPlListOne"></include>) a
+    </select>
+
+    <select id="selectPlOne" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlListOne"></include>
+    </select>
+    <select id="selectPlList" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlListOne"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY
+                <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}
+                </foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY A.dt DESC, A.id
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <sql id="selectPlLisAllBase">
+        SELECT
+            CASE
+            WHEN
+            A.acc IS NULL AND A.prod IS NOT NULL
+            AND A.dept_cd IS NOT NULL
+            AND A.dt IS NOT NULL
+            THEN
+            1
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NOT NULL
+            AND A.dt IS NOT NULL
+            THEN
+            2
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NULL
+            AND A.dt IS NOT NULL
+            THEN
+            3
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NULL
+            AND A.dt IS NULL
+            THEN
+            4
+            ELSE 0
+            END level,
+            A.*,
+            A.tot_amt + A.fix_amt amt2
+        FROM
+            (SELECT
+                A.id,
+                A.dt,
+                A.dept_cd,
+                A.prod,
+                A.acc,
+                SUM(A.amt) amt,
+                A.fix_dept_cd,
+                SUM(A.amt1) amt1,
+                SUM(A.tot_amt) tot_amt,
+                SUM(IFNULL(A.fix_amt, 0)) fix_amt
+            FROM
+                (SELECT
+                    A.id,
+                    A.dt,
+                    A.dept_cd,
+                    A.prod,
+                    A.acc,
+                    SUM(A.totamt) amt,
+                    SUM(A.amt1) amt1,
+                    MAX(A.fix_dept_cd) fix_dept_cd,
+                    B.fix_amt fix_amt,
+                    SUM(A.totamt - A.amt1) tot_amt
+                FROM
+                    (SELECT
+                        a.id,
+                        a.dt,
+                        a.dept_cd,
+                        a.prod,
+                        a.acc,
+                        a.amt,
+                        IFNULL(b.amt, 0) amt1,
+                        b.fix_dept_cd fix_dept_cd,
+                        CASE
+                        WHEN acc.sign = '+' THEN a.amt
+                        WHEN acc.sign = '-' THEN a.amt * - 1
+                        END totamt
+                    FROM
+                    kams_pl_list a
+                    INNER JOIN
+                    kams_acc_code acc ON a.acc = acc.acc
+                    LEFT OUTER JOIN
+                    kams_prepl_list b ON a.pre_id = b.id
+                    WHERE 1=1
+                    <if test="stDt != null and stDt != '' and ndDt != null and ndDt != ''">
+                        AND a.dt between #{stDt} and #{ndDt}
+                    </if>
+                    <if test="dt != null and dt != ''">
+                        AND a.dt = #{dt}
+                    </if>
+                    <if test="deptCd != null and deptCd != ''">AND a.dept_cd = #{deptCd}</if>
+                    <if test="prod != null and prod != ''">AND a.prod = #{prod}</if>
+                    <if test="acc != null and acc != ''">AND a.acc = #{acc}</if>
+                    GROUP BY a.id , a.dt , a.dept_cd , a.prod , a.acc
+                    UNION ALL
+                    SELECT
+                        0 id,
+                        a.dt,
+                        a.fix_dept_cd dept_cd,
+                        a.prod,
+                        a.acc,
+                        0 amt,
+                        0 amt1,
+                        '' fix_dept_cd,
+                        0 totamt
+                    FROM
+                    kams_prepl_list a
+                    WHERE 1=1
+                    <if test="stDt != null and stDt != '' and ndDt != null and ndDt != ''">
+                        AND a.dt between #{stDt} and #{ndDt}
+                    </if>
+                    <if test="dt != null and dt != ''">
+                        AND a.dt = #{dt}
+                    </if>
+                    <if test="deptCd != null and deptCd != ''">AND a.fix_dept_cd = #{deptCd}</if>
+                    <if test="prod != null and prod != ''">AND a.prod = #{prod}</if>
+                    <if test="acc != null and acc != ''">AND a.acc = #{acc}</if>
+                    AND NOT EXISTS(
+                    SELECT
+                      'X'
+                    FROM
+                    kams_pl_list
+                    WHERE
+                    dt = a.dt AND dept_cd = a.fix_dept_cd
+                    AND prod = a.prod)) A
+                LEFT OUTER JOIN (
+                    SELECT
+                    dt, fix_dept_cd, prod, acc, SUM(amt) fix_amt
+                    FROM
+                    kams_prepl_list
+                    WHERE 1=1
+                    <if test="stDt != null and stDt != '' and ndDt != null and ndDt != ''">
+                        AND dt between #{stDt} and #{ndDt}
+                    </if>
+                    <if test="dt != null and dt != ''">
+                        AND dt = #{dt}
+                    </if>
+                    GROUP BY dt , fix_dept_cd , prod , acc) B
+                ON A.dt = B.dt
+                AND A.dept_cd = B.fix_dept_cd
+                AND A.prod = B.prod
+                AND A.acc = B.acc
+                GROUP BY A.dt , A.dept_cd , A.prod , A.acc) A
+            GROUP BY A.dt , A.dept_cd , A.prod , A.acc WITH ROLLUP) A
+        GROUP BY A.dt ,A.id, A.dept_cd , A.prod , A.acc
+    </sql>
+
+    <!--실적출력 조회-->
+    <sql id="selectPlLisAllOne">
+        SELECT
+        A.*,
+        pc.prod_nm AS prod_nm,
+        ac.acc_nm AS acc_nm,
+        dept.dept_nm AS dept_nm,
+        dept1.dept_nm AS fix_dept_nm
+        FROM
+        (
+        <include refid="selectPlLisAllBase"></include>
+        ) A
+        LEFT OUTER JOIN
+        kams_prod_code AS pc ON A.prod = pc.prod
+        LEFT OUTER JOIN
+        kams_acc_code AS ac ON A.acc = ac.acc
+        LEFT OUTER JOIN
+        kams_dept AS dept ON A.dept_cd = dept.dept_cd
+        LEFT OUTER JOIN
+        kams_dept AS dept1 ON A.fix_dept_cd = dept1.dept_cd
+        WHERE
+        1 = 1
+        <if test="level != null and level != ''">AND A.level = 0 OR A.level = #{level}</if>
+        ORDER BY level , dt , id,  dept_cd , prod
+    </sql>
+
+
+    <select id="selectPlListCountAll" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectPlLisAllOne"></include>) a
+    </select>
+
+    <select id="selectPlListAll" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlLisAllOne"></include>
+        <choose>
+            <when test="pageable != null">
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY a.dt DESC, a.id
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+
+
+    <sql id="selectPlLisAllBaseSect">
+        SELECT
+            CASE
+            WHEN
+            A.acc IS NULL AND A.prod IS NOT NULL
+            AND A.dept_cd IS NOT NULL
+            AND A.sect_cd IS NOT NULL
+            AND A.dt IS NOT NULL
+            THEN
+            1
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NOT NULL
+            AND A.sect_cd IS NOT NULL
+            AND A.dt IS NOT NULL
+            THEN
+            2
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NULL
+            AND A.sect_cd IS NOT NULL
+            AND A.dt IS NOT NULL
+            THEN
+            3
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NULL
+            AND A.sect_cd IS NULL
+            AND A.dt IS NOT NULL
+            THEN
+            4
+            WHEN
+            A.acc IS NULL AND A.prod IS NULL
+            AND A.dept_cd IS NULL
+            AND A.sect_cd IS NULL
+            AND A.dt IS NULL
+            THEN
+            5
+            ELSE 0
+            END level,
+            A.*,
+            A.tot_amt + A.fix_amt amt2
+        FROM
+            (SELECT
+                A.dt,
+                dept.sect_cd,
+                A.dept_cd,
+                A.prod,
+                A.acc,
+                SUM(A.amt) amt,
+                A.fix_dept_cd,
+                SUM(A.amt1) amt1,
+                SUM(A.tot_amt) tot_amt,
+                SUM(IFNULL(A.fix_amt, 0)) fix_amt
+            FROM
+                (SELECT
+                    A.dt,
+                    A.dept_cd,
+                    A.prod,
+                    A.acc,
+                    SUM(A.totamt) amt,
+                    SUM(A.amt1) amt1,
+                    MAX(A.fix_dept_cd) fix_dept_cd,
+                    B.fix_amt fix_amt,
+                    SUM(A.totamt - A.amt1) tot_amt
+                FROM
+                    (SELECT
+                        a.id,
+                        a.dt,
+                        a.dept_cd,
+                        a.prod,
+                        a.acc,
+                        a.amt,
+                        IFNULL(b.amt, 0) amt1,
+                        b.fix_dept_cd fix_dept_cd,
+                        CASE
+                        WHEN acc.sign = '+' THEN a.amt
+                        WHEN acc.sign = '-' THEN a.amt * - 1
+                        END totamt
+                    FROM
+                    kams_pl_list a
+                    INNER JOIN
+                    kams_acc_code acc ON a.acc = acc.acc
+                    LEFT OUTER JOIN
+                    kams_prepl_list b ON a.pre_id = b.id
+                    WHERE 1=1
+                    <if test="deptCd != null and deptCd != ''">AND a.dept_cd = #{deptCd}</if>
+                    <if test="prod != null and prod != ''">AND a.prod = #{prod}</if>
+                    <if test="acc != null and acc != ''">AND a.acc = #{acc}</if>
+                    GROUP BY a.id , a.dt , a.dept_cd , a.prod , a.acc
+                    UNION ALL
+                    SELECT
+                        0 id,
+                        a.dt,
+                        a.fix_dept_cd dept_cd,
+                        a.prod,
+                        a.acc,
+                        0 amt,
+                        0 amt1,
+                        '' fix_dept_cd,
+                        0 totamt
+                    FROM
+                    kams_prepl_list a
+                    WHERE 1=1
+                    <if test="deptCd != null and deptCd != ''">AND a.fix_dept_cd = #{deptCd}</if>
+                    <if test="prod != null and prod != ''">AND a.prod = #{prod}</if>
+                    <if test="acc != null and acc != ''">AND a.acc = #{acc}</if>
+                    AND NOT EXISTS(
+                        SELECT
+                        'X'
+                        FROM
+                        kams_pl_list
+                        WHERE
+                        dt = a.dt AND dept_cd = a.fix_dept_cd
+                        AND prod = a.prod)
+                    ) A
+                LEFT OUTER JOIN (
+                SELECT
+                dt, fix_dept_cd, prod, acc, SUM(amt) fix_amt
+                FROM
+                kams_prepl_list
+                WHERE 1=1
+                GROUP BY dt , fix_dept_cd , prod , acc) B
+                ON A.dt = B.dt
+                AND A.dept_cd = B.fix_dept_cd
+                AND A.prod = B.prod
+                AND A.acc = B.acc
+                GROUP BY A.dt , A.dept_cd , A.prod , A.acc) A
+            LEFT OUTER JOIN
+            kams_dept AS dept ON A.dept_cd = dept.dept_cd
+            GROUP BY
+            A.dt  , dept.sect_cd , A.dept_cd , A.prod , A.acc WITH ROLLUP) A
+        GROUP BY A.dt, A.sect_cd, A.dept_cd , A.prod , A.acc
+    </sql>
+
+
+    <!--실적레포트출력 조회-->
+    <sql id="selectPlLisReportOne">
+        select
+            M.level,
+            IFNULL(M.sect_cd,'9999') sect_cd,
+            IFNULL(dept.sect_nm,'9999') sect_nm,
+            IFNULL(M.dept_cd,'9999') dept_cd,
+            IFNULL(dept.dept_nm,'9999') dept_nm,
+            IFNULL(M.prod,'P999') prod,
+            IFNULL(pc.prod_nm,'P999') prod_nm,
+            SUM(M.amt1) amt1,
+            SUM(M.amt2) amt2,
+            SUM(M.amt3) amt3
+        from
+        (
+            SELECT
+                A.level,
+                A.dt dt,
+                A.sect_cd,
+                A.dept_cd,
+                A.prod,
+                A.amt2 amt1,
+                0 amt2,
+                0 amt3
+            FROM
+            (
+            <include refid="selectPlLisAllBaseSect"></include>
+            ) A
+            WHERE 1 = 1
+            and A.level > 1
+            and A.level != 5
+            and substr(A.dt,1,4) = #{year}
+            AND A.dt = #{dt}
+            union all
+            SELECT
+                A.level,
+                SUBSTR(A.dt,1,6) dt,
+                A.sect_cd,
+                A.dept_cd,
+                A.prod,
+                0 amt1,
+                SUM(A.amt2) amt2,
+                0 amt3
+            FROM
+            (
+            <include refid="selectPlLisAllBaseSect"></include>
+            ) A
+            WHERE
+            1 = 1
+            and A.level > 1
+            and A.level != 5
+            and substr(A.dt,1,4) = #{year}
+            and SubStr(A.dt,1,6)    =  SubStr(#{dt},1,6)
+            group by A.level, SUBSTR(A.dt,1,6),A.sect_cd, A.dept_cd, A.prod
+            union all
+            SELECT
+                A.level,
+                QUARTER(STR_TO_DATE(A.dt,'%Y%m%d')) dt,
+                A.sect_cd,
+                A.dept_cd,
+                A.prod,
+                0 amt1,
+                0 amt2,
+                SUM(A.amt2) amt3
+            FROM
+            (
+            <include refid="selectPlLisAllBaseSect"></include>
+            ) A
+            WHERE
+            1 = 1
+            and QUARTER(STR_TO_DATE(A.dt,'%Y%m%d')) = QUARTER(STR_TO_DATE(#{dt},'%Y%m%d'))
+            and A.level > 1
+            and A.level != 5
+            and substr(A.dt,1,4) = #{year}
+            group by A.level, QUARTER(STR_TO_DATE(A.dt,'%Y%m%d')),A.sect_cd, A.dept_cd, A.prod
+        ) M
+        LEFT OUTER JOIN
+        kams_prod_code AS pc ON M.prod = pc.prod
+        LEFT OUTER JOIN
+        kams_dept AS dept ON M.dept_cd = dept.dept_cd
+        group by M.level,M.sect_cd,M.dept_cd, M.prod
+    </sql>
+
+
+    <select id="selectPlLisReportCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectPlLisReportOne"></include>) a
+    </select>
+
+    <select id="selectPlLisReport" parameterType="map" resultMap="plListMap">
+        <include refid="selectPlLisReportOne"></include>
+        <choose>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                order by sect_cd,dept_cd , level
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+    <sql id="selectTbDeptSql">
+        <if test="adminType == 'ADMIN' or adminType == 'SYSAD'">
+        SELECT '' DEPT_CD
+        , '0' CO_CD
+        , '' SECT_CD
+        , '' SECT_NM
+        , '부서' DEPT_NM
+        UNION ALL
+        </if>
+        SELECT DEPT_CD
+        , CO_CD
+        , SECT_CD
+        , SECT_NM
+        , DEPT_NM
+        FROM kams_dept
+        where 1=1
+        <if test="deptCd != null and deptCd != ''">AND dept_Cd = #{deptCd}</if>
+        <if test="regStDt != null and regStDt != ''">AND reg_dt >= #{regStDt}</if>
+        <if test="regNdDt != null and regNdDt != ''">AND reg_dt &lt;= #{regNdDt}</if>
+        <if test="keyword != null and keyword != ''">AND (dept_NM = #{keyword} OR sect_nm = #{keyword})</if>
+    </sql>
+
+
+    <select id="selectTbDeptsGrpByDeptCd" parameterType="map" resultMap="deptMap">
+        <include refid="selectTbDeptSql"></include>
+        ORDER BY CO_CD,DEPT_NM
+    </select>
+
+    <sql id="selectTbDeptRecordSql">
+
+        SELECT  DEPT_CD
+        , CO_CD
+        , SECT_CD
+        , SECT_NM
+        , DEPT_NM
+        , DEPT_NMK
+        , DIV_CD
+        , REG_DT
+        , TO_DT
+        FROM kams_dept_record
+    </sql>
+
+
+    <select id="selectTbDeptsRecord" parameterType="map" resultMap="deptMap">
+        <include refid="selectTbDeptRecordSql"></include>
+    </select>
+
+
+    <select id="selectTbDepts" parameterType="map" resultMap="deptMap">
+        <include refid="selectTbDeptSql"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY
+                <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}
+                </foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY c.reg_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <sql id="selectTbAccSql">
+        SELECT acc.*
+        FROM kams_acc_code acc
+        where 1=1
+        <if test="acc != null and acc != ''">AND acc.acc = #{acc}</if>
+    </sql>
+
+
+    <select id="selectAccCdList" parameterType="map" resultMap="accMap">
+        <include refid="selectTbAccSql"></include>
+        ORDER BY acc.acc asc
+    </select>
+
+    <sql id="selectTbProdSql">
+        SELECT prod.*
+        FROM kams_prod_code prod
+        where 1=1
+        <if test="prod != null and prod != ''">AND prod.prod = #{prod}</if>
+    </sql>
+
+
+    <select id="selectProdCdList" parameterType="map" resultMap="prodMap">
+        <include refid="selectTbProdSql"></include>
+        ORDER BY prod.prod asc
+    </select>
+
+
+    <select id="selectJsonTreeData" resultType="String">
+        SELECT
+        group_concat(
+        JSON_OBJECT("sect_cd",A.sect_cd,"sect_nm",A.sect_nm, "dept_cd",A.dept_cd,"dept_nm",A.dept_nm, "emp_cd",B.emp_cd, "emp_nm",B.kor_nm,"hcls_cd",B.hcls_cd,"hcls_nm",B.hcls_nm,"tel",B.tel,"hp",B.hp)
+        separator ',') data
+        FROM ka_intra.kams_dept A,
+        ka_intra.kams_emp B
+        where A.dept_cd = B.dept_cd
+        and ENRL_FG = 'J01'
+        order by A.sect_cd , A.dept_cd ,B.HCLS_CD, B.emp_cd;
+    </select>
+</mapper>

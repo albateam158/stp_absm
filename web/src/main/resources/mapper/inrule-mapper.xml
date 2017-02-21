@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.KamsInterRuleMapper">
+
+    <resultMap id="ruleMap" type="com.stp.absm.model.KInRule">
+        <result property="ruleId " column="rule_id "/>
+        <result property="groupId" column="group_id"/>
+        <result property="groupNm" column="group_nm"/>
+        <result property="docGroup" column="doc_group"/>
+        <result property="docSeq" column="doc_seq"/>
+        <result property="docId" column="doc_id"/>
+        <result property="ruleNm" column="rule_nm"/>
+        <result property="establishDt" column="establish_dt"/>
+        <result property="reformDt" column="reform_dt"/>
+        <result property="chargeDept" column="charge_dept"/>
+        <result property="chargeDeptNm" column="charge_dept_nm"/>
+        <result property="chargeDeptDetail" column="charge_dept_detail"/>
+        <result property="recentFile" column="recent_file"/>
+        <result property="recentFileUrl" column="recent_file_url"/>
+        <result property="recentFileName" column="recent_file_name"/>
+        <result property="beforeFile" column="before_file"/>
+        <result property="beforeFileUrl" column="before_file_url"/>
+        <result property="beforeFileName" column="before_file_name"/>
+        <result property="state" column="state"/>
+        <result property="regEmp" column="reg_emp"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateEmp" column="update_emp"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+        <result property="data2" column="data2"/>
+    </resultMap>
+
+
+    <!--========================================== INSERT ============================================== -->
+
+    <!--========================================== UPDATE ============================================== -->
+
+    <!--========================================== DELETE ============================================== -->
+
+    <!--========================================== SELECT ============================================== -->
+
+    <select id="selectKinRuleDocSeq" parameterType="map" resultType="com.stp.absm.model.KInRule">
+        SELECT ifnull(lpad(max(a.doc_seq)+1, 2, '0'),'00') docSeq FROM kams_inter_rule_code a
+        where a.group_id = #{groupId} and a.doc_group = #{docGroup}
+    </select>
+
+    <sql id="selectKinRuleFrame">
+        SELECT a.*
+        , c1.data2 data2
+        , c1.code_name group_nm
+        , d1.DEPT_NM charge_dept_nm
+        , f1.url recent_file_url
+        , f1.file_name recent_file_name
+        , f2.url before_file_url
+        , f2.file_name before_file_name
+        FROM ka_intra.kams_inter_rule_code a
+        left outer join ka_intra.kams_inter_rule_file f1
+        ON a.recent_file = f1.file_id
+        left outer join ka_intra.kams_inter_rule_file f2
+        ON a.before_file = f2.file_id
+        left outer join ka_intra.kams_code c1
+        ON c1.code_group = 'IRG'
+        and a.group_id = c1.data1
+        left outer join ka_intra.kams_dept d1
+        ON a.charge_dept = d1.dept_cd
+        where 1=1
+        <if test="ruleId != null and ruleId != ''">AND A.rule_id = #{ruleId}</if>
+        <if test="groupId != null and groupId != ''">AND A.group_id = #{groupId}</if>
+        <if test="docGroup != null and docGroup != ''">AND A.doc_group = #{docGroup}</if>
+        <if test="establishDt != null and establishDt != ''">AND A.establish_dt = #{establishDt}</if>
+        <if test="reformDt != null and reformDt != ''">AND A.reform_dt = #{reformDt}</if>
+        <if test="chargeDept != null and chargeDept != ''">AND A.charge_dept = #{chargeDept}</if>
+        <if test="ruleNm != null and ruleNm != ''">AND A.rule_nm LIKE CONCAT('%', #{ruleNm}, '%')</if>
+        <if test="stDt != null and stDt != '' and ndDt != null and ndDt != ''">
+            AND a.reform_dt between #{stDt} and #{ndDt}
+        </if>
+    </sql>
+
+
+    <select id="selectKinRuleCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectKinRuleFrame"></include>) a
+    </select>
+
+    <select id="selectKinRule" parameterType="map" resultMap="ruleMap">
+        <include refid="selectKinRuleFrame"></include>
+    </select>
+    <select id="selectKinRules" parameterType="map" resultMap="ruleMap">
+        <include refid="selectKinRuleFrame"></include>
+        <choose>
+            <when test="pageable != null">
+                ORDER BY
+                <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}
+                </foreach>
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY cast(a.doc_id as signed), a.doc_seq
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+
+</mapper>
