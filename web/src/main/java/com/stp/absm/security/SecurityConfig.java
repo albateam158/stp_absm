@@ -34,46 +34,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http
-				.csrf().disable()
-				.anonymous().and()
-				.formLogin()
-				.loginPage("/login")
-				.defaultSuccessUrl("/", true)
-				.loginProcessingUrl("/auth")
-				.failureHandler(new CustomLoginFailureHandler())
-				//.failureUrl("/login")
-			.and()
-				.logout()
-				.deleteCookies("remember-me")
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login")
-			.and().rememberMe().and()
-				.authorizeRequests()
-				.antMatchers(
-						"/auth/**",
-						"/login",
-						"/error",
-						"/signup",
-						"/assets/**",
-						"/projectdownload/**",
-						"/pages/**",
-						"/admin/form",
-						"/user/form_pre",
-						"/user/form",
-						"/emp/listV",
-                        "/emp/phone_form",
-						"/emp/list_div",
-						"/emp/phoneV",
-						"/emp/phone_div",
-						"/inter_rule/listV",
-						"/inter_rule/list_div",
-						"/ruleFile2",
-						"/ruleFile",
-                        "/getByteImage1/**"
-				).permitAll()
-				.antMatchers("/**").hasRole("SUPERVISOR").and()
-				.addFilterAfter(new AjaxSessionTimeoutFilter(), ExceptionTranslationFilter.class);
+//		http
+//				.csrf().disable()
+//				.anonymous()
+//				.and()
+//				.formLogin()
+//				.loginPage("/login")
+//				.defaultSuccessUrl("/", true)
+//				.loginProcessingUrl("/auth")
+//				.failureHandler(new CustomLoginFailureHandler())
+//				//.failureUrl("/login")
+//			.and()
+//				.logout()
+//				.deleteCookies("remember-me")
+//				.logoutUrl("/logout")
+//				.logoutSuccessUrl("/login")
+//			.and()
+//				.rememberMe().and()
+//				.authorizeRequests()
+//				.antMatchers(
+//						"/auth/**",
+//						"/login",
+//						"/error",
+//						"/signup",
+//						"/assets/**",
+//						"/projectdownload/**",
+//						"/pages/**",
+//						"/admin/form",
+//						"/user/form_pre",
+//						"/user/form",
+//						"/emp/listV",
+//                        "/emp/phone_form",
+//						"/emp/list_div",
+//						"/emp/phoneV",
+//						"/emp/phone_div",
+//						"/inter_rule/listV",
+//						"/inter_rule/list_div",
+//						"/ruleFile2",
+//						"/ruleFile",
+//                        "/getByteImage1/**"
+//				).permitAll()
+//				.antMatchers("/**").hasRole("SUPERVISOR").and()
+//				.addFilterAfter(new AjaxSessionTimeoutFilter(), ExceptionTranslationFilter.class);
 	}
 
 	@Bean

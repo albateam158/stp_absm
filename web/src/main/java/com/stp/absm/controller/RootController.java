@@ -91,8 +91,33 @@ public class RootController {
     protected  KBoardSettingRepository kBoardSettingRepository;
 
 
-
     protected PagingUtil pagingUtil = new PagingUtil();
+
+    /////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////  absm  /////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+
+    @Autowired
+    protected  AbsmEventRepository absmEventRepository;
+
+    @Autowired
+    protected  AbsmFileRepository absmFileRepository;
+
+    @Autowired
+    protected  AbsmFilterRepository absmFilterRepository;
+
+    @Autowired
+    protected  AbsmMeasureRepository absmMeasureRepository;
+
+    @Autowired
+    protected  AbsmModelRepository absmModelRepository;
+
+    @Autowired
+    protected  AbsmPrivateRepository absmPrivateRepository;
+
+    @Autowired
+    protected  AbsmSurveyRepository absmSurveyRepository;
+
 
 
     /**
