@@ -132,7 +132,7 @@ public class RootController {
     @Autowired
     protected XUserMapper xUserMapper;
 
-    @Autowired
+//    @Autowired
     protected DzEmpMapper dzEmpMapper;
 
     @Autowired
