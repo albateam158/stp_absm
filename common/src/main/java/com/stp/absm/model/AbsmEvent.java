@@ -28,6 +28,10 @@ public class AbsmEvent implements Serializable {
     private String evDt8;
     private String evDt9;
     private String evDt10;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

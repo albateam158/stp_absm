@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.Page005Mapper">
+
+    <resultMap id="BoardMap" type="com.stp.absm.model.AbsmSurvey">
+        <id property="suId" column="su_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="suVal1" column="su_val1"/>
+        <result property="suVal2" column="su_val2"/>
+        <result property="suVal3" column="su_val3"/>
+        <result property="suVal4" column="su_val4"/>
+        <result property="suVal5" column="su_val5"/>
+        <result property="suVal6" column="su_val6"/>
+        <result property="suVal7" column="su_val7"/>
+        <result property="suVal8" column="su_val8"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="name" column="name"/>
+        <result property="pNo" column="p_no"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+
+    </resultMap>
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectBoardSql">
+        select a.*
+               ,b.dt
+               ,b.case_nm
+               ,d.age
+               ,d.sex
+               ,d.name
+               ,d.p_no
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_survey AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        AND c.pr_id = #{prId}
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        Inner JOIN absm_private d
+        ON a.pr_id = d.pr_id
+        AND d.age = #{age}
+        AND d.sex = #{sex}
+        order by num desc
+    </sql>
+
+    <select id="selectBoardsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectBoardSql"></include>) a
+    </select>
+
+
+    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
+        <include refid="selectBoardSql"></include>
+        <choose>
+            <when test="pageable != null">
+                <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
+                LIMIT #{pageable.offset}, #{pageable.pageSize}
+            </when>
+            <when test="random != null">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY c.su_id DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+
+
+</mapper>

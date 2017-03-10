@@ -33,6 +33,10 @@ public class AbsmModel implements Serializable {
     private Integer moPre3;
     private Integer moPre4;
     private Integer stLevel;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

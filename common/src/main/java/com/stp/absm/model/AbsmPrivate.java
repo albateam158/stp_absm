@@ -22,8 +22,11 @@ public class AbsmPrivate implements Serializable {
     private Integer age;
     private String sex;
     private String note;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;
-
 }

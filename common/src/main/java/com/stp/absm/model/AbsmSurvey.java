@@ -26,6 +26,10 @@ public class AbsmSurvey implements Serializable {
     private String suVal6;
     private String suVal7;
     private String suVal8;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

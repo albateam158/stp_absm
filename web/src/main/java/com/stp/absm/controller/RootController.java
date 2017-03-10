@@ -98,6 +98,12 @@ public class RootController {
     /////////////////////////////////////////////////////////////////////////
 
     @Autowired
+    protected  AbsmCaseRepository absmCaseRepository;
+
+    @Autowired
+    protected  AbsmCodeRepository absmCodeRepository;
+
+    @Autowired
     protected  AbsmEventRepository absmEventRepository;
 
     @Autowired
@@ -144,5 +150,23 @@ public class RootController {
     @Autowired
     protected KamsBoardMapper kamsBoardMapper;
 
+    //absm mapper
 
+    @Autowired
+    protected Page001Mapper page001Mapper;
+
+    @Autowired
+    protected Page002Mapper page002Mapper;
+
+    @Autowired
+    protected Page003Mapper page003Mapper;
+
+    @Autowired
+    protected Page004Mapper page004Mapper;
+
+    @Autowired
+    protected Page005Mapper page005Mapper;
+
+    @Autowired
+    protected Page006Mapper page006Mapper;
 }

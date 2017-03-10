@@ -53,7 +53,16 @@ public abstract class MyBatisConfig {
 		Resource inRuleMapper                           = new ClassPathResource("mapper/inrule-mapper.xml");
 		Resource boardMapper                           = new ClassPathResource("mapper/board-mapper.xml");
 
-		sessionFactoryBean.setMapperLocations(new Resource[]{  categoryMapper, noticeMapper, userMapper, empMapper, recordMapper, inRuleMapper, boardMapper });
+		//absm mapper
+		Resource page001Mapper                           = new ClassPathResource("mapper/page001-mapper.xml");
+		Resource page002Mapper                           = new ClassPathResource("mapper/page002-mapper.xml");
+		Resource page003Mapper                           = new ClassPathResource("mapper/page003-mapper.xml");
+		Resource page004Mapper                           = new ClassPathResource("mapper/page004-mapper.xml");
+		Resource page005Mapper                           = new ClassPathResource("mapper/page005-mapper.xml");
+		Resource page006Mapper                           = new ClassPathResource("mapper/page006-mapper.xml");
+
+		sessionFactoryBean.setMapperLocations(new Resource[]{  categoryMapper, noticeMapper, userMapper, empMapper, recordMapper, inRuleMapper, boardMapper,
+				page001Mapper, page002Mapper, page003Mapper, page004Mapper, page005Mapper, page006Mapper});
 		//sessionFactoryBean.setMapperLocations(pathResolver.getResources(MAPPER_LOCATIONS_PATH));
 	}
 }

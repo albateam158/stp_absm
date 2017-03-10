@@ -1,11 +1,15 @@
 package com.stp.absm.repository;
 
+import com.stp.absm.model.AbsmPrivate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.stp.absm.model.AbsmCode;
 import com.stp.absm.repository.support.Master;
 
+import java.util.List;
+
 @Master
-public interface AbsmPrivateRepository extends JpaRepository<AbsmCode, Integer> {
+public interface AbsmPrivateRepository extends JpaRepository<AbsmPrivate, Integer> {
+    List<AbsmPrivate> findByDeleteDateIsNullOrderByPrIdAsc();
+    List<AbsmPrivate> findByCaIdAndDeleteDateIsNullOrderByPrIdAsc(String caId);
 
 }

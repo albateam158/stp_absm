@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.Page006Mapper">
+
+    <resultMap id="FilterMap" type="com.stp.absm.model.AbsmFilter">
+        <id property="fiId" column="fi_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="fiTm" column="fi_tm"/>
+        <result property="meanRri" column="mean_rri"/>
+        <result property="stdRri" column="std_rri"/>
+        <result property="meanHrv" column="mean_hrv"/>
+        <result property="stdHrv" column="std_hrv"/>
+        <result property="rmssdd" column="rmssdd"/>
+        <result property="pnn50" column="pnn50"/>
+        <result property="lfhf" column="lfhf"/>
+        <result property="scl" column="scl"/>
+        <result property="surAvg" column="sur_avg"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+    </resultMap>
+
+    <resultMap id="ModelMap" type="com.stp.absm.model.AbsmModel">
+        <id property="moId" column="mo_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="seCd" column="se_cd"/>
+        <result property="meanRri" column="mean_rri"/>
+        <result property="stdRri" column="std_rri"/>
+        <result property="meanHrv" column="mean_hrv"/>
+        <result property="stdHrv" column="std_hrv"/>
+        <result property="rmssdd" column="rmssdd"/>
+        <result property="pnn50" column="pnn50"/>
+        <result property="lfhf" column="lfhf"/>
+        <result property="scl" column="scl"/>
+        <result property="surAvg" column="sur_avg"/>
+        <result property="moPre1" column="mo_pre1"/>
+        <result property="moPre2" column="mo_pre2"/>
+        <result property="moPre3" column="mo_pre3"/>
+        <result property="moPre4" column="mo_pre4"/>
+        <result property="stLevel" column="st_level"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+    </resultMap>
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectFilterSql">
+        select a.*
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_filter AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        AND c.pr_id = #{prId}
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        order by num desc
+    </sql>
+
+    <select id="selectFiltersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectFilterSql"></include>) a
+    </select>
+
+
+    <select id="selectFilters" parameterType="map" resultMap="FilterMap">
+        <include refid="selectFilterSql"></include>
+    </select>
+
+
+
+
+
+
+    <sql id="selectModelSql">
+        select a.* from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_model AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        AND c.pr_id = #{prId}
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        order by num desc
+    </sql>
+
+    <select id="selectModelsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectModelSql"></include>) a
+    </select>
+
+
+    <select id="selectModels" parameterType="map" resultMap="ModelMap">
+        <include refid="selectModelSql"></include>
+    </select>
+
+
+
+    <sql id="selectMeasureSql">
+        select a.*
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_measure AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        AND c.pr_id = #{prId}
+        AND c.eg_cd = #{egCd}
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        order by num desc
+        LIMIT #{lastRow}, #{lastRow}+30000
+    </sql>
+
+    <select id="selectMeasuresCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectMeasureSql"></include>) a
+    </select>
+
+
+    <select id="selectMeasures" parameterType="map" resultMap="FilterMap">
+        <include refid="selectMeasureSql"></include>
+    </select>
+
+</mapper>

@@ -28,6 +28,10 @@ public class AbsmFilter implements Serializable {
     private Integer lfhf;
     private Integer scl;
     private Integer surAvg;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

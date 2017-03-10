@@ -22,6 +22,10 @@ public class AbsmFile implements Serializable {
     private String url;
     private Integer fileSize;
     private String fileName;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

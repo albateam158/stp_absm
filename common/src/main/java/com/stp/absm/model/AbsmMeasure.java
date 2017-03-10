@@ -21,6 +21,10 @@ public class AbsmMeasure implements Serializable {
     private String egCd;
     private String meTm;
     private Integer meVal;
+    @Transient
+    private String dt;
+    @Transient
+    private String caseNm;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;
