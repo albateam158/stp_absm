@@ -71,18 +71,18 @@ class MasterDatabaseConfig extends DatabaseConfig {
     }
 }
 
-@Configuration
-@EnableConfigurationProperties(SlaveDatabaseProperties.class)
-class SlaveDatabaseConfig extends DatabaseConfig {
-	
-	@Autowired
-	private SlaveDatabaseProperties slaveDatabaseProperties;
-	
-	@Bean(name = "slaveDataSource", destroyMethod = "close")
-	public DataSource dataSource() {
-		org.apache.tomcat.jdbc.pool.DataSource slaveDataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-		configureDataSource(slaveDataSource, slaveDatabaseProperties);
-		return slaveDataSource;
-	}
-
-}
+//@Configuration
+//@EnableConfigurationProperties(SlaveDatabaseProperties.class)
+//class SlaveDatabaseConfig extends DatabaseConfig {
+//
+//	@Autowired
+//	private SlaveDatabaseProperties slaveDatabaseProperties;
+//
+//	@Bean(name = "slaveDataSource", destroyMethod = "close")
+//	public DataSource dataSource() {
+//		org.apache.tomcat.jdbc.pool.DataSource slaveDataSource = new org.apache.tomcat.jdbc.pool.DataSource();
+//		configureDataSource(slaveDataSource, slaveDatabaseProperties);
+//		return slaveDataSource;
+//	}
+//
+//}

@@ -74,18 +74,18 @@ class MasterMyBatisConfig extends MyBatisConfig {
     }
 }
 
-@Configuration
-@MapperScan(basePackages = MyBatisConfig.BASE_PACKAGE, annotationClass = Slave.class, sqlSessionFactoryRef = "slaveSqlSessionFactory")
-class SlaveMyBatisConfig extends MyBatisConfig {
-	
-	@Bean(name = "slaveSqlSessionFactory")
-	public SqlSessionFactory slaveSqlSessionFactory(@Qualifier("slaveDataSource") DataSource slaveDataSource) throws Exception {
-		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-		configureSqlSessionFactory(sessionFactoryBean, slaveDataSource);
-		return sessionFactoryBean.getObject();
-	}
-	@Bean(name = "slaveSqlSessionTemplate")
-	public SqlSessionTemplate slaveSqlSessionTemplate(@Qualifier("slaveSqlSessionFactory") SqlSessionFactory slaveSqlSessionFactory) throws Exception {
-		return new SqlSessionTemplate(slaveSqlSessionFactory);
-	}
-}
+//@Configuration
+//@MapperScan(basePackages = MyBatisConfig.BASE_PACKAGE, annotationClass = Slave.class, sqlSessionFactoryRef = "slaveSqlSessionFactory")
+//class SlaveMyBatisConfig extends MyBatisConfig {
+//
+//	@Bean(name = "slaveSqlSessionFactory")
+//	public SqlSessionFactory slaveSqlSessionFactory(@Qualifier("slaveDataSource") DataSource slaveDataSource) throws Exception {
+//		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+//		configureSqlSessionFactory(sessionFactoryBean, slaveDataSource);
+//		return sessionFactoryBean.getObject();
+//	}
+//	@Bean(name = "slaveSqlSessionTemplate")
+//	public SqlSessionTemplate slaveSqlSessionTemplate(@Qualifier("slaveSqlSessionFactory") SqlSessionFactory slaveSqlSessionFactory) throws Exception {
+//		return new SqlSessionTemplate(slaveSqlSessionFactory);
+//	}
+//}
