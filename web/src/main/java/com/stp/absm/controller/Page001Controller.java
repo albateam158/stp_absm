@@ -171,9 +171,4 @@ public class Page001Controller extends RootController {
 
         return result;
     }
-
-/*txtFileService.setFileName(filePath);
-                txtFileService.setFileType(fileType[i]);
-                txtFileService.setCaId(caId);
-                txtFileService.doParse();*/
 }

@@ -179,14 +179,6 @@ public class Page002Controller extends RootController {
                 modelFileService.doParse();
             }
 
-            /*if ("TXT".equals(fileNameExt.toUpperCase())) {
-                txtFileService.setFileInfo(fileUploadInfo);
-                txtFileService.doParse();
-            }
-            else if ("XLS".equals(fileNameExt.toUpperCase()) || "XLSX".equals(fileNameExt.toUpperCase())) {
-                excelFileService.setFileInfo(fileUploadInfo);
-                excelFileService.doParse();
-            }*/
             i++;
 
         }
