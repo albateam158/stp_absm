@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>한국교통연구원 작업현황 목록 (web)</title>
+<style type="text/css">
+	*{margin:0; padding:0;}
+	body{width:100%; height:100%;  font-family:"Malgun Gothic"; font-size:13px; margin:0; padding:0;}
+	a{color:#9d4e14; text-decoration:underline;}
+	#wrapper{padding:10px 15px 15px;}
+	#wrapper h1{font-size:22px; text-align:center; letter-spacing:-1px; margin-bottom:15px}
+	#wrapper table{width:100%; border-collapse:collapse;}
+	#wrapper table thead th{text-align:center;}
+	#wrapper table th,
+	#wrapper table td{ vertical-align:middle; padding:7px 10px 9px; border:1px solid #d2c8bb;}
+	#wrapper table td.cls{font-size:14px; font-weight:bold;}
+	#wrapper table .title1{font-size:13px; background-color:#fe8820; color:#fff;}
+	#wrapper table .title2{background-color:#f7f7f7; color:#707070;}
+	#wrapper table .title3{background-color:#dfdfdf; color:#707070;}
+	#wrapper table tr.ca th,
+	#wrapper table tr.ca td{border-top:1px solid #887b66;}
+	#wrapper table tbody tr.ok th,
+	#wrapper table tbody tr.ok td{background:#9b9b9b; color:#fff;}
+	#wrapper table tbody tr.ok td a:link,
+	#wrapper table tbody tr.ok td a:visited,
+	#wrapper table tbody tr.ok td a:hover{color:#fff;}
+	#wrapper table tbody tr.ok2 th,
+	#wrapper table tbody tr.ok2 td{background:#dd911a; color:#fff;}
+	#wrapper table tbody tr.ok2 td a:link,
+	#wrapper table tbody tr.ok2 td a:visited,
+	#wrapper table tbody tr.ok2 td a:hover{color:#fff;}
+	#wrapper table tbody tr.ok3 th,
+	#wrapper table tbody tr.ok3 td{background:#777; color:#fff;}/*background:#a66a0b;*/
+	#wrapper table tbody tr.ok3 td a:link,
+	#wrapper table tbody tr.ok3 td a:visited,
+	#wrapper table tbody tr.ok3 td a:hover{color:#fff;}
+	#wrapper table tbody tr td .today{background:#000; color:#fff;}
+	#wrapper table tbody tr.ok td.cm,#wrapper table tbody tr.ok2 td.cm{color:#fff; vertical-align:top; line-height:16px;}
+	
+	.workGuide{position:relative; overflow:hidden; margin:0 0 10px;}
+	.style{float:left; overflow:hidden;}
+	.style li{float:left; list-style:none; color:#666; font-size:11px; padding:0 15px 0 0;}
+	.style li span{display:inline-block; *display:inline; *zoom:1; width:8px; height:8px;}
+	.style li span.ok{background:#9b9b9b}
+	.style li span.ing{background:#dd911a}
+	.style li span.modi{background:#777}
+	.notify{color:#888; font-size:11px; font-style:italic; margin:0 0 10px; border:1px dotted #d2c8bb; padding:3px 5px 5px 5px;}
+	.by{float:right; color:#9d4e14; font-size:11px; text-decoration:underline;}
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<h1>한국교통연구원 작업현황</h1>
+		<div class="workGuide">
+			<ul class="style">
+				<li><span class="modi"></span> 수정</li>
+				<li><span class="ing"></span> 이슈발생</li>
+			</ul>
+		</div>
+		<div class="notify">
+			<strong> :</strong> - 
+		</div>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+			<colgroup>
+				<col width="10%" />
+				<col width="20%" />
+				<col width="20%" />
+				<col width="20%" />
+				<col width="30%" />
+			</colgroup>
+			<thead>
+				<tr class="title2">
+					<th>1Depth</th>
+					<th>2Depth</th>
+					<th>Folder</th>
+					<th>File</th>
+					<th>Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td rowspan="4">자료입력</td>
+					<td>기초자료 및 개인특성 자료 입력</td>
+					<td rowspan="4">input</td>
+					<td><a href="html/input/baseline.html" target="_blank">baseline.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+				<tr>
+					<td>생체신호 측정자료 입력</td>
+					<td><a href="html/input/biosignal.html" target="_blank">biosignal.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+				<tr>
+					<td>이벤트 자료 입력</td>
+					<td><a href="html/input/event.html" target="_blank">event.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+				<tr>
+					<td>동영상 자료 입력</td>
+					<td><a href="html/input/video.html" target="_blank">video.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+				<tr>
+					<td>자료 조회</td>
+					<td></td>
+					<td>search</td>
+					<td><a href="html/search/search.html" target="_blank">search.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+				<tr>
+					<td>결과 보기</td>
+					<td></td>
+					<td>result</td>
+					<td><a href="html/result/result.html" target="_blank">result.html</a></td>
+					<td class="cm">2017-03-13</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
