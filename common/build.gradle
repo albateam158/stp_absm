@@ -97,6 +97,11 @@ dependencies {
     compile ('net.sourceforge.jexcelapi:jxl:2.6')
     compile ('net.sf.jtidy:jtidy:r938')
 
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.13'
+    compile group: 'org.apache.poi', name: 'poi', version: '3.13'
+
+
     // social
     compile("org.springframework.social:spring-social-security:${springSocialVersion}")
     compile("org.springframework.social:spring-social-config:${springSocialVersion}")
