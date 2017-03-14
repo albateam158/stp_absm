@@ -1,19 +1,27 @@
 package com.stp.absm.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.stp.absm.common.*;
+import com.stp.absm.model.AbsmCase;
+import com.stp.absm.model.AbsmPrivate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.stp.absm.model.*;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 개인특성자료입력 화면
@@ -21,6 +29,20 @@ import com.stp.absm.model.*;
 
 @RestController
 public class Page001Controller extends RootController {
+
+    private final Logger logger = LoggerFactory.getLogger(Page001Controller.class);
+
+    @Value(value = "${upload.fileLocation}")
+    private String fileLocation;
+
+    @Autowired
+    protected PrivateFileService privateFileService;
+
+    @Autowired
+    protected SurveyFileService surveyFileService;
+
+    @Autowired
+    protected FilterFileService filterFileService;
 
     /**
      * 조회화면
@@ -77,12 +99,81 @@ public class Page001Controller extends RootController {
      */
     @RequestMapping(value = "/page001/form", method = RequestMethod.POST)
     public Map<String, Object> pageFormSubmit(
-            WebRequest request
+            HttpServletRequest request
     ) {
 
         Map<String, Object> result = new HashMap<String, Object>();
+        /*
+		 * validate request type
+		 */
+        Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
+        final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+
+        logger.info("multiRequest data " + multiRequest.getParameterMap().toString());
+        logger.info("request data " + request.getParameterMap().toString());
+
+        AbsmCase absmCase = new AbsmCase();
+
+		/* Form Data */
+        String dt = (String)request.getParameter("dt");
+        String caseNm = (String)request.getParameter("caseNm");
+        String note = (String)request.getParameter("note");
+
+        absmCase.setDt(dt);
+        absmCase.setCaseNm(caseNm);
+        absmCase.setNote(note);
+
+        absmCaseRepository.save(absmCase);
+
+        // 등록된 Case Id를 조회하여 개인정보 입력시 사용
+        int caId = page001Mapper.selectCaseId();
+
+		/* get multipart file */
+        final List<MultipartFile> files = multiRequest.getFiles("fileName");
+        String[] fileType = request.getParameterValues("fileType");
+
+        logger.info("files count " + files.size());
+        logger.info("fileLocation " + fileLocation);
+
+        /* process files */
+        Iterator<MultipartFile> itr = files.iterator();
+        MultipartFile file;
+        String filePath = "";
+        int i = 0;
+
+        while (itr.hasNext()) {
+            file = itr.next();
+            filePath = CommonUtil.fileTransferTo(file, fileLocation);
+
+            /* after move file upload file data */
+            FileUploadInfo fileUploadInfo = new FileUploadInfo();
+            fileUploadInfo.setCaId(caId);
+            fileUploadInfo.setFileName(filePath);
+            fileUploadInfo.setFileType(fileType[i]);
+            fileUploadInfo.setFileSize(file.getSize());
+
+            if ("PRIVATE".equals(fileType[i])) {
+                privateFileService.setFileInfo(fileUploadInfo);
+                privateFileService.doParse();
+            }
+            else if ("SURVEY".equals(fileType[i])) {
+                surveyFileService.setFileInfo(fileUploadInfo);
+                surveyFileService.doParse();
+            }
+            else if ("FILTER".equals(fileType[i])) {
+                filterFileService.setFileInfo(fileUploadInfo);
+                filterFileService.doParse();
+            }
+
+            i++;
+
+        }
+
         return result;
     }
 
-
+/*txtFileService.setFileName(filePath);
+                txtFileService.setFileType(fileType[i]);
+                txtFileService.setCaId(caId);
+                txtFileService.doParse();*/
 }

@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -19,15 +18,15 @@ public class AbsmFilter implements Serializable {
     private Integer caId;
     private Integer prId;
     private String fiTm;
-    private Integer meanRri;
-    private Integer stdRri;
-    private Integer meanHrv;
-    private Integer stdHrv;
-    private Integer rmssdd;
-    private Integer pnn50;
-    private Integer lfhf;
-    private Integer scl;
-    private Integer surAvg;
+    private Double meanRri;
+    private Double stdRri;
+    private Double meanHrv;
+    private Double stdHrv;
+    private Double rmssdd;
+    private Double pnn50;
+    private Double lfhf;
+    private Double scl;
+    private Double surAvg;
     @Transient
     private String dt;
     @Transient

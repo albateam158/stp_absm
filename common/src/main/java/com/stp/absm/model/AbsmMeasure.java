@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,7 +19,7 @@ public class AbsmMeasure implements Serializable {
     private Integer prId;
     private String egCd;
     private String meTm;
-    private Integer meVal;
+    private Double meVal;
     @Transient
     private String dt;
     @Transient

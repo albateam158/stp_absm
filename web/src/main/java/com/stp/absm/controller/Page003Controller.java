@@ -1,23 +1,29 @@
 package com.stp.absm.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.stp.absm.common.CommonUtil;
+import com.stp.absm.common.EventFileService;
+import com.stp.absm.common.FileUploadInfo;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmEvent;
 import com.stp.absm.model.AbsmPrivate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.stp.absm.model.KamsBoardContent;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 이벤트자료입력 화면
@@ -25,6 +31,14 @@ import com.stp.absm.model.KamsBoardContent;
 
 @RestController
 public class Page003Controller extends RootController {
+
+    private final Logger logger = LoggerFactory.getLogger(Page003Controller.class);
+
+    @Value(value = "${upload.fileLocation}")
+    private String fileLocation;
+
+    @Autowired
+    protected EventFileService eventFileService;
 
     /**
      * 조회화면
@@ -86,10 +100,56 @@ public class Page003Controller extends RootController {
      */
     @RequestMapping(value = "/page003/form", method = RequestMethod.POST)
     public Map<String, Object> pageFormSubmit(
-            WebRequest request
+            HttpServletRequest request
     ) {
 
         Map<String, Object> result = new HashMap<String, Object>();
+
+        /*
+		 * validate request type
+		 */
+        Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
+        final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+
+		/* Form Data */
+        String strCaId  = (String)request.getParameter("caId");
+        String strPrId  = (String)request.getParameter("prId");
+        String name     = (String)request.getParameter("name");
+
+        int caId = 0;
+        if (!"".equals(strCaId))
+            caId = Integer.valueOf(strCaId);
+        else
+            caId = 1;
+
+        int prId = 0;
+        if (!"".equals(strPrId))
+            prId = Integer.valueOf(strPrId);
+        else
+            prId = 1;
+
+
+        /* get multipart file */
+        MultipartFile file = multiRequest.getFile("fileName");
+        String fileType = request.getParameter("fileType");
+
+        logger.info("fileLocation " + fileLocation);
+
+        String filePath = CommonUtil.fileTransferTo(file, fileLocation);
+
+        /* after move file upload file data */
+        FileUploadInfo fileUploadInfo = new FileUploadInfo();
+        fileUploadInfo.setCaId(caId);
+        fileUploadInfo.setPrId(prId);
+        fileUploadInfo.setFileName(filePath);
+        fileUploadInfo.setFileType(fileType);
+        fileUploadInfo.setFileSize(file.getSize());
+
+        if ("EVENT".equals(fileType)) {
+            eventFileService.setFileInfo(fileUploadInfo);
+            eventFileService.doParse();
+        }
+
         return result;
     }
 

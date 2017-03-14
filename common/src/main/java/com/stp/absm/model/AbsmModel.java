@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -19,19 +18,19 @@ public class AbsmModel implements Serializable {
     private Integer caId;
     private Integer prId;
     private Integer seCd;
-    private Integer meanRri;
-    private Integer stdRri;
-    private Integer meanHrv;
-    private Integer stdHrv;
-    private Integer rmssdd;
-    private Integer pnn50;
-    private Integer lfhf;
-    private Integer scl;
-    private Integer surAvg;
-    private Integer moPre1;
-    private Integer moPre2;
-    private Integer moPre3;
-    private Integer moPre4;
+    private Double meanRri;
+    private Double stdRri;
+    private Double meanHrv;
+    private Double stdHrv;
+    private Double rmssdd;
+    private Double pnn50;
+    private Double lfhf;
+    private Double scl;
+    private Double surAvg;
+    private Double moPre1;
+    private Double moPre2;
+    private Double moPre3;
+    private Double moPre4;
     private Integer stLevel;
     @Transient
     private String dt;

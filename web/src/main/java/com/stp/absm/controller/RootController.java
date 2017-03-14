@@ -2,7 +2,6 @@ package com.stp.absm.controller;
 
 import com.google.gson.Gson;
 import com.stp.absm.common.AES;
-import com.stp.absm.common.FileService;
 import com.stp.absm.mybatis.mapper.*;
 import com.stp.absm.repository.*;
 import com.stp.absm.common.PagingUtil;
@@ -28,8 +27,7 @@ public class RootController {
     protected AES aes;
 
 
-    @Autowired
-    protected FileService fileService;
+
 
 
     @Autowired

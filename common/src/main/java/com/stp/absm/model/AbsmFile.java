@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -20,7 +19,7 @@ public class AbsmFile implements Serializable {
     private Integer prId;
     private String fileCd;
     private String url;
-    private Integer fileSize;
+    private long fileSize;
     private String fileName;
     @Transient
     private String dt;
