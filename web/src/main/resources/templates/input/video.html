@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교통연구원 시안 | 동영상 자료 입력</title>
+<link rel="icon" href="../../images/favicon.png">
+<link rel="stylesheet" href="../../css/reset.css" />
+<link rel="stylesheet" href="../../css/font.css" />
+<link rel="stylesheet" href="../../css/common.css" />
+ <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<header>
+		<div class="inner_box">
+			<h1>
+				<a href="#"><img src="../../images/logo2.gif" alt="홈" /></a>
+			</h1>
+			<!-- navigation -->
+			<nav class="navi">
+				<ul>
+					<li class="navi_has">
+						<a href="#"><span class="navi_icon1"></span>자료 입력</a>
+						<div class="navi_sub">
+							<ul>
+								<li><a href="baseline.html" target="_blank">기초자료 및 개인특성 자료 입력</a></li>
+								<li><a href="biosignal.html" target="_blank">생체신호 측정자료 입력</a></li>
+								<li><a href="event.html" target="_blank">이벤트 자료 입력</a></li>
+								<li><a href="video.html" target="_blank">동영상 자료 입력</a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a href="../search/search.html" target="_blank"><span class="navi_icon2"></span>자료 조회</a></li>
+					<li><a href="../result/result.html" target="_blank"><span class="navi_icon3"></span>결과 보기</a></li>
+				</ul>				
+			</nav><!-- //navigation -->
+		</div>
+	</header>
+	<div class="content">			
+		<section class="mb10">			
+			<div class="pd7">
+				<h2 class="input">동영상 자료 입력</h2>
+				<div class="bg_wh">
+					<form action="">
+						<label for="caId" class="wd100">케이스명</label>
+						<select name="caId" id="caId"  class="box_bd wd80 mb10">
+							<option value="">1</option>
+							<option value="">2</option>
+						</select>
+						<label for="name" class="wd35">이름</label>
+						<select name="name" id=""  class="box_bd wd80 mb10">
+							<option value="">한후자</option>
+							<option value="">이옥자</option>
+						</select>
+						<br />
+
+						<label for="" class="wd100">동영상 파일명</label>
+						<input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="videoFindFile">
+						<label for="fileName" id="" class="file_label">파일찾기</label>
+						<input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('videoFindFile').value=this.value" onkeydown="return flase" >						
+						<button type="button" id="" name="save" class="input_btn fr">입력</button>
+					</form>		
+					<span class="line"></span>				
+					
+					<video width="" height="280px" controls class="ma_t">
+						<source src="../../video/sample.mp4" type="video/mp4">
+					</video>
+				</div><!-- //bg_wh -->
+			</div><!-- //pd7 -->					
+		</section>		
+	</div>
+	<footer>	
+		<div class="inner_box">
+			<img src="../../images/footer_logo.gif" alt="한국교통안전연구원 로고" />
+			<address>(우)30147 세종특별자치시 시청대로 370 세종국책연구단지 과학인프라동(B)&nbsp;&nbsp;|&nbsp;&nbsp;TEL : 044-211-3114&nbsp;&nbsp;|&nbsp;&nbsp;FAX : 044-211-3222<br>Copyright© 2017 THE KOREA TRANSPORT INSTITUTE All rights reserved </address>
+		</div>
+	</footer>
+
+<!-- jQuery 2.2.3 -->
+<script type="text/javascript" src="../../js/jquery-2.2.3.min.js"></script>	
+<script src="../../js/common.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../../js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../../js/jquery.flot.resize.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../../js/jquery.flot.categories.min.js"></script>
+
+</body>
+</html>

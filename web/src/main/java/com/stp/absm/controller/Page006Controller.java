@@ -25,7 +25,7 @@ public class Page006Controller extends RootController {
      * @param mav
      * @return
      */
-    @RequestMapping(value = "/page006/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/result/result", method = RequestMethod.GET)
     public ModelAndView pageFormList(
             HttpServletRequest request,
             ModelAndView mav
@@ -36,7 +36,7 @@ public class Page006Controller extends RootController {
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
 
-        mav.setViewName("page006/list");
+        mav.setViewName("result/result");
 
         return mav;
     }
@@ -46,7 +46,7 @@ public class Page006Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page006/filter", method = RequestMethod.GET)
+    @RequestMapping(value = "/result/filter", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmFilter> filterFormListAjax(
             @RequestParam(value = "caId", required = false) String caId,
@@ -67,7 +67,7 @@ public class Page006Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page006/model", method = RequestMethod.GET)
+    @RequestMapping(value = "/result/model", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmModel> modelFormListAjax(
             @RequestParam(value = "caId", required = false) String caId,
@@ -88,7 +88,7 @@ public class Page006Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page006/measure", method = RequestMethod.GET)
+    @RequestMapping(value = "/result/measure", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmModel> measureFormListAjax(
             @RequestParam(value = "caId", required = false) String caId,

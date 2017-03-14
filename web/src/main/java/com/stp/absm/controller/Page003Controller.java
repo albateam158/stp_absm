@@ -46,7 +46,7 @@ public class Page003Controller extends RootController {
      * @param mav
      * @return
      */
-    @RequestMapping(value = "/page003/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/input/event", method = RequestMethod.GET)
     public ModelAndView pageFormList(
             HttpServletRequest request,
             ModelAndView mav
@@ -58,7 +58,7 @@ public class Page003Controller extends RootController {
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
 
-        mav.setViewName("page003/list");
+        mav.setViewName("input/event");
 
         return mav;
     }
@@ -70,7 +70,7 @@ public class Page003Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page003/list_div", method = RequestMethod.GET)
+    @RequestMapping(value = "/input/event_div", method = RequestMethod.GET)
     public ModelAndView pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "prId", required = false) String prId,
@@ -89,7 +89,7 @@ public class Page003Controller extends RootController {
 
         mav.addObject("boards", boards);
         mav.addObject("paging", paging);
-        mav.setViewName("page003/list_div");
+        mav.setViewName("input/event_div");
         return mav;
     }
 
@@ -98,7 +98,7 @@ public class Page003Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page003/form", method = RequestMethod.POST)
+    @RequestMapping(value = "/input/event_form", method = RequestMethod.POST)
     public Map<String, Object> pageFormSubmit(
             HttpServletRequest request
     ) {

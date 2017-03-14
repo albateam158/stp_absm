@@ -32,7 +32,7 @@ public class Page005Controller extends RootController {
      * @param mav
      * @return
      */
-    @RequestMapping(value = "/page005/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/search", method = RequestMethod.GET)
     public ModelAndView pageFormList(
             HttpServletRequest request,
             ModelAndView mav
@@ -43,7 +43,7 @@ public class Page005Controller extends RootController {
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
 
-        mav.setViewName("page005/list");
+        mav.setViewName("search/search");
 
         return mav;
     }
@@ -55,7 +55,7 @@ public class Page005Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page005/list_div", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/search_div", method = RequestMethod.GET)
     public ModelAndView pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "prId", required = false) String prId,
@@ -77,7 +77,7 @@ public class Page005Controller extends RootController {
 
         mav.addObject("boards", boards);
         mav.addObject("paging", paging);
-        mav.setViewName("page005/list_div");
+        mav.setViewName("search/search_div");
         return mav;
     }
 

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교통연구원 시안 | 자료 조회</title>
+<link rel="icon" href="/images/favicon.png">
+<link rel="stylesheet" href="/css/reset.css" />
+<link rel="stylesheet" href="/css/font.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<link rel="stylesheet" href="/css/jsgrid.css" />
+ <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<header>
+		<div class="inner_box">
+			<h1>
+				<a href="#"><img src="../../images/logo2.gif" alt="홈" /></a>
+			</h1>
+			<!-- navigation -->
+			<nav class="navi">
+				<ul>
+					<li class="navi_has">
+						<a href="#"><span class="navi_icon1"></span>자료 입력</a>
+						<div class="navi_sub">
+							<ul>
+								<li><a href="../input/baseline.html" target="_blank">기초자료 및 개인특성 자료 입력</a></li>
+								<li><a href="../input/biosignal.html" target="_blank">생체신호 측정자료 입력</a></li>
+								<li><a href="../input/event.html" target="_blank">이벤트 자료 입력</a></li>
+								<li><a href="../input/video.html" target="_blank">동영상 자료 입력</a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a href="search.html" target="_blank"><span class="navi_icon2"></span>자료 조회</a></li>
+					<li><a href="../result/result.html" target="_blank"><span class="navi_icon3"></span>결과 보기</a></li>
+				</ul>				
+			</nav><!-- //navigation -->
+		</div>
+	</header>
+	<div class="content">			
+		<section class="mb10">			
+			<div class="pd7">
+				<h2 class="lookup">자료 조회</h2>
+				<div class="bg_wh">
+					<form>
+						<label for="caId" class="wd80">케이스명</label>
+						<select name="caId" id="caId"  class="box_bd wd80 mb10">
+							<option value="">1</option>
+							<option value="">2</option>
+						</select>						
+						<br />
+						<label for="name" class="wd80">이름</label>
+						<input type="text" name="name" class="box_bd wd80" id="name"/>
+						<label for="age" class="wd35">나이</label>
+						<input type="text" name="age" class="box_bd wd80" id="age"/>
+						<label for="sex" class="wd35">성별</label>
+						<select name="sex" id="sex" class="box_bd wd80" class="box_bd wd80 mb10">
+							<option value="">남</option>
+							<option value="">여</option>
+						</select>												
+						<button type="button" id="search" name="search" class="sch_btn fr">조회</button>
+					</form>	
+					<span class="line"></span>			
+					<div id="jsGrid"></div>
+				</div><!-- //bg_wh -->
+			</div><!-- //pd7 -->					
+		</section>		
+	</div>
+	<footer>	
+		<div class="inner_box">
+			<img src="../../images/footer_logo.gif" alt="한국교통안전연구원 로고" />
+			<address>(우)30147 세종특별자치시 시청대로 370 세종국책연구단지 과학인프라동(B)&nbsp;&nbsp;|&nbsp;&nbsp;TEL : 044-211-3114&nbsp;&nbsp;|&nbsp;&nbsp;FAX : 044-211-3222<br>Copyright© 2017 THE KOREA TRANSPORT INSTITUTE All rights reserved </address>
+		</div>
+	</footer>
+
+<!-- jQuery 2.2.3 -->
+<script type="text/javascript" src="../../js/jquery-2.2.3.min.js"></script>
+<script src="../../js/common.js"></script>	
+<!-- FLOT CHARTS -->
+<script src="../../js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../../js/jquery.flot.resize.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../../js/jquery.flot.categories.min.js"></script>
+<!-- http://js-grid.com/ -->
+<script src="../../js/jsgrid.min.js"></script>
+
+
+<script type="text/javascript">
+    var clients = [
+        { "이름": "한후자", "나이": "77세", "성별": "여", "설문조사1": "4", "설문조사2":"3", "설문조사3":"1","설문조사4":"1","설문조사5":"5","설문조사6":"5","설문조사7":"2","설문조사8":"4"}
+    ];
+ 
+   // var countries = [
+   //     { Name: "", Id: 0 },
+   //     { Name: "United States", Id: 1 },
+   //     { Name: "Canada", Id: 2 },
+   //     { Name: "United Kingdom", Id: 3 }
+   // ];
+ 
+    $("#jsGrid").jsGrid({
+        width: "100%",
+        height: "400px",
+ 
+        //inserting: true,
+       // editing: true,
+        sorting: true,
+        paging: true,
+ 
+        data: clients,
+ 
+        fields: [
+            { name: "이름", type: "text", width: 100 , align: "center"},
+            { name: "나이", type: "text", width: 100 , align: "center"},
+            { name: "성별", type: "text",  width: 100 , align: "center"},
+            { name: "설문조사1", type: "number",  width: 100 , align: "center"},
+            { name: "설문조사2", type: "number",  width: 100 , align: "center"},
+			{ name: "설문조사3", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사4", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사5", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사6", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사7", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사8", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사9", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사10", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사11", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사12", type: "number", width: 100 , align: "center"},
+			{ name: "설문조사13", type: "number", width: 100, align: "center" }
+        ]
+    });
+</script>
+</body>
+</html>

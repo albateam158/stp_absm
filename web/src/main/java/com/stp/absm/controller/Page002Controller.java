@@ -49,7 +49,7 @@ public class Page002Controller extends RootController {
      * @param mav
      * @return
      */
-    @RequestMapping(value = "/page002/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/input/biosignal", method = RequestMethod.GET)
     public ModelAndView pageFormList(
             HttpServletRequest request,
             ModelAndView mav
@@ -60,7 +60,7 @@ public class Page002Controller extends RootController {
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
 
-        mav.setViewName("page002/list");
+        mav.setViewName("input/biosignal");
 
         return mav;
     }
@@ -72,7 +72,7 @@ public class Page002Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page002/list_div", method = RequestMethod.GET)
+    @RequestMapping(value = "/input/biosignal_div", method = RequestMethod.GET)
     public ModelAndView pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "prId", required = false) String prId,
@@ -91,7 +91,7 @@ public class Page002Controller extends RootController {
 
         mav.addObject("boards", boards);
         mav.addObject("paging", paging);
-        mav.setViewName("page002/list_div");
+        mav.setViewName("input/biosignal_div");
         return mav;
     }
 
@@ -102,7 +102,7 @@ public class Page002Controller extends RootController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/page002/private_combo" , method={RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/input/private_combo" , method={RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody List<AbsmPrivate> smallClassComboAjax(
             final HttpServletRequest request, final HttpServletResponse response)
     {
@@ -117,7 +117,7 @@ public class Page002Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/page002/form", method = RequestMethod.POST)
+    @RequestMapping(value = "input/biosignal_form", method = RequestMethod.POST)
     public Map<String, Object> pageFormSubmit(
             HttpServletRequest request
     ) {

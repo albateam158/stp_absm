@@ -1,6 +1,0 @@
-/* loading */
-.loading { display: none; text-align: center; padding: 100px 0; font-size: 1.3em; color: #787878; overflow: hidden; clear: both; }
-.loading.wrap { display: block; position: fixed; left:0; top:0; width: 100%; height: 100%; z-index: 10000; }
-.loading.wrap div { position: fixed; width: 100%; top: 50%; margin-top: -80px; }
-.loading.wrap img { width: 32px; height: 32px; }
-.loading.wrap .blockUi { opacity: 0; }
