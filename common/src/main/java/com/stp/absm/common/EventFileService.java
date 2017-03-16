@@ -64,16 +64,16 @@ public class EventFileService implements DataFileService{
                     AbsmEvent absmEvent = new AbsmEvent();
                     absmEvent.setCaId(caId);
                     absmEvent.setPrId(prId);
-                    absmEvent.setEvDt1(row.getCell(2).toString());
-                    absmEvent.setEvDt2(row.getCell(3).toString());
-                    absmEvent.setEvDt3(row.getCell(4).toString());
-                    absmEvent.setEvDt4(row.getCell(5).toString());
-                    absmEvent.setEvDt5(row.getCell(6).toString());
-                    absmEvent.setEvDt6(row.getCell(7).toString());
-                    absmEvent.setEvDt7(row.getCell(8).toString());
-                    absmEvent.setEvDt8(row.getCell(9).toString());
-                    absmEvent.setEvDt9(row.getCell(10).toString());
-                    absmEvent.setEvDt10(row.getCell(11).toString());
+                    absmEvent.setEvDt1(row.getCell(3).toString());
+                    absmEvent.setEvDt2(row.getCell(4).toString());
+                    absmEvent.setEvDt3(row.getCell(5).toString());
+                    absmEvent.setEvDt4(row.getCell(6).toString());
+                    absmEvent.setEvDt5(row.getCell(7).toString());
+                    absmEvent.setEvDt6(row.getCell(8).toString());
+                    absmEvent.setEvDt7(row.getCell(9).toString());
+                    absmEvent.setEvDt8(row.getCell(10).toString());
+                    absmEvent.setEvDt9(row.getCell(11).toString());
+                    absmEvent.setEvDt10(row.getCell(12).toString());
                     logger.info(absmEvent.toString());
 
                     absmEventRepository.save(absmEvent);

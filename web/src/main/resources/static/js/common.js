@@ -24,4 +24,11 @@ $(document).ready(function() {
 			$('.graph_box1').css('width','1229px');
 		}
 	});
+
+
+	//datepicker
+	$(function() {
+		$( "#datePicker" ).datepicker({
+		});
+	});
 });

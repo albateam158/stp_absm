@@ -8,22 +8,26 @@
         <div class="pd7">
             <h2 class="input">기초자료 및 개인특성 자료 입력</h2>
             <div class="bg_wh">
-                <form action="">
-                    <label for="dt" class="wd102">측정일자</label><input type="text" id="dt" name="dt" class="box_bd wd80" />
-                    <label for="cassNm">케이스명</label>
-                    <input type="text" id="cassNm" name="cassNm" class="box_bd wd80" />
+                <form id="PrivateForm">
+                    <label for="dt" class="wd102">측정일자</label><input type="text" id="datePicker" name="dt" class="box_bd wd80"><!-- 20170316 추가 datepicker -->
+                    <label for="caseNm">케이스명</label>
+                    <input type="text" id="caseNm" name="caseNm" class="box_bd wd80" />
                     <label for="note" class="wd35">설명</label><input type="text" id="note" name="note" class="box_bd wd150 mb10" /><br />
 
                     <label for="" class="wd100">개인특성 파일명</label>
                     <input type="text" class="box_bd mr0 mb10 wd189" title="파일찾기" readonly="readonly"  id="file_sch1">
-                    <label for="fileName" id="" class="file_label">파일찾기</label>
-                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value" onkeydown="return flase" ><br />
+                    <label for="file1" id="" class="file_label">파일찾기</label><!-- lable의 for : file1 -->
+                    <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value" onkeydown="return false" ><!-- input의 id : file1 -->
+                    <input type="hidden" name="fileType" value="PRIVATE" />
+                    <br />
 
                     <label for="" class="wd100">설문조사 파일명</label>
                     <input type="text" class="box_bd mr0 wd189" title="파일찾기" readonly="readonly"  id="file_sch2">
-                    <label for="fileName" id="" class="file_label">파일찾기</label>
-                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch2').value=this.value" onkeydown="return flase" >
-                    <button type="button" id="" name="save" class="input_btn fr">입력</button>
+                    <label for="file2" id="" class="file_label">파일찾기</label><!-- lable의 for : file2 -->
+                    <input id="file2" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch2').value=this.value" onkeydown="return false" ><!-- input의 id : file2 -->
+                    <input type="hidden" name="fileType" value="SURVEY" />
+
+                    <button type="button" id="" name="save" class="input_btn fr" onclick="savePrivate();">입력</button>
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>
@@ -35,11 +39,7 @@
 
 	<@layout.put block="script">
     <script type="text/javascript">
-        var clients = [
-            {"케이스명": "측정1","참가번호": 1,"이름": "한후자", "나이": "77세", "성별": "남"},
-            {"케이스명": "측정1","참가번호": 2,"이름": "이옥자", "나이": "75세", "성별": "여"},
-            {"케이스명": "측정1","참가번호": 3,"이름": "이시응", "나이": "74세", "성별": "남"}
-        ];
+        var clients = [];
 
         // var countries = [
         //     { Name: "", Id: 0 },

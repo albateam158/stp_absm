@@ -108,3 +108,5 @@ h4{font-size:15px;color:#4d5557;padding:0px 10px 0px 0px;font-weight:500;letter-
 table{width:100%;border-collapse:collapse;/* border-top:2px solid #18729f; */padding:0px;text-align:center;font-size:14px;color:#252525;}
 table th,table td{border:1px solid #b3c0c6;border-collapse:collapse;padding:5px;}
 table th{font-weight:500;background-color:#dbe4e8;text-align:center;}
+
+.inner_box nav li .navi_sub ul li a:hover{color:#07489a;}

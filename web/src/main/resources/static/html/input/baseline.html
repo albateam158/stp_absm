@@ -57,12 +57,14 @@
 						<label for="" class="wd100">개인특성 파일명</label>
 						<input type="text" class="box_bd mr0 mb10 wd189" title="파일찾기" readonly="readonly"  id="file_sch1">
 						<label for="fileName" id="" class="file_label">파일찾기</label>
-						<input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value" onkeydown="return flase" ><br />		
+						<input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value" onkeydown="return flase" ><br />
+						<input type="hidden" name="fileType" value="PRIVATE" />
 
 						<label for="" class="wd100">설문조사 파일명</label>
 						<input type="text" class="box_bd mr0 wd189" title="파일찾기" readonly="readonly"  id="file_sch2">
 						<label for="fileName" id="" class="file_label">파일찾기</label>
-						<input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch2').value=this.value" onkeydown="return flase" >	
+						<input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch2').value=this.value" onkeydown="return flase" >
+
 						<button type="button" id="" name="save" class="input_btn fr">입력</button>
 					</form>		
 					<span class="line"></span>		

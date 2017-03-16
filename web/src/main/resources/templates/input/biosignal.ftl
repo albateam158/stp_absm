@@ -24,13 +24,21 @@
                     <label for="" class="wd100">ECG 파일명</label>
                     <input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="ecgFindFile">
                     <label for="fileName" id="" class="file_label">파일찾기</label>
-                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ecgFindFile').value=this.value" onkeydown="return flase" ><br />
+                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ecgFindFile').value=this.value" onkeydown="return false" >
+                    <br />
 
                     <label for="" class="wd100">GSR 파일명</label>
                     <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="gsrfindFile">
                     <label for="fileName" id="" class="file_label">파일찾기</label>
-                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('gsrfindFile').value=this.value" onkeydown="return flase" >
+                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('gsrfindFile').value=this.value" onkeydown="return false" >
+                    <br />
+
+                    <label for="" class="wd100">GSR 파일명</label>
+                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="gsrfindFile">
+                    <label for="fileName" id="" class="file_label">파일찾기</label>
+                    <input id="" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('gsrfindFile').value=this.value" onkeydown="return false" >
                     <button type="button" id="" name="save" class="input_btn fr">입력</button>
+
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>

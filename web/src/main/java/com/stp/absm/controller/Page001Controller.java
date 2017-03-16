@@ -3,12 +3,13 @@ package com.stp.absm.controller;
 import com.stp.absm.common.*;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmPrivate;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,10 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 개인특성자료입력 화면
@@ -40,9 +38,6 @@ public class Page001Controller extends RootController {
 
     @Autowired
     protected SurveyFileService surveyFileService;
-
-    @Autowired
-    protected FilterFileService filterFileService;
 
     /**
      * 조회화면
@@ -68,7 +63,7 @@ public class Page001Controller extends RootController {
      * @return
      */
     @RequestMapping(value = "/input/baseline_div", method = RequestMethod.GET)
-    public ModelAndView pageFormListDiv(
+    public Map<String, Object> pageFormListDiv(
             @RequestParam(value = "dt", required = false) String dt,
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "note", required = false) String note,
@@ -76,6 +71,8 @@ public class Page001Controller extends RootController {
             ModelAndView mav,
             HttpServletRequest request
     ) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("dt", dt);
         params.put("caId", caId);
@@ -86,10 +83,28 @@ public class Page001Controller extends RootController {
         List<AbsmPrivate> boards = page001Mapper.selectBoards(params);
         String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
 
-        mav.addObject("boards", boards);
-        mav.addObject("paging", paging);
-        mav.setViewName("input/baseline_div");
-        return mav;
+        JSONObject jsonObject = new JSONObject();
+        JSONArray cell = new JSONArray();
+
+        for(int i=0; i < boards.size(); i++) {
+
+            AbsmPrivate absmPrivate = (AbsmPrivate)boards.get(i);
+            JSONObject obj = new JSONObject();
+
+            obj.put( "케이스명"     , absmPrivate.getCaseNm());
+            obj.put( "참가번호"     , absmPrivate.getPNo());
+            obj.put( "이름"         , absmPrivate.getName());
+            obj.put( "나이"         , absmPrivate.getAge());
+            obj.put( "성별"         , absmPrivate.getSex());
+            cell.add(obj);
+        }
+
+        jsonObject.put("rows", cell);
+
+        result.put("boards", jsonObject);
+        result.put("paging", paging);
+        //mav.setViewName("input/baseline");
+        return result;
     }
 
     /**
@@ -103,21 +118,27 @@ public class Page001Controller extends RootController {
     ) {
 
         Map<String, Object> result = new HashMap<String, Object>();
+
+        logger.info("request data " + request.getParameterMap().toString());
         /*
 		 * validate request type
 		 */
-        Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
-        final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+        //Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
+        if (!(request instanceof MultipartHttpServletRequest)) {
+            result.put("retCode", "C_PAGE1001");
+            result.put("retMsg", Message.C_PAGE1001);
+            return result;
+        }
 
+        final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         logger.info("multiRequest data " + multiRequest.getParameterMap().toString());
-        logger.info("request data " + request.getParameterMap().toString());
 
         AbsmCase absmCase = new AbsmCase();
 
 		/* Form Data */
-        String dt = (String)request.getParameter("dt");
-        String caseNm = (String)request.getParameter("caseNm");
-        String note = (String)request.getParameter("note");
+        String dt       = (String)request.getParameter("dt");
+        String caseNm   = (String)request.getParameter("caseNm");
+        String note     = (String)request.getParameter("note");
 
         absmCase.setDt(dt);
         absmCase.setCaseNm(caseNm);
@@ -160,15 +181,12 @@ public class Page001Controller extends RootController {
                 surveyFileService.setFileInfo(fileUploadInfo);
                 surveyFileService.doParse();
             }
-            else if ("FILTER".equals(fileType[i])) {
-                filterFileService.setFileInfo(fileUploadInfo);
-                filterFileService.doParse();
-            }
 
             i++;
-
         }
-
+        result.put("caId", caId);
+        result.put("retCode", "S_PAGE1001");
+        result.put("retMsg", Message.S_PAGE1001);
         return result;
     }
 }

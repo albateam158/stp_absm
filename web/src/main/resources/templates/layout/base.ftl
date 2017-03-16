@@ -74,6 +74,7 @@
     <!-- jQuery 2.2.3 -->
     <script type="text/javascript" src="/js/jquery-2.2.3.min.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/app.js"></script>
     <!-- FLOT CHARTS -->
     <script src="/js/jquery.flot.min.js"></script>
     <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
@@ -82,6 +83,8 @@
     <script src="/js/jquery.flot.categories.min.js"></script>
     <!-- http://js-grid.com/ -->
     <script src="/js/jsgrid.min.js"></script>
+    <!-- 20170316 추가 datepicker -->
+    <script src="/js/jquery-ui.min.js"></script>
 
 <@layout.block name="script">
 </@layout.block>

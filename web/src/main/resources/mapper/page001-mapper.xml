@@ -67,6 +67,8 @@
     </select>
 
 
-
+    <select id="selectCaseId" resultType="int">
+        SELECT MAX(ca_id) FROM absm_case
+    </select>
 
 </mapper>

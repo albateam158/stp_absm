@@ -1,9 +1,6 @@
 package com.stp.absm.controller;
 
-import com.stp.absm.common.CommonUtil;
-import com.stp.absm.common.FileUploadInfo;
-import com.stp.absm.common.MeasureFileService;
-import com.stp.absm.common.ModelFileService;
+import com.stp.absm.common.*;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmMeasure;
 import com.stp.absm.model.AbsmPrivate;
@@ -42,6 +39,9 @@ public class Page002Controller extends RootController {
 
     @Autowired
     protected ModelFileService modelFileService;
+
+    @Autowired
+    protected FilterFileService filterFileService;
 
     /**
      * 조회화면
@@ -177,6 +177,10 @@ public class Page002Controller extends RootController {
             else if ("MODEL".equals(fileType[i])) {
                 modelFileService.setFileInfo(fileUploadInfo);
                 modelFileService.doParse();
+            }
+            else if ("FILTER".equals(fileType[i])) {
+                filterFileService.setFileInfo(fileUploadInfo);
+                filterFileService.doParse();
             }
 
             i++;
