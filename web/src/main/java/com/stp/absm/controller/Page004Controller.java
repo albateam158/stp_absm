@@ -1,6 +1,7 @@
 package com.stp.absm.controller;
 
 import com.stp.absm.common.CommonUtil;
+import com.stp.absm.common.Message;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmFile;
 import com.stp.absm.model.AbsmPrivate;
@@ -64,7 +65,7 @@ public class Page004Controller extends RootController {
      * @return
      */
     @RequestMapping(value = "/input/video_div", method = RequestMethod.GET)
-    public ModelAndView pageFormListDiv(
+    public Map<String, Object> pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "prId", required = false) String prId,
             @RequestParam(value = "fileCd", required = false) String fileCd,
@@ -73,18 +74,24 @@ public class Page004Controller extends RootController {
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+
         params.put("caId", caId);
         params.put("prId", prId);
         params.put("fileCd", fileCd);
+
+        logger.info("parameter data " + params.toString());
 
         int count = page004Mapper.selectBoardsCount(params);
         List<AbsmFile> boards = page004Mapper.selectBoards(params);
         String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
 
-        mav.addObject("boards", boards);
-        mav.addObject("paging", paging);
-        mav.setViewName("input/video_div");
-        return mav;
+        String url = "";
+        if (boards.size() > 0)
+            url = boards.get(0).getUrl();
+
+        result.put("url", url);
+        return result;
     }
 
     /**
@@ -108,19 +115,27 @@ public class Page004Controller extends RootController {
 		/* Form Data */
         String strCaId  = (String)request.getParameter("caId");
         String strPrId  = (String)request.getParameter("prId");
-        String name     = (String)request.getParameter("name");
 
         int caId = 0;
-        if (!"".equals(strCaId))
+        if (!"".equals(strCaId)) {
             caId = Integer.valueOf(strCaId);
-        else
-            caId = 1;
+        }
+        else {
+            result.put("retCode", "C002");
+            result.put("retMsg", Message.C002);
+            return result;
+        }
 
         int prId = 0;
-        if (!"".equals(strPrId))
+        if (!"".equals(strPrId)) {
             prId = Integer.valueOf(strPrId);
-        else
-            prId = 1;
+        }
+        else {
+            result.put("retCode", "C003");
+            result.put("retMsg", Message.C003);
+            return result;
+        }
+
 
         /* get multipart file */
         final MultipartFile file = multiRequest.getFile("fileName");
@@ -133,14 +148,18 @@ public class Page004Controller extends RootController {
         // File Table Insert
         AbsmFile absmFile = new AbsmFile();
         absmFile.setCaId(caId);
-        /* 개인정보 또는 설문조사 파일은 개인이 아니라 case 별로 올라감 */
         absmFile.setPrId(prId);
-        absmFile.setFileCd("XLS");
+        absmFile.setFileCd("VIDEO");
         absmFile.setFileName(filePath);
         absmFile.setFileSize(file.getSize());
         absmFile.setUrl(filePath);
 
         absmFileRepository.save(absmFile);
+
+        result.put("caId", caId);
+        result.put("prId", prId);
+        result.put("retCode", "S_PAGE4001");
+        result.put("retMsg", Message.S_PAGE4001);
 
         return result;
     }

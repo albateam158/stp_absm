@@ -56,7 +56,7 @@
                 ORDER BY RAND()
             </when>
             <otherwise>
-                ORDER BY c.vi_id DESC
+
             </otherwise>
         </choose>
     </select>

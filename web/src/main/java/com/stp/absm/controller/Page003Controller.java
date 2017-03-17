@@ -162,8 +162,8 @@ public class Page003Controller extends RootController {
 		 */
         //Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
         if (!(request instanceof MultipartHttpServletRequest)) {
-            result.put("retCode", "C_PAGE1001");
-            result.put("retMsg", Message.C_PAGE1001);
+            result.put("retCode", "C001");
+            result.put("retMsg", Message.C001);
             return result;
         }
 
@@ -177,8 +177,8 @@ public class Page003Controller extends RootController {
             caId = Integer.valueOf(strCaId);
         }
         else {
-            result.put("retCode", "E_PAGE2001");
-            result.put("retMsg", Message.E_PAGE2001);
+            result.put("retCode", "C002");
+            result.put("retMsg", Message.C002);
             return result;
         }
 
@@ -203,8 +203,8 @@ public class Page003Controller extends RootController {
         }
 
         result.put("caId", caId);
-        result.put("retCode", "S_PAGE2001");
-        result.put("retMsg", Message.S_PAGE2001);
+        result.put("retCode", "S_PAGE3001");
+        result.put("retMsg", Message.S_PAGE3001);
 
         return result;
     }

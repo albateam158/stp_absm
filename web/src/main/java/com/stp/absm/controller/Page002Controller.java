@@ -4,12 +4,13 @@ import com.stp.absm.common.*;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmMeasure;
 import com.stp.absm.model.AbsmPrivate;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -73,7 +74,7 @@ public class Page002Controller extends RootController {
      * @return
      */
     @RequestMapping(value = "/input/biosignal_div", method = RequestMethod.GET)
-    public ModelAndView pageFormListDiv(
+    public Map<String, Object>  pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
             @RequestParam(value = "prId", required = false) String prId,
             Pageable pageable,
@@ -81,6 +82,8 @@ public class Page002Controller extends RootController {
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+
         params.put("caId", caId);
         params.put("prId", prId);
         params.put("pageable", pageable);
@@ -89,10 +92,33 @@ public class Page002Controller extends RootController {
         List<AbsmMeasure> boards = page002Mapper.selectBoards(params);
         String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
 
-        mav.addObject("boards", boards);
-        mav.addObject("paging", paging);
-        mav.setViewName("input/biosignal_div");
-        return mav;
+        JSONObject jsonObject = new JSONObject();
+        JSONArray cell = new JSONArray();
+
+        for(int i=0; i < boards.size(); i++) {
+
+            AbsmMeasure absmMeasure = (AbsmMeasure)boards.get(i);
+            JSONObject obj = new JSONObject();
+
+            obj.put( "케이스명"     , absmMeasure.getCaseNm());
+            obj.put( "참가번호"     , absmMeasure.getPrId());
+            obj.put( "ECG/GSR구분"  , absmMeasure.getEgCd());
+            obj.put( "측정시간"     , absmMeasure.getMeTm());
+            obj.put( "측정값"       , absmMeasure.getMeVal());
+
+            cell.add(obj);
+        }
+
+        jsonObject.put("rows", cell);
+
+        result.put("boards", jsonObject);
+        result.put("paging", paging);
+
+        //mav.addObject("boards", boards);
+        //mav.addObject("paging", paging);
+        //mav.setViewName("input/biosignal_div");
+
+        return result;
     }
 
     /**
@@ -126,25 +152,41 @@ public class Page002Controller extends RootController {
         /*
 		 * validate request type
 		 */
-        Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
+        //Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
+        if (!(request instanceof MultipartHttpServletRequest)) {
+            result.put("retCode", "C001");
+            result.put("retMsg", Message.C001);
+            return result;
+        }
+
         final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 
 		/* Form Data */
         String strCaId  = (String)request.getParameter("caId");
         String strPrId  = (String)request.getParameter("prId");
-        String name     = (String)request.getParameter("name");
+
+        logger.info("caId " + strCaId);
+        logger.info("prId " + strPrId);
 
         int caId = 0;
-        if (!"".equals(strCaId))
+        if (!"".equals(strCaId)) {
             caId = Integer.valueOf(strCaId);
-        else
-            caId = 1;
+        }
+        else {
+            result.put("retCode", "C002");
+            result.put("retMsg", Message.C002);
+            return result;
+        }
 
         int prId = 0;
-        if (!"".equals(strPrId))
+        if (!"".equals(strPrId)) {
             prId = Integer.valueOf(strPrId);
-        else
-            prId = 1;
+        }
+        else {
+            result.put("retCode", "C003");
+            result.put("retMsg", Message.C003);
+            return result;
+        }
 
         /* get multipart file */
         final List<MultipartFile> files = multiRequest.getFiles("fileName");
@@ -170,7 +212,7 @@ public class Page002Controller extends RootController {
             fileUploadInfo.setFileType(fileType[i]);
             fileUploadInfo.setFileSize(file.getSize());
 
-            if ("MEASURE".equals(fileType[i])) {
+            if ("ECG".equals(fileType[i]) || "GSR".equals(fileType[i])) {
                 measureFileService.setFileInfo(fileUploadInfo);
                 measureFileService.doParse();
             }
@@ -186,6 +228,11 @@ public class Page002Controller extends RootController {
             i++;
 
         }
+
+        result.put("caId", caId);
+        result.put("prId", prId);
+        result.put("retCode", "S_PAGE2001");
+        result.put("retMsg", Message.S_PAGE2001);
 
         return result;
     }

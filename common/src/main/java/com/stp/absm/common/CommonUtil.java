@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -78,13 +77,13 @@ public class CommonUtil {
                 saveFile.delete();
             }*/
 
-            try {
+            /*try {
                 file.transferTo(new File(filePath));
             }
             catch (IOException ie) {
                 ie.printStackTrace();
             }
-
+*/
         }
 
         return filePath;

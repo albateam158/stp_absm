@@ -47,10 +47,10 @@ public class MeasureFileService implements DataFileService {
 
         String egCd = "";
         if ("ECG".equals(fileType)) {
-            egCd = "1";
+            egCd = "E";
         }
         else if ("GSR".equals(fileType)) {
-            egCd = "2";
+            egCd = "G";
         }
 
         try {

@@ -125,8 +125,8 @@ public class Page001Controller extends RootController {
 		 */
         //Assert.state(request instanceof MultipartHttpServletRequest, "request !instanceof MultipartHttpServletRequest");
         if (!(request instanceof MultipartHttpServletRequest)) {
-            result.put("retCode", "C_PAGE1001");
-            result.put("retMsg", Message.C_PAGE1001);
+            result.put("retCode", "C001");
+            result.put("retMsg", Message.C001);
             return result;
         }
 

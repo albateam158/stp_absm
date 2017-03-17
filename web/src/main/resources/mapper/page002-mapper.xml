@@ -29,7 +29,6 @@
         SELECT (@row_number:=@row_number + 1) AS num, c.*
         FROM absm_measure AS c, (SELECT @row_number:=0) AS t
         WHERE 1=1
-        AND c.eg_cd = #{egCd}
         AND c.pr_id = #{prId}
         ) a
         Inner JOIN absm_case b
