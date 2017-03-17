@@ -35,6 +35,9 @@ public class Page004Controller extends RootController {
     @Value(value = "${upload.fileLocation}")
     private String fileLocation;
 
+    @Value(value = "${upload.videoUrl}")
+    private String videoUrl;
+
     /**
      * 조회화면
      * @param request
@@ -139,20 +142,21 @@ public class Page004Controller extends RootController {
 
         /* get multipart file */
         final MultipartFile file = multiRequest.getFile("fileName");
-        String[] fileType = request.getParameterValues("fileType");
+        //String[] fileType = request.getParameterValues("fileType");
 
         logger.info("fileLocation " + fileLocation);
 
-        String filePath = CommonUtil.fileTransferTo(file, fileLocation);
+        //String filePath = CommonUtil.fileTransferTo(file, fileLocation);
+        CommonUtil.fileTransferTo(file, fileLocation);
 
         // File Table Insert
         AbsmFile absmFile = new AbsmFile();
         absmFile.setCaId(caId);
         absmFile.setPrId(prId);
         absmFile.setFileCd("VIDEO");
-        absmFile.setFileName(filePath);
+        absmFile.setFileName(file.getOriginalFilename());
         absmFile.setFileSize(file.getSize());
-        absmFile.setUrl(filePath);
+        absmFile.setUrl(videoUrl+file.getOriginalFilename());
 
         absmFileRepository.save(absmFile);
 

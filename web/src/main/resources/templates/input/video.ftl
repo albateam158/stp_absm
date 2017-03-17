@@ -30,6 +30,7 @@
 
                 <video id="video1" name="video1" width="" height="280px" controls class="ma_t">
                     <source src="/video/sample.mp4" type="video/mp4">
+                    <!-- <source src="E:/MyProject/traffic/upload/sample.mp4" type="video/mp4"> -->
                 </video>
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
