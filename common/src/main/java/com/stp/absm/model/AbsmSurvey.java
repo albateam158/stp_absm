@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -29,6 +28,9 @@ public class AbsmSurvey implements Serializable {
     @Transient
     private String dt;
     @Transient
+    private String age;
+    private String sex;
+    private String name;
     private String caseNm;
     private Date regDate;
     private Date updateDate;

@@ -1,23 +1,23 @@
 package com.stp.absm.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmPrivate;
 import com.stp.absm.model.AbsmSurvey;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.stp.absm.model.KamsBoardContent;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *  자료 조회 화면
@@ -26,6 +26,7 @@ import com.stp.absm.model.KamsBoardContent;
 @RestController
 public class Page005Controller extends RootController {
 
+    private final Logger logger = LoggerFactory.getLogger(Page005Controller.class);
     /**
      * 조회화면
      * @param request
@@ -56,9 +57,9 @@ public class Page005Controller extends RootController {
      * @return
      */
     @RequestMapping(value = "/search/search_div", method = RequestMethod.GET)
-    public ModelAndView pageFormListDiv(
+    public Map<String, Object> pageFormListDiv(
             @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "prId", required = false) String prId,
+            @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "age", required = false) String age,
             @RequestParam(value = "sex", required = false) String sex,
             Pageable pageable,
@@ -66,19 +67,52 @@ public class Page005Controller extends RootController {
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+
         params.put("caId", caId);
-        params.put("prId", prId);
+        params.put("name", name);
         params.put("age", age);
         params.put("sex", sex);
+        //params.put("pageable", pageable);
 
-        int count = page005Mapper.selectBoardsCount(params);
-        List<AbsmSurvey> boards = page005Mapper.selectBoards(params);
-        String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
+        logger.info("param info " + params.toString());
 
-        mav.addObject("boards", boards);
-        mav.addObject("paging", paging);
-        mav.setViewName("search/search_div");
-        return mav;
+        //int count = page005Mapper.selectBoardsCount(params);
+        List<AbsmSurvey> boards = page005Mapper.selectPrivateInfo(params);
+        //String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
+
+        JSONObject jsonObject = new JSONObject();
+        JSONArray cell = new JSONArray();
+
+        for(int i=0; i < boards.size(); i++) {
+
+            AbsmSurvey absmSurvey = (AbsmSurvey)boards.get(i);
+            JSONObject obj = new JSONObject();
+
+            obj.put( "ID"         , absmSurvey.getPrId());
+            obj.put( "이름"       , absmSurvey.getName());
+            obj.put( "나이"       , absmSurvey.getAge());
+            obj.put( "성별"       , absmSurvey.getSex());
+            obj.put( "설문조사1"  , absmSurvey.getSuVal1());
+            obj.put( "설문조사2"  , absmSurvey.getSuVal2());
+            obj.put( "설문조사3"  , absmSurvey.getSuVal3());
+            obj.put( "설문조사4"  , absmSurvey.getSuVal4());
+            obj.put( "설문조사5"  , absmSurvey.getSuVal5());
+            obj.put( "설문조사6"  , absmSurvey.getSuVal6());
+            obj.put( "설문조사7"  , absmSurvey.getSuVal7());
+            obj.put( "설문조사8"  , absmSurvey.getSuVal8());
+            cell.add(obj);
+        }
+
+        jsonObject.put("rows", cell);
+
+        result.put("boards", jsonObject);
+        //result.put("paging", paging);
+
+        //mav.addObject("boards", boards);
+        //mav.addObject("paging", paging);
+        //mav.setViewName("search/search_div");
+        return result;
     }
 
 

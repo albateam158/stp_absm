@@ -43,8 +43,8 @@ function getPrivateInfo(caId) {
 
     $.ajax({
         type : "GET",
-        url : "/input/baseline_div?caId="+caId,
-
+        url : "/input/baseline_div",
+        data : {"caId" : caId},
         success: function(data) {
 
             var gridData = data.boards;
@@ -119,8 +119,11 @@ function getBioInfo(caId, prId) {
 
     $.ajax({
         type : "GET",
-        url : "/input/biosignal_div?caId="+caId+"&prId="+prId,
-
+        url : "/input/biosignal_div",
+        data: {
+            "caId": caId,
+            "prId": prId
+        },
         success: function(data) {
 
             var gridData = data.boards;
@@ -195,7 +198,10 @@ function getEventInfo(caId) {
 
     $.ajax({
         type : "GET",
-        url : "/input/event_div?caId="+caId,
+        url : "/input/event_div",
+        data: {
+            "caId": caId
+        },
         success: function(data) {
 
             var gridData = data.boards;
@@ -278,7 +284,12 @@ function getVideoInfo(caId, prId) {
 
     $.ajax({
         type : "GET",
-        url : "/input/video_div?caId="+caId+"&prId="+prId+"&fileCd=VIDEO",
+        url : "/input/video_div",
+        data: {
+            "caId": caId,
+            "prId": prId,
+            "fileCd": "VIDEO"
+        },
         success: function(data) {
 
             if (data.url != "") {
@@ -296,6 +307,74 @@ function getVideoInfo(caId, prId) {
 
 }
 
+// 자료 조회
+function getAbsmInfo() {
+
+    console.log("getAbsmInfo Start");
+
+    var form = $('#SearchForm')[0];
+    var formData = new FormData(form);
+    console.log("formData " + formData);
+
+    console.log("formData " + formData.get("caId"));
+    console.log("formData " + formData.get("name"));
+    console.log("formData " + formData.get("age"));
+    console.log("formData " + formData.get("sex"));
+
+
+    $.ajax({
+        type : "GET",
+        url : "/search/search_div",
+        data: {
+            "caId": formData.get("caId"),
+            "name": formData.get("name"),
+            "age": formData.get("age"),
+            "sex": formData.get("sex")
+        },
+
+        success: function(data) {
+
+            var gridData = data.boards;
+
+            var clients = [
+                { "ID" : "458", "이름": "한후자", "나이": "77세", "성별": "여", "설문조사1": "4", "설문조사2":"3", "설문조사3":"1","설문조사4":"1","설문조사5":"5","설문조사6":"5","설문조사7":"2","설문조사8":"4"}
+            ];
+
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+
+                //inserting: true,
+                // editing: true,
+                sorting: true,
+                paging: true,
+
+                data: clients, //gridData.rows,
+
+                fields: [
+                    { name: "ID", type: "text", width: 100 , align: "center"},
+                    { name: "이름", type: "text", width: 100 , align: "center"},
+                    { name: "나이", type: "text", width: 100 , align: "center"},
+                    { name: "성별", type: "text",  width: 100 , align: "center"},
+                    { name: "설문조사1", type: "number",  width: 100 , align: "center"},
+                    { name: "설문조사2", type: "number",  width: 100 , align: "center"},
+                    { name: "설문조사3", type: "number", width: 100 , align: "center"},
+                    { name: "설문조사4", type: "number", width: 100 , align: "center"},
+                    { name: "설문조사5", type: "number", width: 100 , align: "center"},
+                    { name: "설문조사6", type: "number", width: 100 , align: "center"},
+                    { name: "설문조사7", type: "number", width: 100 , align: "center"},
+                    { name: "설문조사8", type: "number", width: 100 , align: "center"},
+                ]
+            });
+
+        },
+        error: function(request, status, error) {
+            alert("개인정보 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
+        }
+    });
+
+}
+
 // 케이스 목록 조회
 function getCaseList(formName) {
 
@@ -306,7 +385,6 @@ function getCaseList(formName) {
         success: function(data) {
 
             var cases = data.cases;
-            var pris = data.pris;
 
             if (formName == "EventForm") {
                 $.each(cases, function(index, item) {
@@ -317,19 +395,47 @@ function getCaseList(formName) {
                 $.each(cases, function(index, item) {
                     $('#BioForm select#caId').append("<option value='" + item.caId + "'>" + item.caseNm + "</option> ");
                 });
+            }
+            else if (formName == "VideoForm") {
+                $.each(cases, function(index, item) {
+                    $('#VideoForm select#caId').append("<option value='" + item.caId + "'>" + item.caseNm + "</option> ");
+                });
+            }
+            else if (formName == "SearchForm") {
+                $.each(cases, function(index, item) {
+                    $('#SearchForm select#caId').append("<option value='" + item.caId + "'>" + item.caseNm + "</option> ");
+                });
+            }
+        },
+        error: function(request, status, error) {
+            alert("케이스 목록 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
+        }
+    });
 
-                var pris = data.pris;
+}
+
+// 케이스별 참가자 목록 조회
+function getPrivateList(formName, caId) {
+
+
+    $.ajax({
+        type : "GET",
+        url : "/input/privateList?caId="+caId,
+        success: function(data) {
+
+            var pris = data.pris;
+
+            if (formName == "BioForm") {
+
+                $('#BioForm select#name option').not("[value='']").remove();
                 $.each(pris, function(index, item) {
                     // TODO 케이스 조회시 리턴 오브젝트에 개인정보 이름 추가
                     $('#BioForm select#name').append("<option value='" + item.prId + "'>" + item.name + "</option> ");
                 });
             }
             else if (formName == "VideoForm") {
-                $.each(cases, function(index, item) {
-                    $('#VideoForm select#caId').append("<option value='" + item.caId + "'>" + item.caseNm + "</option> ");
-                });
 
-                var pris = data.pris;
+                $('#VideoForm select#name option').not("[value='']").remove();
                 $.each(pris, function(index, item) {
                     // TODO 케이스 조회시 리턴 오브젝트에 개인정보 이름 추가
                     $('#VideoForm select#name').append("<option value='" + item.prId + "'>" + item.name + "</option> ");
@@ -339,7 +445,7 @@ function getCaseList(formName) {
 
         },
         error: function(request, status, error) {
-            alert("bioCaseList 케이스 목록 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
+            alert("privateList 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
         }
     });
 

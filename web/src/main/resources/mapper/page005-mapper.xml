@@ -43,15 +43,25 @@
         SELECT (@row_number:=@row_number + 1) AS num, c.*
         FROM absm_survey AS c, (SELECT @row_number:=0) AS t
         WHERE 1=1
-        AND c.pr_id = #{prId}
+        --AND c.pr_id = #{prId}
         ) a
         Inner JOIN absm_case b
         ON a.ca_id = b.ca_id
         AND b.ca_id = #{caId}
         Inner JOIN absm_private d
         ON a.pr_id = d.pr_id
+        AND d.ca_id = b.ca_id
+        <if test="age != null and age != ''">
         AND d.age = #{age}
+        </if>
+
+        <if test="sex != null and sex != ''">
         AND d.sex = #{sex}
+        </if>
+
+        <if test="name != null and name != ''">
+        AND d.name = #{name}
+        </if>
         order by num desc
     </sql>
 
@@ -77,7 +87,38 @@
         </choose>
     </select>
 
+    <select id="selectPrivateInfo" parameterType="java.util.Map" resultMap="BoardMap">
+        select a.*
+           ,b.dt
+           ,b.case_nm
+           ,d.age
+           ,d.sex
+           ,d.name
+           ,d.p_no
+        from
+        (
+            SELECT c.*
+            FROM absm_survey AS c
+            WHERE 1=1
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        Inner JOIN absm_private d
+        ON a.pr_id = d.pr_id
+        AND d.ca_id = b.ca_id
+        <if test="age != null and age != ''">
+            AND d.age = #{age}
+        </if>
 
+        <if test="sex != null and sex != ''">
+            AND d.sex = #{sex}
+        </if>
 
+        <if test="name != null and name != ''">
+            AND d.name = #{name}
+        </if>
+        order by a.ca_id , a.pr_id desc
+    </select>
 
 </mapper>

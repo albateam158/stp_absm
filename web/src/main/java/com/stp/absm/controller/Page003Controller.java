@@ -66,20 +66,39 @@ public class Page003Controller extends RootController {
     }
 
     /**
-     * 조회화면
+     * 케이스 목록 조회
      * @param request
      * @param request
      * @return
      */
     @RequestMapping(value = "/input/caseList", method = RequestMethod.GET)
-    public Map<String, Object> pageCaseList(
+    public Map<String, Object> caseList(
             HttpServletRequest request
     ) {
         List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("cases", cases);
+
+        return result;
+    }
+
+    /**
+     * 개인 정보 조회
+     * @param request
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/input/privateList", method = RequestMethod.GET)
+    public Map<String, Object> privateList(
+            @RequestParam(value = "caId", required = false) String caId,
+            HttpServletRequest request
+    ) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("caId", caId);
+
+        List<AbsmPrivate> pris = page003Mapper.selectPrivates(params);
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("pris", pris);
 
         return result;

@@ -14,6 +14,7 @@
                     </select>
                     <label for="name" class="wd35">이름</label>
                     <select name="name" id="name"  class="box_bd wd80 mb10">
+                        <option value="">선택하세요</option>
                     </select>
                     <br />
 
@@ -69,6 +70,9 @@
         $('#BioForm select#caId').on('change', function(){
             var selVal = $(this).val();
             $('#BioForm input[name="caId"]').val(selVal);
+
+            // case별 참가자 목록 조회
+            getPrivateList("BioForm", selVal);
 
         });
 
