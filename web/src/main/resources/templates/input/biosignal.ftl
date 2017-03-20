@@ -11,6 +11,7 @@
                 <form id="BioForm">
                     <label for="caId" class="wd100">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80 mb10">
+                        <option value="">선택하세요</option>
                     </select>
                     <label for="name" class="wd35">이름</label>
                     <select name="name" id="name"  class="box_bd wd80 mb10">
@@ -40,6 +41,14 @@
                     <label for="file3" id="" class="file_label">파일찾기</label>
                     <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="FILTER" />
+                    <br />
+
+                    <label for="" class="wd100">SPSS 파일명</label>
+                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="ModelfindFile">
+                    <label for="file4" id="" class="file_label">파일찾기</label>
+                    <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ModelfindFile').value=this.value" onkeydown="return false" >
+                    <input type="hidden" name="fileType" value="MODEL" />
+
                     <button type="button" id="" name="save" class="input_btn fr" onclick="saveBiosignal();">입력</button>
 
                 </form>

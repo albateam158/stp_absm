@@ -54,17 +54,19 @@ public class ModelFileService implements DataFileService {
             // 엑셀 파일 오픈
             XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
 
+            /* section code */
+            int seCd = 2;
             for (Row row : wb.getSheetAt(0)) {
 
                 if (row.getRowNum() < 1)
                     continue;
 
-                if (row.getCell(0) != null) {
+                if (row.getCell(1) != null) {
 
                     AbsmModel absmModel = new AbsmModel();
                     absmModel.setCaId(caId);
                     absmModel.setPrId(prId);
-                    absmModel.setSeCd(2);
+                    absmModel.setSeCd(seCd);
 
                     absmModel.setMeanRri(Double.valueOf(row.getCell(2).toString()));
                     absmModel.setStdRri(Double.valueOf(row.getCell(3).toString()));
@@ -80,11 +82,12 @@ public class ModelFileService implements DataFileService {
                     absmModel.setMoPre2(Double.valueOf(row.getCell(12).toString()));
                     absmModel.setMoPre3(Double.valueOf(row.getCell(13).toString()));
                     absmModel.setMoPre4(Double.valueOf(row.getCell(14).toString()));
-                    absmModel.setStLevel(Integer.valueOf(row.getCell(15).toString()));
+                    absmModel.setStLevel(Integer.valueOf(CommonUtil.removeDot(row.getCell(15).toString())));
 
                     logger.info(absmModel.toString());
 
                     absmModelRepository.save(absmModel);
+                    seCd++;
 
                 }
             }

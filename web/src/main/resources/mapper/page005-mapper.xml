@@ -105,7 +105,7 @@
         ON a.ca_id = b.ca_id
         AND b.ca_id = #{caId}
         Inner JOIN absm_private d
-        ON a.pr_id = d.pr_id
+        ON a.pr_id = d.p_no
         AND d.ca_id = b.ca_id
         <if test="age != null and age != ''">
             AND d.age = #{age}

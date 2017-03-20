@@ -202,31 +202,33 @@ public class Page002Controller extends RootController {
 
         while (itr.hasNext()) {
             file = itr.next();
-            filePath = CommonUtil.fileTransferTo(file, fileLocation);
 
-            /* after move file upload file data */
-            FileUploadInfo fileUploadInfo = new FileUploadInfo();
-            fileUploadInfo.setCaId(caId);
-            fileUploadInfo.setPrId(prId);
-            fileUploadInfo.setFileName(filePath);
-            fileUploadInfo.setFileType(fileType[i]);
-            fileUploadInfo.setFileSize(file.getSize());
+            if (file != null && !"".equals(file.getOriginalFilename())) {
 
-            if ("ECG".equals(fileType[i]) || "GSR".equals(fileType[i])) {
-                measureFileService.setFileInfo(fileUploadInfo);
-                measureFileService.doParse();
-            }
-            else if ("MODEL".equals(fileType[i])) {
-                modelFileService.setFileInfo(fileUploadInfo);
-                modelFileService.doParse();
-            }
-            else if ("FILTER".equals(fileType[i])) {
-                filterFileService.setFileInfo(fileUploadInfo);
-                filterFileService.doParse();
-            }
+                filePath = CommonUtil.fileTransferTo(file, fileLocation);
 
+                /* after move file upload file data */
+                FileUploadInfo fileUploadInfo = new FileUploadInfo();
+                fileUploadInfo.setCaId(caId);
+                fileUploadInfo.setPrId(prId);
+                fileUploadInfo.setFileName(filePath);
+                fileUploadInfo.setFileType(fileType[i]);
+                fileUploadInfo.setFileSize(file.getSize());
+
+                if ("ECG".equals(fileType[i]) || "GSR".equals(fileType[i])) {
+                    measureFileService.setFileInfo(fileUploadInfo);
+                    measureFileService.doParse();
+                }
+                else if ("MODEL".equals(fileType[i])) {
+                    modelFileService.setFileInfo(fileUploadInfo);
+                    modelFileService.doParse();
+                }
+                else if ("FILTER".equals(fileType[i])) {
+                    filterFileService.setFileInfo(fileUploadInfo);
+                    filterFileService.doParse();
+                }
+            }
             i++;
-
         }
 
         result.put("caId", caId);

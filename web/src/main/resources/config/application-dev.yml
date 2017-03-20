@@ -15,11 +15,11 @@ spring:
         active: dev
     datasource:
         dataSourceClassName: org.gjt.mm.mysql.Driver
-        url: jdbc:mysql://127.0.0.1:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
-        databaseName: wicrowd_db
-        serverName: wicrowd_db
-        username: wicrowd_cms
-        password: wicrowd2016!@#$
+        url: jdbc:mysql://127.0.0.1:3306/traffic?useUnicode=true&characterEncoding=utf-8
+        databaseName: traffic
+        serverName: traffic
+        username: map_user
+        password: map_user
         validationQuery: SELECT 1
         testOnBorrow: true
     jpa:

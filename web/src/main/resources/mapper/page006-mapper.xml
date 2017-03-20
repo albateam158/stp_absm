@@ -21,6 +21,11 @@
         <result property="regDate" column="reg_date"/>
         <result property="updateDate" column="update_date"/>
         <result property="deleteDate" column="delete_date"/>
+        <result property="caseNm" column="case_nm" />
+        <result property="name" column="name" />
+        <result property="chartId" column="chart_id" />
+        <result property="chartData" column="chart_data" />
+        <result property="pNo" column="p_no" />
     </resultMap>
 
     <resultMap id="ModelMap" type="com.stp.absm.model.AbsmModel">
@@ -134,4 +139,28 @@
         <include refid="selectMeasureSql"></include>
     </select>
 
+    <select id="selectResultData" parameterType="java.util.Map" resultMap="FilterMap">
+
+        select
+                a.ca_id
+                ,a.case_nm
+                ,b.pr_id
+                ,b.p_no
+                ,b.name
+                ,c.fi_tm
+                ,c.mean_rri
+                ,c.std_rri
+                ,c.mean_hrv
+                ,c.std_hrv
+                ,c.rmssdd
+                ,c.pnn50
+                ,c.lfhf
+                ,c.scl
+          from absm_case a, absm_private b,  absm_filter c
+         where a.ca_id = #{caId}
+           and a.ca_id = b.ca_id
+           and a.ca_id = c.ca_id
+           and b.p_no = #{pNo}
+           and b.pr_id = c.pr_id
+    </select>
 </mapper>

@@ -16,12 +16,13 @@ spring:
     datasource:
         master:
             dataSourceClassName: org.gjt.mm.mysql.Driver
-            url: jdbc:mysql://127.0.0.1:3306/absm?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            url: jdbc:mysql://127.0.0.1:3306/traffic?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            #url: jdbc:mysql://127.0.0.1:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
             #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            databaseName: absm
-            serverName: kasset6
-            username: root
-            password: qkrtkd!23
+            databaseName: traffic
+            serverName: localDB
+            username: map_user
+            password: map_user
             #password: wicrowd2016!@#$
             validationQuery: SELECT 1
             testOnBorrow: true
@@ -75,13 +76,14 @@ pdf:
     zipmakerUrl: http://52.79.135.24:8080/add
 
 multipart:
-    maxFileSize: 10Mb
-    maxRequestSize: 30Mb
+    maxFileSize: 200Mb
+    maxRequestSize: 300Mb
 
 develop: true
 
 upload:
-    fileLocation: /
+    fileLocation: E:\MyProject\traffic\upload
+    videoUrl: http://localhost:8080/video/
 
 logging:
     config: classpath:logback.xml

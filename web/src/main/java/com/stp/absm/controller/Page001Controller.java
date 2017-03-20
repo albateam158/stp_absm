@@ -164,22 +164,25 @@ public class Page001Controller extends RootController {
 
         while (itr.hasNext()) {
             file = itr.next();
-            filePath = CommonUtil.fileTransferTo(file, fileLocation);
 
-            /* after move file upload file data */
-            FileUploadInfo fileUploadInfo = new FileUploadInfo();
-            fileUploadInfo.setCaId(caId);
-            fileUploadInfo.setFileName(filePath);
-            fileUploadInfo.setFileType(fileType[i]);
-            fileUploadInfo.setFileSize(file.getSize());
+            if (file != null && !"".equals(file.getOriginalFilename())) {
 
-            if ("PRIVATE".equals(fileType[i])) {
-                privateFileService.setFileInfo(fileUploadInfo);
-                privateFileService.doParse();
-            }
-            else if ("SURVEY".equals(fileType[i])) {
-                surveyFileService.setFileInfo(fileUploadInfo);
-                surveyFileService.doParse();
+                filePath = CommonUtil.fileTransferTo(file, fileLocation);
+
+                /* after move file upload file data */
+                FileUploadInfo fileUploadInfo = new FileUploadInfo();
+                fileUploadInfo.setCaId(caId);
+                fileUploadInfo.setFileName(filePath);
+                fileUploadInfo.setFileType(fileType[i]);
+                fileUploadInfo.setFileSize(file.getSize());
+
+                if ("PRIVATE".equals(fileType[i])) {
+                    privateFileService.setFileInfo(fileUploadInfo);
+                    privateFileService.doParse();
+                } else if ("SURVEY".equals(fileType[i])) {
+                    surveyFileService.setFileInfo(fileUploadInfo);
+                    surveyFileService.doParse();
+                }
             }
 
             i++;

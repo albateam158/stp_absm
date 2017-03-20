@@ -1,13 +1,12 @@
 package com.stp.absm.mybatis.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import com.stp.absm.model.AbsmFilter;
 import com.stp.absm.model.AbsmMeasure;
 import com.stp.absm.model.AbsmModel;
-import com.stp.absm.model.AbsmSurvey;
 import com.stp.absm.repository.support.Master;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 결과보기 화면
@@ -25,5 +24,5 @@ public interface Page006Mapper {
 
     List<AbsmMeasure> selectMeasures(Map<String, Object> params);
 
-
+    List<AbsmFilter> selectResultData(Map<String, Object> params);
 }

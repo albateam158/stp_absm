@@ -89,7 +89,7 @@ public class Page005Controller extends RootController {
             AbsmSurvey absmSurvey = (AbsmSurvey)boards.get(i);
             JSONObject obj = new JSONObject();
 
-            obj.put( "ID"         , absmSurvey.getPrId());
+            obj.put( "참가번호"         , absmSurvey.getPrId());
             obj.put( "이름"       , absmSurvey.getName());
             obj.put( "나이"       , absmSurvey.getAge());
             obj.put( "성별"       , absmSurvey.getSex());

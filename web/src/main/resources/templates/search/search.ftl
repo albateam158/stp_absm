@@ -11,6 +11,7 @@
                 <form id="SearchForm">
                     <label for="caId" class="wd80">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80 mb10">
+                        <option value="">선택하세요</option>
                     </select>
                     <br />
                     <label for="name" class="wd80">이름</label>
@@ -53,7 +54,7 @@
             data: clients,
 
             fields: [
-                { name: "ID", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "text", width: 100 , align: "center"},
                 { name: "이름", type: "text", width: 100 , align: "center"},
                 { name: "나이", type: "text", width: 100 , align: "center"},
                 { name: "성별", type: "text",  width: 100 , align: "center"},
@@ -66,6 +67,7 @@
                 { name: "설문조사7", type: "number", width: 100 , align: "center"},
                 { name: "설문조사8", type: "number", width: 100 , align: "center"}
             ]
+
         });
     </script>
 	</@layout.put>

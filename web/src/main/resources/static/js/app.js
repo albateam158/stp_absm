@@ -2,6 +2,7 @@
  * Created by thomas on 2017-03-15.
  */
 
+var $window = $(window);
 
 /* 개인특성 정보 업로드 처리 */
 function savePrivate() {
@@ -336,9 +337,9 @@ function getAbsmInfo() {
 
             var gridData = data.boards;
 
-            var clients = [
+            /*var clients = [
                 { "ID" : "458", "이름": "한후자", "나이": "77세", "성별": "여", "설문조사1": "4", "설문조사2":"3", "설문조사3":"1","설문조사4":"1","설문조사5":"5","설문조사6":"5","설문조사7":"2","설문조사8":"4"}
-            ];
+            ];*/
 
             $("#jsGrid").jsGrid({
                 width: "100%",
@@ -349,10 +350,10 @@ function getAbsmInfo() {
                 sorting: true,
                 paging: true,
 
-                data: clients, //gridData.rows,
+                data: gridData.rows,
 
                 fields: [
-                    { name: "ID", type: "text", width: 100 , align: "center"},
+                    { name: "참가번호", type: "text", width: 100 , align: "center"},
                     { name: "이름", type: "text", width: 100 , align: "center"},
                     { name: "나이", type: "text", width: 100 , align: "center"},
                     { name: "성별", type: "text",  width: 100 , align: "center"},
@@ -364,7 +365,15 @@ function getAbsmInfo() {
                     { name: "설문조사6", type: "number", width: 100 , align: "center"},
                     { name: "설문조사7", type: "number", width: 100 , align: "center"},
                     { name: "설문조사8", type: "number", width: 100 , align: "center"},
-                ]
+                ],
+                rowDoubleClick: function(args) {
+                    console.log("args " + args);
+                    var caId = 87;
+                    var pNo = args.item.참가번호;
+
+                    var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                    $(location).attr('href',url);
+                },
             });
 
         },
@@ -375,9 +384,110 @@ function getAbsmInfo() {
 
 }
 
+/* 결과 화면의 데이터 조회 */
+function getChartInfo() {
+
+    var caId    = 87;
+    var pNo     = 1;
+    var chartId = $('#filter option:selected').val();
+
+    //var chartId = 1;
+    $.ajax({
+        type : "GET",
+        url : "/result/chart",
+        data: {
+            "caId"   : caId,
+            "pNo"    : pNo,
+            "chartId": chartId
+        },
+        success: function(data) {
+
+            var chartInfo = data.chartInfo;
+
+            var filterChart = []
+
+            $.each(chartInfo, function(index, item) {
+                if (chartId == 1)
+                    filterChart.push([index, item.meanRri]);
+                else if (chartId == 2)
+                    filterChart.push([index, item.stdRri]);
+                else if (chartId == 3)
+                    filterChart.push([index, item.meanHrv]);
+                else if (chartId == 4)
+                    filterChart.push([index, item.stdHrv]);
+                else if (chartId == 5)
+                    filterChart.push([index, item.rmssdd]);
+                else if (chartId == 6)
+                    filterChart.push([index, item.pnn50]);
+                else if (chartId == 7)
+                    filterChart.push([index, item.lfhf]);
+                else if (chartId == 8)
+                    filterChart.push([index, item.scl]);
+            });
+
+            var line_data1 = {
+                data: filterChart,
+                color: "#3c8dbc"
+            };
+
+            $.plot("#line-chart", [line_data1], {
+                grid: {
+                    hoverable: true,
+                    borderColor: "#f3f3f3",
+                    borderWidth: 1,
+                    tickColor: "#f3f3f3"
+                },
+                series: {
+                    shadowSize: 0,
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                lines: {
+                    fill: false,
+                    color: ["#3c8dbc", "#f56954"]
+                },
+                yaxis: {
+                    show: true,
+                },
+                xaxis: {
+                    show: true
+                }
+            });
+            //Initialize tooltip on hover
+            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+                position: "absolute",
+                display: "none",
+                opacity: 0.8
+            }).appendTo("body");
+
+            $("#line-chart").bind("plothover", function (event, pos, item) {
+
+                if (item) {
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
+
+                    $("#line-chart-tooltip").html(item.series.label + " of " + x + " = " + y)
+                        .css({top: item.pageY + 5, left: item.pageX + 5})
+                        .fadeIn(200);
+                } else {
+                    $("#line-chart-tooltip").hide();
+                }
+            });
+
+        },
+        error: function(request, status, error) {
+            alert("결과 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
+        }
+    });
+
+}
+
 // 케이스 목록 조회
 function getCaseList(formName) {
-
 
     $.ajax({
         type : "GET",

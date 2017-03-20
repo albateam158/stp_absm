@@ -1,5 +1,4 @@
 <@layout.extends name="layout/base.ftl">
-
     <@layout.put block="head">
 
     </@layout.put>
@@ -8,20 +7,26 @@
         <div class="pd7">
             <h2 class="result">결과 보기</h2><!-- result, input, search 클래스 명에 따라 왼쪽 아이콘이 달라집니다. -->
             <div class="bg_wh">
-                <form action="">
+                <form id="ResultForm">
                     <label for="caId" class="wd55">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80">
-                        <option value="">1</option>
-                        <option value="">2</option>
+                        <option value="">선택하세요</option>
                     </select>
                     <label for="name" class="wd35">이름</label><input type="text" id="name" name="name" class="box_bd wd80" />
                     <label for="filter">측정자료</label>
                     <select name="filter" id="filter"  class="box_bd wd80">
-                        <option value="">1</option>
-                        <option value="">2</option>
+                        <option value="">선택하세요</option>
+                        <option value="1">meanRR(s)</option>
+                        <option value="2">SDNN(s)</option>
+                        <option value="3">RMSD(s)</option>
+                        <option value="4">pnn50(%)</option>
+                        <option value="5">meanHR</option>
+                        <option value="6">stdHR</option>
+                        <option value="7">LF/HF</option>
+                        <option value="8">n-meanSCL</option>
                     </select>
                     <div class="btns fr">
-                        <button type="button" id="search" name="search" class="sch_btn fl">조회</button><!-- fl 클래스명은 왼쪽으로 붙는 클래스명입니다. -->
+                        <button type="button" id="search" name="search" class="sch_btn fl" onclick="getChartInfo();">조회</button><!-- fl 클래스명은 왼쪽으로 붙는 클래스명입니다. -->
                         <button type="button" id="isShow" name="isShow" class="graph_btn fl">그래프2 보기</button>
                     </div>
                 </form>
@@ -81,6 +86,13 @@
 
     <@layout.put block="script">
     <script type="text/javascript">
+
+        $(document).ready(function() {
+            //getCaseList("SearchForm");
+            /* 넘어온 파라미터 정보로 바로 조회 */
+
+        });
+
         $(function () {
             /*
              * Flot Interactive Chart
@@ -181,7 +193,7 @@
             //LINE randomly generated data
 
             var sin = [], cos = [];
-            for (var i = 0; i < 14; i += 0.5) {
+            for (var i = 0; i < 24; i += 0.5) {
                 sin.push([i, Math.sin(i)]);
                 cos.push([i, Math.cos(i)]);
             }
@@ -226,6 +238,7 @@
                 display: "none",
                 opacity: 0.8
             }).appendTo("body");
+
             $("#line-chart").bind("plothover", function (event, pos, item) {
 
                 if (item) {
@@ -240,6 +253,8 @@
                 }
 
             });
+        });
+
         /* END LINE CHART */
     </script>
     </@layout.put>

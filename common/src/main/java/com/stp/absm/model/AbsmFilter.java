@@ -30,7 +30,16 @@ public class AbsmFilter implements Serializable {
     @Transient
     private String dt;
     @Transient
+    private String name;
+    @Transient
     private String caseNm;
+    @Transient
+    private int pNo;
+    @Transient
+    private String chartId;
+    @Transient
+    private String chartData;
+
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

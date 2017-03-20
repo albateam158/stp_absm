@@ -1,16 +1,14 @@
 package com.stp.absm.controller;
 
+import com.stp.absm.model.AbsmFilter;
+import com.stp.absm.model.AbsmModel;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.stp.absm.model.*;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 결과보기 화면
@@ -30,15 +28,53 @@ public class Page006Controller extends RootController {
             HttpServletRequest request,
             ModelAndView mav
     ) {
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        //List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
+        //List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
 
-        mav.addObject("cases", cases);
-        mav.addObject("pris", pris);
+        /*Map<String , Object> params = new HashMap<String, Object>();
+        params.put("caId", caId);
+        params.put("pNo", pNo);
+        params.put("chartId", 1);
 
+        List<AbsmFilter> filters = page006Mapper.selectResultData(params);*/
+
+        //mav.addObject("cases", cases);
+        //mav.addObject("pris", pris);
+
+        //mav.addObject("chartData", filters);
+        //mav.addObject("bioChartData", filters);
+        //mav.addObject("privateData");
+        //mav.addObject("measureResult");
         mav.setViewName("result/result");
 
         return mav;
+    }
+
+    @RequestMapping(value = "/result/chart", method = RequestMethod.GET)
+    public @ResponseBody Map<String, Object> chartInfoAjax(
+            @RequestParam(value = "caId", required = false) String caId,
+            @RequestParam(value = "pNo", required = false) String pNo,
+            @RequestParam(value = "chartId", required = false) String chartId,
+            HttpServletRequest request
+    ) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        params.put("caId"   , caId);
+        params.put("pNo"    , pNo);
+        params.put("chartId", chartId);
+
+        List<AbsmFilter> chartInfo = page006Mapper.selectResultData(params);
+        //List<AbsmFilter> bioChartData = page006Mapper.selectResultData(params);
+        //List<AbsmFilter> privateData = page006Mapper.selectResultData(params);
+        //List<AbsmFilter> measureResult = page006Mapper.selectResultData(params);
+
+        result.put("chartInfo", chartInfo);
+        //result.put("bioChartData", bioChartData);
+        //result.put("privateData", privateData);
+        //result.put("measureResult", measureResult);
+
+        return result;
     }
 
     /**
