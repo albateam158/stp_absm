@@ -1,7 +1,6 @@
 package com.stp.absm.controller;
 
-import com.stp.absm.model.AbsmFilter;
-import com.stp.absm.model.AbsmModel;
+import com.stp.absm.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,8 +27,8 @@ public class Page006Controller extends RootController {
             HttpServletRequest request,
             ModelAndView mav
     ) {
-        //List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        //List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
+        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
 
         /*Map<String , Object> params = new HashMap<String, Object>();
         params.put("caId", caId);
@@ -38,8 +37,8 @@ public class Page006Controller extends RootController {
 
         List<AbsmFilter> filters = page006Mapper.selectResultData(params);*/
 
-        //mav.addObject("cases", cases);
-        //mav.addObject("pris", pris);
+        mav.addObject("cases", cases);
+        mav.addObject("pris", pris);
 
         //mav.addObject("chartData", filters);
         //mav.addObject("bioChartData", filters);
@@ -64,15 +63,13 @@ public class Page006Controller extends RootController {
         params.put("pNo"    , pNo);
         params.put("chartId", chartId);
 
-        List<AbsmFilter> chartInfo = page006Mapper.selectResultData(params);
-        //List<AbsmFilter> bioChartData = page006Mapper.selectResultData(params);
-        //List<AbsmFilter> privateData = page006Mapper.selectResultData(params);
-        //List<AbsmFilter> measureResult = page006Mapper.selectResultData(params);
+        // Filter Data
+        List<AbsmFilter>   chartInfo    = page006Mapper.selectResultData(params);
+        // Video Data
+        AbsmFile           absmFile     = page006Mapper.selectVideoUrl(params);
 
         result.put("chartInfo", chartInfo);
-        //result.put("bioChartData", bioChartData);
-        //result.put("privateData", privateData);
-        //result.put("measureResult", measureResult);
+        result.put("videoInfo", absmFile);
 
         return result;
     }

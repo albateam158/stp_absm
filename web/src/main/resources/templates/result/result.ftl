@@ -52,8 +52,8 @@
                 <div class="row_box">
                     <div class="fl video_box">
                         <h3>동영상</h3>
-                        <video width="100%" height="280px" controls>
-                            <source src="/video/sample.mp4" type="video/mp4">
+                        <video id="MyVideo" width="100%" height="280px" controls>
+                            <source src="" type="video/mp4">
                         </video>
                     </div>
                     <div class="fl result_box">
@@ -87,11 +87,13 @@
     <@layout.put block="script">
     <script type="text/javascript">
 
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             //getCaseList("SearchForm");
-            /* 넘어온 파라미터 정보로 바로 조회 */
-
+            /!* 넘어온 파라미터 정보로 바로 조회 *!/
+            var vid = document.getElementById("MyVideo");
+            vid.play();
         });
+*/
 
         $(function () {
             /*
@@ -191,23 +193,15 @@
              * ----------
              */
             //LINE randomly generated data
-
-            var sin = [], cos = [];
-            for (var i = 0; i < 24; i += 0.5) {
-                sin.push([i, Math.sin(i)]);
-                cos.push([i, Math.cos(i)]);
-            }
+            var temp = [];
             var line_data1 = {
-                data: sin,
+                data: temp,
                 color: "#3c8dbc"
             };
-            var line_data2 = {
-                data: cos,
-                color: "#00c0ef"
-            };
-            $.plot("#line-chart", [line_data1, line_data2], {
+            $.plot("#line-chart", [line_data1], {
                 grid: {
                     hoverable: true,
+                    clickable: true,
                     borderColor: "#f3f3f3",
                     borderWidth: 1,
                     tickColor: "#f3f3f3"

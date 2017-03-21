@@ -54,6 +54,7 @@
             data: clients,
 
             fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
                 { name: "참가번호", type: "text", width: 100 , align: "center"},
                 { name: "이름", type: "text", width: 100 , align: "center"},
                 { name: "나이", type: "text", width: 100 , align: "center"},

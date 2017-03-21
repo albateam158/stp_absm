@@ -3,6 +3,7 @@
  */
 
 var $window = $(window);
+var isSearch = false;
 
 /* 개인특성 정보 업로드 처리 */
 function savePrivate() {
@@ -337,10 +338,6 @@ function getAbsmInfo() {
 
             var gridData = data.boards;
 
-            /*var clients = [
-                { "ID" : "458", "이름": "한후자", "나이": "77세", "성별": "여", "설문조사1": "4", "설문조사2":"3", "설문조사3":"1","설문조사4":"1","설문조사5":"5","설문조사6":"5","설문조사7":"2","설문조사8":"4"}
-            ];*/
-
             $("#jsGrid").jsGrid({
                 width: "100%",
                 height: "400px",
@@ -353,6 +350,7 @@ function getAbsmInfo() {
                 data: gridData.rows,
 
                 fields: [
+                    { name: "caId", type: "text", width: 100 , visible: false},
                     { name: "참가번호", type: "text", width: 100 , align: "center"},
                     { name: "이름", type: "text", width: 100 , align: "center"},
                     { name: "나이", type: "text", width: 100 , align: "center"},
@@ -367,9 +365,9 @@ function getAbsmInfo() {
                     { name: "설문조사8", type: "number", width: 100 , align: "center"},
                 ],
                 rowDoubleClick: function(args) {
-                    console.log("args " + args);
-                    var caId = 87;
-                    var pNo = args.item.참가번호;
+                    //console.log("args " + args);
+                    var caId  = args.item.caId;
+                    var pNo  = args.item.참가번호;
 
                     var url = "/result/result?caId="+caId+"&pNo="+pNo;
                     $(location).attr('href',url);
@@ -387,11 +385,13 @@ function getAbsmInfo() {
 /* 결과 화면의 데이터 조회 */
 function getChartInfo() {
 
+    // 결과 조회를 위한 param 세팅
+    // TODO : 조회 화면에서 넘겨받은 데이터로 설정
     var caId    = 87;
     var pNo     = 1;
     var chartId = $('#filter option:selected').val();
+    var vid = document.getElementById("MyVideo");
 
-    //var chartId = 1;
     $.ajax({
         type : "GET",
         url : "/result/chart",
@@ -404,7 +404,7 @@ function getChartInfo() {
 
             var chartInfo = data.chartInfo;
 
-            var filterChart = []
+            var filterChart = [];
 
             $.each(chartInfo, function(index, item) {
                 if (chartId == 1)
@@ -425,6 +425,18 @@ function getChartInfo() {
                     filterChart.push([index, item.scl]);
             });
 
+            // 한번 조회가 완료되면 그 후에는 동영상으로 로드하지 않음
+            if (isSearch == false) {
+                isSearch = true;
+
+                var videoInfo = data.videoInfo;
+
+                /* video url load */
+                vid.src = videoInfo.url;
+                vid.load();
+                vid.play();
+            }
+
             var line_data1 = {
                 data: filterChart,
                 color: "#3c8dbc"
@@ -433,6 +445,7 @@ function getChartInfo() {
             $.plot("#line-chart", [line_data1], {
                 grid: {
                     hoverable: true,
+                    clickable: true,
                     borderColor: "#f3f3f3",
                     borderWidth: 1,
                     tickColor: "#f3f3f3"
@@ -457,25 +470,15 @@ function getChartInfo() {
                     show: true
                 }
             });
-            //Initialize tooltip on hover
-            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
-                position: "absolute",
-                display: "none",
-                opacity: 0.8
-            }).appendTo("body");
-
-            $("#line-chart").bind("plothover", function (event, pos, item) {
+            $("#line-chart").bind("plotclick", function (event, pos, item) {
 
                 if (item) {
-                    var x = item.datapoint[0].toFixed(2),
-                        y = item.datapoint[1].toFixed(2);
-
-                    $("#line-chart-tooltip").html(item.series.label + " of " + x + " = " + y)
-                        .css({top: item.pageY + 5, left: item.pageX + 5})
-                        .fadeIn(200);
+                    vid.currentTime = (item.dataIndex) * 60;
+                    vid.play();
                 } else {
                     $("#line-chart-tooltip").hide();
                 }
+
             });
 
         },
