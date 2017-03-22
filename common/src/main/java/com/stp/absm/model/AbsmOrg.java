@@ -1,24 +1,24 @@
 package com.stp.absm.model;
 
-import lombok.Data;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.*;
+
+import lombok.Data;
+
 @Data
 @Entity
-@Table(name = "absm_filter")
-public class AbsmFilter implements Serializable {
+@Table(name = "absm_org")
+public class AbsmOrg implements Serializable {
 
     private static final long serialVersionUID = -2565451500618009275L;
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer fiId;
+    private Integer orId;
     private Integer caId;
     private Integer prId;
-    private String seCd;
-    private String valCd;
+    private String fiTm;
     private Double meanRri;
     private Double stdRri;
     private Double meanHrv;
@@ -27,7 +27,6 @@ public class AbsmFilter implements Serializable {
     private Double pnn50;
     private Double lfhf;
     private Double scl;
-    private Double surAvg;
     @Transient
     private String dt;
     @Transient
