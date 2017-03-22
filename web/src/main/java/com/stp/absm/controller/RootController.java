@@ -108,6 +108,9 @@ public class RootController {
     protected  AbsmFileRepository absmFileRepository;
 
     @Autowired
+    protected  AbsmOrgRepository absmOrgRepository;
+
+    @Autowired
     protected  AbsmFilterRepository absmFilterRepository;
 
     @Autowired
