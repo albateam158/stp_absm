@@ -42,7 +42,6 @@ public class Page002Controller extends RootController {
     protected ModelFileService modelFileService;
 
     @Autowired
-    //protected FilterFileService filterFileService;
     protected OrgFileService orgFileService;
 
     /**

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import java.io.IOException;
 /**
  * Created by thomas on 2017-03-22.
  */
+@Service
 public class OrgFileService implements DataFileService {
     public static Logger logger = Logger.getLogger(OrgFileService.class);
 
