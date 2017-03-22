@@ -44,6 +44,10 @@ public class Page002Controller extends RootController {
     @Autowired
     protected OrgFileService orgFileService;
 
+    @Autowired
+    protected FilterFileService filterFileService;
+
+
     /**
      * 조회화면
      * @param request
@@ -219,9 +223,9 @@ public class Page002Controller extends RootController {
                     measureFileService.setFileInfo(fileUploadInfo);
                     measureFileService.doParse();
                 }
-                else if ("MODEL".equals(fileType[i])) {
-                    modelFileService.setFileInfo(fileUploadInfo);
-                    modelFileService.doParse();
+                else if ("FILTER".equals(fileType[i])) {
+                    filterFileService.setFileInfo(fileUploadInfo);
+                    filterFileService.doParse();
                 }
                 else if ("ORG".equals(fileType[i])) {
                     orgFileService.setFileInfo(fileUploadInfo);

@@ -44,11 +44,11 @@
                     <br />
 
                     <label for="" class="wd100">SPSS 파일명</label>
-                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="ModelfindFile">
+                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="filterfindFile">
                     <label for="file4" id="" class="file_label">파일찾기</label>
-                    <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ModelfindFile').value=this.value" onkeydown="return false" >
-                    <input type="hidden" name="fileType" value="MODEL" />
-
+                    <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >
+                    <!--<input type="hidden" name="fileType" value="MODEL" />-->
+                    <input type="hidden" name="fileType" value="FILTER" />
                     <button type="button" id="" name="save" class="input_btn fr" onclick="saveBiosignal();">입력</button>
 
                 </form>

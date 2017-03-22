@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -74,7 +73,7 @@ public class CommonUtil {
 
             File saveFile = new File(filePath);
 
-            if (saveFile.exists()) {
+            /*if (saveFile.exists()) {
                 saveFile.delete();
             }
 
@@ -84,7 +83,7 @@ public class CommonUtil {
             }
             catch (IOException ie) {
                 ie.printStackTrace();
-            }
+            }*/
 
         }
 
