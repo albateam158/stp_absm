@@ -1,14 +1,13 @@
 package com.stp.absm.common;
 
 import com.stp.absm.model.AbsmFile;
-import com.stp.absm.model.AbsmFilter;
+import com.stp.absm.model.AbsmOrg;
 import com.stp.absm.repository.AbsmFileRepository;
-import com.stp.absm.repository.AbsmFilterRepository;
+import com.stp.absm.repository.AbsmOrgRepository;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,22 +15,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Created by thomas on 2017-03-13.
+ * Created by thomas on 2017-03-22.
  */
-@Service
-public class FilterFileService implements DataFileService{
-
-    public static Logger logger = Logger.getLogger(FilterFileService.class);
+public class OrgFileService implements DataFileService {
+    public static Logger logger = Logger.getLogger(OrgFileService.class);
 
     FileUploadInfo fileUploadInfo = new FileUploadInfo();
 
     @Autowired
-    protected AbsmFilterRepository absmFilterRepository;
+    protected AbsmOrgRepository absmOrgRepository;
 
     @Autowired
     protected AbsmFileRepository absmFileRepository;
 
-    public FilterFileService() {}
+    public OrgFileService() {}
 
     @Override
     public void setFileInfo(FileUploadInfo fileUploadInfo) {
@@ -61,54 +58,54 @@ public class FilterFileService implements DataFileService{
 
                 if (row.getCell(0) != null) {
 
-                    AbsmFilter absmFilter = new AbsmFilter();
-                    absmFilter.setCaId(caId);
-                    absmFilter.setPrId(prId);
-                    //absmFilter.setFiTm(CommonUtil.removeDot(row.getCell(0).toString()));
+                    AbsmOrg absmOrg = new AbsmOrg();
+                    absmOrg.setCaId(caId);
+                    absmOrg.setPrId(prId);
+                    absmOrg.setFiTm(CommonUtil.removeDot(row.getCell(0).toString()));
 
                     if (row.getCell(1) != null)
-                        absmFilter.setMeanRri(Double.valueOf(row.getCell(1).toString()));
+                        absmOrg.setMeanRri(Double.valueOf(row.getCell(1).toString()));
                     else
-                        absmFilter.setMeanRri(0.0);
+                        absmOrg.setMeanRri(0.0);
 
                     if (row.getCell(2) != null)
-                        absmFilter.setStdRri(Double.valueOf(row.getCell(2).toString()));
+                        absmOrg.setStdRri(Double.valueOf(row.getCell(2).toString()));
                     else
-                        absmFilter.setStdRri(0.0);
+                        absmOrg.setStdRri(0.0);
 
                     if (row.getCell(3) != null)
-                        absmFilter.setRmssdd(Double.valueOf(row.getCell(3).toString()));
+                        absmOrg.setRmssdd(Double.valueOf(row.getCell(3).toString()));
                     else
-                        absmFilter.setRmssdd(0.0);
+                        absmOrg.setRmssdd(0.0);
 
                     if (row.getCell(4) != null)
-                        absmFilter.setPnn50(Double.valueOf(row.getCell(4).toString()));
+                        absmOrg.setPnn50(Double.valueOf(row.getCell(4).toString()));
                     else
-                        absmFilter.setPnn50(0.0);
+                        absmOrg.setPnn50(0.0);
 
                     if (row.getCell(5) != null)
-                        absmFilter.setMeanHrv(Double.valueOf(row.getCell(5).toString()));
+                        absmOrg.setMeanHrv(Double.valueOf(row.getCell(5).toString()));
                     else
-                        absmFilter.setMeanHrv(0.0);
+                        absmOrg.setMeanHrv(0.0);
 
                     if (row.getCell(6) != null)
-                        absmFilter.setStdHrv(Double.valueOf(row.getCell(6).toString()));
+                        absmOrg.setStdHrv(Double.valueOf(row.getCell(6).toString()));
                     else
-                        absmFilter.setStdHrv(0.0);
+                        absmOrg.setStdHrv(0.0);
 
                     if (row.getCell(7) != null)
-                        absmFilter.setLfhf(Double.valueOf(row.getCell(7).toString()));
+                        absmOrg.setLfhf(Double.valueOf(row.getCell(7).toString()));
                     else
-                        absmFilter.setLfhf(0.0);
+                        absmOrg.setLfhf(0.0);
 
                     if (row.getCell(10) != null)
-                        absmFilter.setScl(Double.valueOf(row.getCell(10).toString()));
+                        absmOrg.setScl(Double.valueOf(row.getCell(10).toString()));
                     else
-                        absmFilter.setScl(0.0);
+                        absmOrg.setScl(0.0);
 
-                    logger.info(absmFilter.toString());
+                    logger.info(absmOrg.toString());
 
-                    absmFilterRepository.save(absmFilter);
+                    absmOrgRepository.save(absmOrg);
 
                 }
             }

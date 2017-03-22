@@ -37,10 +37,10 @@
                     <br />
 
                     <label for="" class="wd100">분단위 파일명</label>
-                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="filterfindFile">
+                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="orgfindFile">
                     <label for="file3" id="" class="file_label">파일찾기</label>
-                    <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >
-                    <input type="hidden" name="fileType" value="FILTER" />
+                    <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('orgfindFile').value=this.value" onkeydown="return false" >
+                    <input type="hidden" name="fileType" value="ORG" />
                     <br />
 
                     <label for="" class="wd100">SPSS 파일명</label>

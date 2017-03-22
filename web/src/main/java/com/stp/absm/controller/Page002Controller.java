@@ -42,7 +42,8 @@ public class Page002Controller extends RootController {
     protected ModelFileService modelFileService;
 
     @Autowired
-    protected FilterFileService filterFileService;
+    //protected FilterFileService filterFileService;
+    protected OrgFileService orgFileService;
 
     /**
      * 조회화면
@@ -223,9 +224,9 @@ public class Page002Controller extends RootController {
                     modelFileService.setFileInfo(fileUploadInfo);
                     modelFileService.doParse();
                 }
-                else if ("FILTER".equals(fileType[i])) {
-                    filterFileService.setFileInfo(fileUploadInfo);
-                    filterFileService.doParse();
+                else if ("ORG".equals(fileType[i])) {
+                    orgFileService.setFileInfo(fileUploadInfo);
+                    orgFileService.doParse();
                 }
             }
             i++;

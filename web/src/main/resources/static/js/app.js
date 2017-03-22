@@ -260,6 +260,7 @@ function saveVideo() {
         processData: false,
         contentType: false,
         cache: false,
+        enctype: "multipart/form-data",
         success: function(data) {
 
             var retCode = data.retCode;
