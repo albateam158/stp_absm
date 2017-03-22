@@ -66,7 +66,7 @@ public class ModelFileService implements DataFileService {
                     AbsmModel absmModel = new AbsmModel();
                     absmModel.setCaId(caId);
                     absmModel.setPrId(prId);
-                    absmModel.setSeCd(seCd);
+//                    absmModel.setSeCd(seCd);
 
                     absmModel.setMeanRri(Double.valueOf(row.getCell(2).toString()));
                     absmModel.setStdRri(Double.valueOf(row.getCell(3).toString()));
@@ -91,6 +91,9 @@ public class ModelFileService implements DataFileService {
 
                 }
             }
+
+
+
 
             // File Table Insert
             AbsmFile absmFile = new AbsmFile();

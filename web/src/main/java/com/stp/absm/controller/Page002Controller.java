@@ -1,9 +1,7 @@
 package com.stp.absm.controller;
 
 import com.stp.absm.common.*;
-import com.stp.absm.model.AbsmCase;
-import com.stp.absm.model.AbsmMeasure;
-import com.stp.absm.model.AbsmPrivate;
+import com.stp.absm.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -226,6 +224,39 @@ public class Page002Controller extends RootController {
                 else if ("FILTER".equals(fileType[i])) {
                     filterFileService.setFileInfo(fileUploadInfo);
                     filterFileService.doParse();
+
+                    AbsmFilter absmFilter = new AbsmFilter();
+                    AbsmModel absmModel = new AbsmModel();
+                    Map<String, Object> map = new HashMap<String, Object>();
+
+                    absmFilter.setCaId(caId);
+                    absmFilter.setPrId(prId);
+                    //평균 필터데이터생성
+                    page002Mapper.createFilterValCd2(absmFilter);
+
+                    //표준편차 필터데이터생성
+                    page002Mapper.createFilterValCd3(absmFilter);
+
+                    //Z표준화 모델데이터생성
+                    page002Mapper.createModel(absmModel);
+
+                    //모형식 모델업데이트
+                    map.put("caId",caId);
+                    map.put("prId",prId);
+                    List<AbsmModel> modelResults = page002Mapper.selectModelResult(map);
+                    for(AbsmModel modelResult : modelResults){
+                        modelResult.setCaId(modelResult.getCaId());
+                        modelResult.setPrId(modelResult.getPrId());
+                        modelResult.setSeCd(modelResult.getSeCd());
+                        modelResult.setMoPre1(modelResult.getMoPre1());
+                        modelResult.setMoPre2(modelResult.getMoPre2());
+                        modelResult.setMoPre3(modelResult.getMoPre3());
+                        modelResult.setMoPre4(modelResult.getMoPre4());
+                        modelResult.setStLevel(modelResult.getStLevel());
+                        absmModelRepository.save(modelResult);
+                    }
+
+
                 }
                 else if ("ORG".equals(fileType[i])) {
                     orgFileService.setFileInfo(fileUploadInfo);

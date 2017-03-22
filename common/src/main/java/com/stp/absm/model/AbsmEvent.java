@@ -17,7 +17,7 @@ public class AbsmEvent implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer evId;
     private Integer caId;
-    private Integer prId;
+    private Integer pNo;
     private String evDt1;
     private String evDt2;
     private String evDt3;

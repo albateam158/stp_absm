@@ -17,7 +17,7 @@ public class AbsmModel implements Serializable {
     private Integer moId;
     private Integer caId;
     private Integer prId;
-    private Integer seCd;
+    private String seCd;
     private Double meanRri;
     private Double stdRri;
     private Double meanHrv;
