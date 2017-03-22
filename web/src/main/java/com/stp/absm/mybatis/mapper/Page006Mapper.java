@@ -1,9 +1,6 @@
 package com.stp.absm.mybatis.mapper;
 
-import com.stp.absm.model.AbsmFile;
-import com.stp.absm.model.AbsmFilter;
-import com.stp.absm.model.AbsmMeasure;
-import com.stp.absm.model.AbsmModel;
+import com.stp.absm.model.*;
 import com.stp.absm.repository.support.Master;
 
 import java.util.List;
@@ -28,4 +25,8 @@ public interface Page006Mapper {
     List<AbsmFilter> selectResultData(Map<String, Object> params);
 
     AbsmFile selectVideoUrl(Map<String, Object> params);
+
+    List<AbsmEvent> selectEvents(Map<String, Object> params);
+
+
 }

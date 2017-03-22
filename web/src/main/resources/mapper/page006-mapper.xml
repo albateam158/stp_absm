@@ -91,6 +91,28 @@
 
     </resultMap>
 
+    <resultMap id="EventMap" type="com.stp.absm.model.AbsmEvent">
+        <id property="evId" column="ev_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="evDt1" column="ev_dt1"/>
+        <result property="evDt2" column="ev_dt2"/>
+        <result property="evDt3" column="ev_dt3"/>
+        <result property="evDt4" column="ev_dt4"/>
+        <result property="evDt5" column="ev_dt5"/>
+        <result property="evDt6" column="ev_dt6"/>
+        <result property="evDt7" column="ev_dt7"/>
+        <result property="evDt8" column="ev_dt8"/>
+        <result property="evDt9" column="ev_dt9"/>
+        <result property="evDt10" column="ev_dt10"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+    </resultMap>
+
     <!--========================================== SELECT ============================================== -->
     <sql id="selectFilterSql">
         select a.*
@@ -208,5 +230,29 @@
            and a.pr_id = b.pr_id
            and b.p_no = #{pNo}
            and a.file_cd = 'VIDEO'
+    </select>
+
+
+    <sql id="selectEventSql">
+        select a.*
+        ,b.dt
+        ,b.case_nm
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_event AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        and c.p_no = #{pNo}
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        order by num desc
+    </sql>
+
+
+
+    <select id="selectEvents" parameterType="map" resultMap="EventMap">
+        <include refid="selectBoardSql"></include>
     </select>
 </mapper>
