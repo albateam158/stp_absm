@@ -118,18 +118,6 @@
 
     <select id="selectBoards" parameterType="map" resultMap="BoardMap">
         <include refid="selectBoardSql"></include>
-        <choose>
-            <when test="pageable != null">
-                <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
-                LIMIT #{pageable.offset}, #{pageable.pageSize}
-            </when>
-            <when test="random != null">
-                ORDER BY RAND()
-            </when>
-            <otherwise>
-                ORDER BY c.me_id DESC
-            </otherwise>
-        </choose>
     </select>
 
     <insert id="createFilterValCd2" parameterType="absmFilter">
@@ -173,7 +161,7 @@
     <insert id="createModel" parameterType="absmModel">
         insert into absm_model(
         ca_id, pr_id, se_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
-        select  a.ca_id, a.pr_id, a.se_cd
+        select  DISTINCT a.ca_id, a.pr_id, a.se_cd
         , (a.mean_rri - b.mean_rri) / c.mean_rri mean_rri
         , (a.std_rri - b.std_rri) / c.std_rri std_rri
         , (a.mean_hrv - b.mean_hrv) / c.mean_hrv mean_hrv
@@ -222,9 +210,53 @@
         from absm_model a
         left outer join absm_mosu b
         on b.mo_cd = '1'
-        where a.pr_id = 3
+        where 1=1
         and a.ca_id = #{caId}
         and a.pr_id = #{prId}
         ) a1
     </select>
+
+
+    <delete id="deleteMeasure" parameterType="map">
+        delete from absm_measure
+        where ca_id = #{caId}
+        and pr_id = #{prId}
+    </delete>
+
+    <delete id="deletePrivate" parameterType="map">
+        delete from absm_private
+        where ca_id = #{caId}
+    </delete>
+    <delete id="deleteSurvey" parameterType="map">
+        delete from absm_survey
+        where ca_id = #{caId}
+    </delete>
+
+    <delete id="deleteSurveyAvg" parameterType="map">
+        delete from absm_survey_avg
+        where ca_id = #{caId}
+    </delete>
+
+    <delete id="deleteEvent" parameterType="map">
+        delete from absm_event
+        where ca_id = #{caId}
+    </delete>
+
+    <delete id="deleteOrg" parameterType="map">
+        delete from absm_org
+        where ca_id = #{caId}
+        and pr_id = #{prId}
+    </delete>
+
+    <delete id="deleteFilter" parameterType="map">
+        delete from absm_filter
+        where ca_id = #{caId}
+        and pr_id = #{prId}
+    </delete>
+
+    <delete id="deleteModel" parameterType="map">
+        delete from absm_model
+        where ca_id = #{caId}
+        and pr_id = #{prId}
+    </delete>
 </mapper>

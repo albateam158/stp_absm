@@ -38,8 +38,8 @@ public class Page005Controller extends RootController {
             HttpServletRequest request,
             ModelAndView mav
     ) {
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
+        List<AbsmPrivate> pris = absmPrivateRepository.findByOrderByPrIdAsc();
 
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);

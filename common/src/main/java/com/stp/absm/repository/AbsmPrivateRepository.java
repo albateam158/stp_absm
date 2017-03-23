@@ -9,7 +9,7 @@ import java.util.List;
 
 @Master
 public interface AbsmPrivateRepository extends JpaRepository<AbsmPrivate, Integer> {
-    List<AbsmPrivate> findByDeleteDateIsNullOrderByPrIdAsc();
-    List<AbsmPrivate> findByCaIdAndDeleteDateIsNullOrderByPrIdAsc(String caId);
+    List<AbsmPrivate> findByOrderByPrIdAsc();
+    List<AbsmPrivate> findByCaIdOrderByPrIdAsc(Integer caId);
 
 }

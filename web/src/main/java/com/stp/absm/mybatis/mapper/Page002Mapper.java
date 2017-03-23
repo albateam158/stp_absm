@@ -28,4 +28,22 @@ public interface Page002Mapper {
     Integer createModel(AbsmModel absmModel);
 
     List<AbsmModel> selectModelResult(Map<String, Object> params);
+
+
+    Integer deletePrivate(Map<String, Object> params);
+
+    Integer deleteMeasure(Map<String, Object> params);
+
+    Integer deleteSurvey(Map<String, Object> params);
+
+    Integer deleteSurveyAvg(Map<String, Object> params);
+
+
+    Integer deleteOrg(Map<String, Object> params);
+
+    Integer deleteEvent(Map<String, Object> params);
+
+    Integer deleteFilter(Map<String, Object> params);
+
+    Integer deleteModel(Map<String, Object> params);
 }

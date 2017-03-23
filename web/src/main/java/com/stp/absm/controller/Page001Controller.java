@@ -180,10 +180,23 @@ public class Page001Controller extends RootController {
                 fileUploadInfo.setFileType(fileType[i]);
                 fileUploadInfo.setFileSize(file.getSize());
 
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("caId",caId);
+
                 if ("PRIVATE".equals(fileType[i])) {
+
+                    //개인 데이터삭제
+                    page002Mapper.deletePrivate(param);
+
                     privateFileService.setFileInfo(fileUploadInfo);
                     privateFileService.doParse();
                 } else if ("SURVEY".equals(fileType[i])) {
+
+                    //설문 데이터삭제
+                    page002Mapper.deleteSurvey(param);
+                    //설문 데이터삭제
+                    page002Mapper.deleteSurveyAvg(param);
+
                     surveyFileService.setFileInfo(fileUploadInfo);
                     surveyFileService.doParse();
                 }

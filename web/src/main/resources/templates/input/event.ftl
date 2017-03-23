@@ -53,16 +53,16 @@
 
             fields: [
                 { name: "이름", type: "text", width: 100 , align: "center"},
-                { name: "이벤트1", type: "number", width: 100 , align: "center"},
-                { name: "이벤트2", type: "number",  width: 100 , align: "center"},
-                { name: "이벤트3", type: "number",  width: 100 , align: "center"},
-                { name: "이벤트4", type: "number",  width: 100 , align: "center"},
-                { name: "이벤트5", type: "number", width: 100 , align: "center"},
-                { name: "이벤트6", type: "number", width: 100 , align: "center"},
-                { name: "이벤트7", type: "number", width: 100 , align: "center"},
-                { name: "이벤트8", type: "number", width: 100 , align: "center"},
-                { name: "이벤트9", type: "number", width: 100 , align: "center"},
-                { name: "이벤트10", type: "number", width: 100 , align: "center"},
+                { name: "대기지점출발", type: "number", width: 100 , align: "center"},
+                { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 탑승", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                { name: "버스하차", type: "number", width: 100 , align: "center"},
+                { name: "대기지점", type: "number", width: 100 , align: "center"},
             ]
         });
     </script>

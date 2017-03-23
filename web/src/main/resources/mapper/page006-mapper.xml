@@ -112,7 +112,18 @@
         <result property="deleteDate" column="delete_date"/>
 
     </resultMap>
-
+    <resultMap id="PriMap" type="com.stp.absm.model.AbsmPrivate">
+        <id property="prId" column="pr_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prNo" column="p_no"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="note" column="note"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+    </resultMap>
     <!--========================================== SELECT ============================================== -->
     <sql id="selectFilterSql">
         select a.*
@@ -254,5 +265,21 @@
 
     <select id="selectEvents" parameterType="map" resultMap="EventMap">
         <include refid="selectEventSql"></include>
+    </select>
+
+    <select id="selectPrivates" parameterType="map" resultMap="PriMap">
+        select *
+        from absm_private
+        where 1=1
+        and ca_id = #{caId}
+        order by pr_id
+    </select>
+    <select id="selectPrivate" parameterType="map" resultMap="PriMap">
+        select *
+        from absm_private
+        where 1=1
+        and ca_id = #{caId}
+        and p_no = #{pNo}
+        order by pr_id
     </select>
 </mapper>

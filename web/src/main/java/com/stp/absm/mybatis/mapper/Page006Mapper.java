@@ -28,5 +28,10 @@ public interface Page006Mapper {
 
     List<AbsmEvent> selectEvents(Map<String, Object> params);
 
+    List<AbsmPrivate> selectPrivates(Map<String, Object> params);
+
+    AbsmPrivate selectPrivate(Map<String, Object> params);
+
+
 
 }

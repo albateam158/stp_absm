@@ -47,18 +47,6 @@
 
     <select id="selectBoards" parameterType="map" resultMap="BoardMap">
         <include refid="selectBoardSql"></include>
-        <choose>
-            <when test="pageable != null">
-                <!--ORDER BY <foreach collection="pageable.sort" item="order" separator=",">${order.property} ${order.direction}</foreach>-->
-                LIMIT #{pageable.offset}, #{pageable.pageSize}
-            </when>
-            <when test="random != null">
-                ORDER BY RAND()
-            </when>
-            <otherwise>
-
-            </otherwise>
-        </choose>
     </select>
 
 

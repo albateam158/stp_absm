@@ -57,8 +57,8 @@ public class Page002Controller extends RootController {
             HttpServletRequest request,
             ModelAndView mav
     ) {
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
+        List<AbsmPrivate> pris = absmPrivateRepository.findByOrderByPrIdAsc();
 
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
@@ -135,7 +135,7 @@ public class Page002Controller extends RootController {
             final HttpServletRequest request, final HttpServletResponse response)
     {
         String caId = request.getParameter("caId");
-        List<AbsmPrivate> pris = absmPrivateRepository.findByCaIdAndDeleteDateIsNullOrderByPrIdAsc(caId);
+        List<AbsmPrivate> pris = absmPrivateRepository.findByCaIdOrderByPrIdAsc(Integer.parseInt(caId));
 
         return pris;
     }
@@ -217,11 +217,23 @@ public class Page002Controller extends RootController {
                 fileUploadInfo.setFileType(fileType[i]);
                 fileUploadInfo.setFileSize(file.getSize());
 
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("caId",caId);
+                param.put("prId",prId);
+
                 if ("ECG".equals(fileType[i]) || "GSR".equals(fileType[i])) {
+                    //측정 데이터삭제
+                    page002Mapper.deleteMeasure(param);
+
                     measureFileService.setFileInfo(fileUploadInfo);
                     measureFileService.doParse();
                 }
                 else if ("FILTER".equals(fileType[i])) {
+                    //필터 데이터삭제
+                    page002Mapper.deleteFilter(param);
+                    //모델 데이터삭제
+                    page002Mapper.deleteModel(param);
+
                     filterFileService.setFileInfo(fileUploadInfo);
                     filterFileService.doParse();
 
@@ -237,6 +249,8 @@ public class Page002Controller extends RootController {
                     //표준편차 필터데이터생성
                     page002Mapper.createFilterValCd3(absmFilter);
 
+                    absmModel.setCaId(caId);
+                    absmModel.setPrId(prId);
                     //Z표준화 모델데이터생성
                     page002Mapper.createModel(absmModel);
 
@@ -259,6 +273,10 @@ public class Page002Controller extends RootController {
 
                 }
                 else if ("ORG".equals(fileType[i])) {
+
+                    //원본 데이터삭제
+                    page002Mapper.deleteOrg(param);
+
                     orgFileService.setFileInfo(fileUploadInfo);
                     orgFileService.doParse();
                 }

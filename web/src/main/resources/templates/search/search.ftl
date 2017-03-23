@@ -59,14 +59,14 @@
                 { name: "이름", type: "text", width: 100 , align: "center"},
                 { name: "나이", type: "text", width: 100 , align: "center"},
                 { name: "성별", type: "text",  width: 100 , align: "center"},
-                { name: "설문조사1", type: "number",  width: 100 , align: "center"},
-                { name: "설문조사2", type: "number",  width: 100 , align: "center"},
-                { name: "설문조사3", type: "number", width: 100 , align: "center"},
-                { name: "설문조사4", type: "number", width: 100 , align: "center"},
-                { name: "설문조사5", type: "number", width: 100 , align: "center"},
-                { name: "설문조사6", type: "number", width: 100 , align: "center"},
-                { name: "설문조사7", type: "number", width: 100 , align: "center"},
-                { name: "설문조사8", type: "number", width: 100 , align: "center"}
+                { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 탑승", type: "number", width: 100 , align: "center"},
+                { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                { name: "버스하차", type: "number", width: 100 , align: "center"}
             ]
 
         });

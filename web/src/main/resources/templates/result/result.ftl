@@ -10,9 +10,23 @@
                 <form id="ResultForm">
                     <label for="caId" class="wd55">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80">
-                        <option value="">선택하세요</option>
+                        <option value="${aPri.caId}">선택하세요</option>
+                        <#list cases as case>
+                            <option value="${case.caId!}"
+                                    <#if aPri.caId?exists && aPri.caId == case.caId>selected</#if>
+                            >${case.caseNm}</option>
+                        </#list>
                     </select>
-                    <label for="name" class="wd35">이름</label><input type="text" id="name" name="name" class="box_bd wd80" />
+                    <label for="name" class="wd35">이름</label>
+                    <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
+                    <select name="name" id="name"  class="box_bd wd80">
+                        <option value="${aPri.prNo}">선택하세요</option>
+                         <#list LPris as LPri>
+                            <option value="${LPri.prNo}"
+                                    <#if aPri.prNo?exists && aPri.prNo == LPri.prNo>selected</#if>
+                            >${LPri.name}</option>
+                        </#list>
+                    </select>
                     <label for="filter">측정자료</label>
                     <select name="filter" id="filter"  class="box_bd wd80">
                         <option value="">선택하세요</option>

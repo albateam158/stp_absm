@@ -9,5 +9,5 @@ import java.util.List;
 
 @Master
 public interface AbsmCaseRepository extends JpaRepository<AbsmCase, Integer> {
-    List<AbsmCase> findByDeleteDateIsNullOrderByCaIdAsc();
+    List<AbsmCase> findByOrderByCaIdAsc();
 }

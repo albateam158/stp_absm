@@ -18,6 +18,9 @@ public class AbsmPrivate implements Serializable {
     private Integer prId;
     private Integer caId;
     private Integer pNo;
+    @Transient
+    private Integer prNo;
+
     private String name;
     private Integer age;
     private String sex;

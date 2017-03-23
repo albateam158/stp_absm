@@ -226,16 +226,16 @@ function getEventInfo(caId) {
 
                 fields: [
                     { name: "이름", type: "text", width: 100 , align: "center"},
-                    { name: "이벤트1", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트2", type: "number",  width: 100 , align: "center"},
-                    { name: "이벤트3", type: "number",  width: 100 , align: "center"},
-                    { name: "이벤트4", type: "number",  width: 100 , align: "center"},
-                    { name: "이벤트5", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트6", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트7", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트8", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트9", type: "number", width: 100 , align: "center"},
-                    { name: "이벤트10", type: "number", width: 100 , align: "center"},
+                    { name: "대기지점출발", type: "number", width: 100 , align: "center"},
+                    { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                    { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                    { name: "지하철 탑승", type: "number",  width: 100 , align: "center"},
+                    { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                    { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                    { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                    { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                    { name: "버스하차", type: "number", width: 100 , align: "center"},
+                    { name: "대기지점", type: "number", width: 100 , align: "center"},
                 ]
             });
 
@@ -358,14 +358,14 @@ function getAbsmInfo() {
                     { name: "이름", type: "text", width: 100 , align: "center"},
                     { name: "나이", type: "text", width: 100 , align: "center"},
                     { name: "성별", type: "text",  width: 100 , align: "center"},
-                    { name: "설문조사1", type: "number",  width: 100 , align: "center"},
-                    { name: "설문조사2", type: "number",  width: 100 , align: "center"},
-                    { name: "설문조사3", type: "number", width: 100 , align: "center"},
-                    { name: "설문조사4", type: "number", width: 100 , align: "center"},
-                    { name: "설문조사5", type: "number", width: 100 , align: "center"},
-                    { name: "설문조사6", type: "number", width: 100 , align: "center"},
-                    { name: "설문조사7", type: "number", width: 100 , align: "center"},
-                    { name: "설문조사8", type: "number", width: 100 , align: "center"},
+                    { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                    { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                    { name: "지하철 탑승", type: "number", width: 100 , align: "center"},
+                    { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                    { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                    { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                    { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                    { name: "버스하차", type: "number", width: 100 , align: "center"},
                 ],
                 rowDoubleClick: function(args) {
                     //console.log("args " + args);
@@ -390,8 +390,8 @@ function getChartInfo() {
 
     // 결과 조회를 위한 param 세팅
     // TODO : 조회 화면에서 넘겨받은 데이터로 설정
-    var caId    = 98;
-    var pNo     = 1;
+    var caId    = $('#caId option:selected').val();
+    var pNo     = $('#pNo option:selected').val();
     var chartId = $('#filter option:selected').val();
     var vid = document.getElementById("MyVideo");
 

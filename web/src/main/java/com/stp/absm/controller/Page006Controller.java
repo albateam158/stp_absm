@@ -24,25 +24,29 @@ public class Page006Controller extends RootController {
      */
     @RequestMapping(value = "/result/result", method = RequestMethod.GET)
     public ModelAndView pageFormList(
-            @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "pNo", required = false) String pNo,
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "pNo", required = false) Integer pNo,
             HttpServletRequest request,
             ModelAndView mav
     ) {
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("caId",caId);
 
-        /*Map<String , Object> params = new HashMap<String, Object>();
-        params.put("caId", caId);
-        params.put("pNo", pNo);
-        params.put("chartId", 1);
+        List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
+//        List<AbsmPrivate> LPris = absmPrivateRepository.findByCaIdOrderByPrIdAsc(caId);
+        List<AbsmPrivate> LPris = page006Mapper.selectPrivates(params);
 
-        List<AbsmFilter> filters = page006Mapper.selectResultData(params);*/
+//        Map<String , Object> params = new HashMap<String, Object>();
+//        params.put("caId", caId);
+//        params.put("pNo", pNo);
 
+        /*List<AbsmFilter> filters = page006Mapper.selectResultData(params);*/
+        AbsmPrivate aPri = new AbsmPrivate();
+        aPri.setCaId(caId);
+        aPri.setPrNo(pNo);
         mav.addObject("cases", cases);
-        mav.addObject("pris", pris);
-        mav.addObject("caId", caId);
-        mav.addObject("pNo", pNo);
+        mav.addObject("LPris", LPris);
+        mav.addObject("aPri", aPri);
 
         //mav.addObject("chartData", filters);
         //mav.addObject("bioChartData", filters);
@@ -55,8 +59,8 @@ public class Page006Controller extends RootController {
 
     @RequestMapping(value = "/result/chart", method = RequestMethod.GET)
     public @ResponseBody Map<String, Object> chartInfoAjax(
-            @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "pNo", required = false) String pNo,
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "pNo", required = false) Integer pNo,
             @RequestParam(value = "chartId", required = false) String chartId,
             HttpServletRequest request
     ) {
@@ -89,8 +93,8 @@ public class Page006Controller extends RootController {
     @RequestMapping(value = "/result/filter", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmFilter> filterFormListAjax(
-            @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "prId", required = false) String prId,
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "prId", required = false) Integer prId,
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -110,8 +114,8 @@ public class Page006Controller extends RootController {
     @RequestMapping(value = "/result/model", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmModel> modelFormListAjax(
-            @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "prId", required = false) String prId,
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "prId", required = false) Integer prId,
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -131,8 +135,8 @@ public class Page006Controller extends RootController {
     @RequestMapping(value = "/result/measure", method = RequestMethod.GET)
     public @ResponseBody
     List<AbsmModel> measureFormListAjax(
-            @RequestParam(value = "caId", required = false) String caId,
-            @RequestParam(value = "prId", required = false) String prId,
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "prId", required = false) Integer prId,
             @RequestParam(value = "egCd", required = false) String egCd,
             @RequestParam(value = "lastRow", required = false) String lastRow,
 

@@ -54,8 +54,8 @@ public class Page003Controller extends RootController {
             ModelAndView mav
     ) {
 
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
-        List<AbsmPrivate> pris = absmPrivateRepository.findByDeleteDateIsNullOrderByPrIdAsc();
+        List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
+        List<AbsmPrivate> pris = absmPrivateRepository.findByOrderByPrIdAsc();
 
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
@@ -75,7 +75,7 @@ public class Page003Controller extends RootController {
     public Map<String, Object> caseList(
             HttpServletRequest request
     ) {
-        List<AbsmCase> cases = absmCaseRepository.findByDeleteDateIsNullOrderByCaIdAsc();
+        List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("cases", cases);
@@ -216,7 +216,14 @@ public class Page003Controller extends RootController {
         fileUploadInfo.setFileType(fileType);
         fileUploadInfo.setFileSize(file.getSize());
 
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("caId",caId);
+
         if ("EVENT".equals(fileType)) {
+
+            //이벤트 데이터삭제
+            page002Mapper.deleteEvent(param);
+
             eventFileService.setFileInfo(fileUploadInfo);
             eventFileService.doParse();
         }
