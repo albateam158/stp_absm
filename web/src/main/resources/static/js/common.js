@@ -29,6 +29,7 @@ $(document).ready(function() {
 	//datepicker
 	$(function() {
 		$( "#datePicker" ).datepicker({
+			dateFormat: 'yymmdd'
 		});
 	});
 });

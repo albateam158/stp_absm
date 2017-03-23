@@ -71,4 +71,35 @@
         SELECT MAX(ca_id) FROM absm_case
     </select>
 
+    <update id="insertSurveyAvg" parameterType="map">
+        INSERT INTO absm_survey_avg
+          (
+            ca_id,
+            su_val1,
+            su_val2,
+            su_val3,
+            su_val4,
+            su_val5,
+            su_val6,
+            su_val7,
+            su_val8,
+            reg_date,
+            update_date
+          )
+          VALUES
+          (
+            #{caId},
+            #{suVal1},
+            #{suVal2},
+            #{suVal3},
+            #{suVal4},
+            #{suVal5},
+            #{suVal6},
+            #{suVal7},
+            #{suVal8},
+            NOW(),
+            NOW()
+          )
+    </update>
+
 </mapper>

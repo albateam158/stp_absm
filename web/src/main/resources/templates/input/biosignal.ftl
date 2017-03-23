@@ -27,10 +27,9 @@
                     <label for="file1" id="" class="file_label">파일찾기</label>
                     <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ecgFindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="ECG" />
-                    <br />
 
                     <label for="" class="wd100">GSR 파일명</label>
-                    <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="gsrfindFile">
+                    <input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="gsrfindFile">
                     <label for="file2" id="" class="file_label">파일찾기</label>
                     <input id="file2" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('gsrfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="GSR" />
@@ -41,7 +40,6 @@
                     <label for="file3" id="" class="file_label">파일찾기</label>
                     <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('orgfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="ORG" />
-                    <br />
 
                     <label for="" class="wd100">SPSS 파일명</label>
                     <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="filterfindFile">
@@ -59,7 +57,6 @@
         </div><!-- //pd7 -->
     </section>
 	</@layout.put>
-
 
 	<@layout.put block="script">
     <script type="text/javascript">

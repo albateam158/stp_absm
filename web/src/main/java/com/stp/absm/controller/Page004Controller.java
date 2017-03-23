@@ -153,7 +153,7 @@ public class Page004Controller extends RootController {
         AbsmFile absmFile = new AbsmFile();
         absmFile.setCaId(caId);
         absmFile.setPrId(prId);
-        absmFile.setFileCd("VIDEO");
+        absmFile.setFileCd("08");
         absmFile.setFileName(file.getOriginalFilename());
         absmFile.setFileSize(file.getSize());
         absmFile.setUrl(videoUrl+file.getOriginalFilename());

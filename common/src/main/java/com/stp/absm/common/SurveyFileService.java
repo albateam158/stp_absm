@@ -61,21 +61,45 @@ public class SurveyFileService implements DataFileService {
 
                 if (row.getCell(0) != null) {
 
-                    AbsmSurvey absmSurvey = new AbsmSurvey();
-                    absmSurvey.setCaId(caId);
-                    absmSurvey.setPrId(Integer.valueOf(CommonUtil.removeDot(row.getCell(0).toString())));
-                    absmSurvey.setSuVal1(CommonUtil.removeDot(row.getCell(2).toString()));
-                    absmSurvey.setSuVal2(CommonUtil.removeDot(row.getCell(3).toString()));
-                    absmSurvey.setSuVal3(CommonUtil.removeDot(row.getCell(4).toString()));
-                    absmSurvey.setSuVal4(CommonUtil.removeDot(row.getCell(5).toString()));
-                    absmSurvey.setSuVal5(CommonUtil.removeDot(row.getCell(6).toString()));
-                    absmSurvey.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
-                    absmSurvey.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
-                    absmSurvey.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
-                    logger.info(absmSurvey.toString());
+                    String str = row.getCell(0).toString();
 
-                    absmSurveyRepository.save(absmSurvey);
+                    if ("평균".equals(str)) {
+                        AbsmSurvey absmSurvey = new AbsmSurvey();
+                        absmSurvey.setCaId(caId);
+                        // 설문조사 파일의 평균 값은 cell 두개가 병합
+                        absmSurvey.setSuVal1(CommonUtil.removeDot(row.getCell(2).toString()));
+                        absmSurvey.setSuVal2(CommonUtil.removeDot(row.getCell(3).toString()));
+                        absmSurvey.setSuVal3(CommonUtil.removeDot(row.getCell(4).toString()));
+                        absmSurvey.setSuVal4(CommonUtil.removeDot(row.getCell(5).toString()));
+                        absmSurvey.setSuVal5(CommonUtil.removeDot(row.getCell(6).toString()));
+                        absmSurvey.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
+                        absmSurvey.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
+                        absmSurvey.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
+                        logger.info(absmSurvey.toString());
 
+                        // TODO SurveyAvg 입력을 위한 Repository로 변경
+                        //absmSurveyAvgRepository.save(absmSurvey);
+                    }
+                    else if(!"평균".equals(str) &&
+                            !"이상치(0,24)제외".equals(str) &&
+                            !"모형적용값".equals(str)) {
+
+                        AbsmSurvey absmSurvey = new AbsmSurvey();
+                        absmSurvey.setCaId(caId);
+                        // 설문조사 파일의 평균 값은 cell 두개가 병합
+                        absmSurvey.setPrId(Integer.valueOf(CommonUtil.removeDot(row.getCell(0).toString())));
+                        absmSurvey.setSuVal1(CommonUtil.removeDot(row.getCell(2).toString()));
+                        absmSurvey.setSuVal2(CommonUtil.removeDot(row.getCell(3).toString()));
+                        absmSurvey.setSuVal3(CommonUtil.removeDot(row.getCell(4).toString()));
+                        absmSurvey.setSuVal4(CommonUtil.removeDot(row.getCell(5).toString()));
+                        absmSurvey.setSuVal5(CommonUtil.removeDot(row.getCell(6).toString()));
+                        absmSurvey.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
+                        absmSurvey.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
+                        absmSurvey.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
+                        logger.info(absmSurvey.toString());
+
+                        absmSurveyRepository.save(absmSurvey);
+                    }
                 }
             }
 
@@ -84,7 +108,7 @@ public class SurveyFileService implements DataFileService {
             absmFile.setCaId(caId);
             /* 개인정보 또는 설문조사 파일은 개인이 아니라 case 별로 올라감 */
             absmFile.setPrId(prId);
-            absmFile.setFileCd("XLS");
+            absmFile.setFileCd("02");
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(fileName);

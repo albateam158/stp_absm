@@ -18,4 +18,5 @@ public interface Page001Mapper {
 
     Integer selectCaseId();
 
+    int insertSurveyAvg(Map<String, Object> params);
 }

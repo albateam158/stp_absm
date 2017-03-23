@@ -229,7 +229,7 @@
            and a.ca_id = b.ca_id
            and a.pr_id = b.pr_id
            and b.p_no = #{pNo}
-           and a.file_cd = 'VIDEO'
+           and a.file_cd = '08'
     </select>
 
 

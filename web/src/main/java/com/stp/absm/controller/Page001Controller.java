@@ -3,6 +3,7 @@ package com.stp.absm.controller;
 import com.stp.absm.common.*;
 import com.stp.absm.model.AbsmCase;
 import com.stp.absm.model.AbsmPrivate;
+import com.stp.absm.mybatis.mapper.Page001Mapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class Page001Controller extends RootController {
 
     @Autowired
     protected SurveyFileService surveyFileService;
+
+    @Autowired
+    protected Page001Mapper page001Mapper;
 
     /**
      * 조회화면
