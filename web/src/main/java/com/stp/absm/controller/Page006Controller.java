@@ -24,6 +24,8 @@ public class Page006Controller extends RootController {
      */
     @RequestMapping(value = "/result/result", method = RequestMethod.GET)
     public ModelAndView pageFormList(
+            @RequestParam(value = "caId", required = false) String caId,
+            @RequestParam(value = "pNo", required = false) String pNo,
             HttpServletRequest request,
             ModelAndView mav
     ) {
@@ -39,6 +41,8 @@ public class Page006Controller extends RootController {
 
         mav.addObject("cases", cases);
         mav.addObject("pris", pris);
+        mav.addObject("caId", caId);
+        mav.addObject("pNo", pNo);
 
         //mav.addObject("chartData", filters);
         //mav.addObject("bioChartData", filters);

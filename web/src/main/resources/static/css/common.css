@@ -63,12 +63,12 @@ section label{background:url("../images/dot1.png") 5px 50% no-repeat;}
 section input, section select{margin-right:12px;border-radius:3px 3px 3px 3px; -moz-border-radius:3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px;font-size:14px;}
 section input{padding:0px 3px;}
 section{height:100%;display:block;overflow:hidden;background-color:#f7f7f8;border:1px solid #d7d7d7;box-sizing:border-box;}
-.content{padding:30px 0px;width:1280px;margin:0 auto;}
+.content{padding:30px 0px;width:1280px;margin:0 auto;min-height:1050px;/*170322추가*/}
 .sch_btn{height:30px; line-height:28px; min-width:68px;margin-right:7px;font-size:14px;vertical-align:top;background-color:#32aae6;border:1px solid #2687b7; color:#fff; text-align:center;padding:0px 15px;display:inline-block;border-radius:3px 3px 3px 3px; -moz-border-radius:3px 3px 3px 3px; -webkit-border-top-right-radius: 3px 3px 3px 3px;box-sizing:border-box;}
 .graph_btn{height:30px; line-height:28px; min-width:68px;background-color:#e94c3b;font-size:14px;border:1px solid #ce4c35; color:#fff; text-align:center;padding:0px 15px;display:block;float:right;border-radius:3px 3px 3px 3px; -moz-border-radius:3px 3px 3px 3px; -webkit-border-top-right-radius: 3px 3px 3px 3px;
 	box-sizing:border-box;font-size:14px;
 }
-footer{width:100%;padding:10px 0px;background-color:#3c3e44;color:#9e9fa2;font-size:14px; font-style:normal;}
+footer{width:100%;padding:10px 0px;background-color:#3c3e44;color:#9e9fa2;font-size:14px; font-style:normal;/*170322추가*/position:fixed;bottom:0px;}
 address{font-style:normal;}
 .title_box{display:block;overflow:hidden;}
 h3{font-weight:400;font-size:16px;color:#4d5557;padding:7px 0px 5px 10px; border-bottom:1px solid #d7d7d7;box-sizing:border-box;margin-bottom:7px;}

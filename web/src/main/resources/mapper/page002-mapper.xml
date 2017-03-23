@@ -134,7 +134,7 @@
 
     <insert id="createFilterValCd2" parameterType="absmFilter">
         insert into
-        absm.absm_filter
+        absm_filter
         (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
         SELECT ca_id, pr_id, se_cd, '2' val_cd
         , avg(a.mean_rri) mean_rri
@@ -145,7 +145,7 @@
         , avg(a.pnn50) pnn50
         , avg(a.lfhf) lfhf
         , avg(a.scl) scl
-        FROM absm.absm_filter a
+        FROM absm_filter a
         where val_cd = '1'
         and ca_id = #{caId}
         and pr_id = #{prId}
@@ -153,7 +153,7 @@
 
     <insert id="createFilterValCd3" parameterType="absmFilter">
         insert into
-        absm.absm_filter
+        absm_filter
         (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
         SELECT ca_id, pr_id, se_cd, '3' val_cd
         , stddev_samp(a.mean_rri) mean_rri
@@ -164,14 +164,14 @@
         , stddev_samp(a.pnn50) pnn50
         , stddev_samp(a.lfhf) lfhf
         , stddev_samp(a.scl) scl
-        FROM absm.absm_filter a
+        FROM absm_filter a
         where val_cd = '1'
         and ca_id = #{caId}
         and pr_id = #{prId}
     </insert>
 
     <insert id="createModel" parameterType="absmModel">
-        insert into absm.absm_model(
+        insert into absm_model(
         ca_id, pr_id, se_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
         select  a.ca_id, a.pr_id, a.se_cd
         , (a.mean_rri - b.mean_rri) / c.mean_rri mean_rri
@@ -182,12 +182,12 @@
         , (a.pnn50 - b.pnn50) / c.pnn50 pnn50
         , (a.lfhf - b.lfhf) / c.lfhf lfhf
         , (a.scl - b.scl) / c.scl scl
-        FROM absm.absm_filter a
-        inner join absm.absm_filter b
+        FROM absm_filter a
+        inner join absm_filter b
         on a.ca_id = b.ca_id
         and a.pr_id = b.pr_id
         and b.val_cd = '2'
-        inner join absm.absm_filter c
+        inner join absm_filter c
         on a.ca_id = c.ca_id
         and a.pr_id = c.pr_id
         and c.val_cd = '3'
@@ -219,8 +219,8 @@
             (1-(1- exp(-exp(b.param3-(b.param4*a.std_rri + b.param5*a.mean_hrv + b.param6*a.pnn50 + b.param7*a.scl)))))
           ,2) mo_pre4
         , st_level, ca_id,pr_id,se_cd
-        from absm.absm_model a
-        left outer join absm.absm_mosu b
+        from absm_model a
+        left outer join absm_mosu b
         on b.mo_cd = '1'
         where a.pr_id = 3
         and a.ca_id = #{caId}

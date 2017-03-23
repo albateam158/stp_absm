@@ -13,6 +13,8 @@ function savePrivate() {
     var formData = new FormData(form);
     console.log("formData " + formData);
 
+    console.log("file path " + $('#file1')[0].files[0].name);
+
     $.ajax({
         type : "POST",
         url : "/input/baseline_form",
@@ -388,7 +390,7 @@ function getChartInfo() {
 
     // 결과 조회를 위한 param 세팅
     // TODO : 조회 화면에서 넘겨받은 데이터로 설정
-    var caId    = 87;
+    var caId    = 98;
     var pNo     = 1;
     var chartId = $('#filter option:selected').val();
     var vid = document.getElementById("MyVideo");

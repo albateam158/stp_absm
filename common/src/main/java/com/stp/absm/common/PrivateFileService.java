@@ -76,7 +76,7 @@ public class PrivateFileService implements DataFileService {
             absmFile.setCaId(caId);
             /* 개인정보 또는 설문조사 파일은 개인이 아니라 case 별로 올라감 */
             absmFile.setPrId(prId);
-            absmFile.setFileCd("XLS");
+            absmFile.setFileCd("01");
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(fileName);
