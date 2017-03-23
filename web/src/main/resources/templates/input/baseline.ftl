@@ -17,7 +17,7 @@
                     <label for="" class="wd100">개인특성 파일명</label>
                     <input type="text" class="box_bd mr0 mb10 wd189" title="파일찾기" readonly="readonly"  id="file_sch1">
                     <label for="file1" id="" class="file_label">파일찾기</label><!-- lable의 for : file1 -->
-                    <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value;alert(this.value);" onkeydown="return false" ><!-- input의 id : file1 -->
+                    <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch1').value=this.value;" onkeydown="return false" ><!-- input의 id : file1 -->
                     <input type="hidden" name="fileType" value="PRIVATE" />
                     <!-- <INPUT TYPE="file" NAME="uploads" id="file" size="60" style="height:20px;" on change="this.select(); document.getElementById('excel_path').value=document.selection.createRange().text.toString();"> -->
                     <br />

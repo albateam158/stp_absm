@@ -2,7 +2,9 @@ package com.stp.absm.common;
 
 import com.stp.absm.model.AbsmFile;
 import com.stp.absm.model.AbsmSurvey;
+import com.stp.absm.model.AbsmSurveyAvg;
 import com.stp.absm.repository.AbsmFileRepository;
+import com.stp.absm.repository.AbsmSurveyAvgRepository;
 import com.stp.absm.repository.AbsmSurveyRepository;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,6 +32,9 @@ public class SurveyFileService implements DataFileService {
 
     @Autowired
     protected AbsmFileRepository absmFileRepository;
+
+    @Autowired
+    protected AbsmSurveyAvgRepository absmSurveyAvgRepository;
 
     public SurveyFileService() {}
 
@@ -63,22 +68,20 @@ public class SurveyFileService implements DataFileService {
 
                     String str = row.getCell(0).toString();
 
-                    if ("평균".equals(str)) {
-                        AbsmSurvey absmSurvey = new AbsmSurvey();
-                        absmSurvey.setCaId(caId);
-                        // 설문조사 파일의 평균 값은 cell 두개가 병합
-                        absmSurvey.setSuVal1(CommonUtil.removeDot(row.getCell(2).toString()));
-                        absmSurvey.setSuVal2(CommonUtil.removeDot(row.getCell(3).toString()));
-                        absmSurvey.setSuVal3(CommonUtil.removeDot(row.getCell(4).toString()));
-                        absmSurvey.setSuVal4(CommonUtil.removeDot(row.getCell(5).toString()));
-                        absmSurvey.setSuVal5(CommonUtil.removeDot(row.getCell(6).toString()));
-                        absmSurvey.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
-                        absmSurvey.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
-                        absmSurvey.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
-                        logger.info(absmSurvey.toString());
-
-                        // TODO SurveyAvg 입력을 위한 Repository로 변경
-                        //absmSurveyAvgRepository.save(absmSurvey);
+                    if ("모형적용값".equals(str)) {
+                        AbsmSurveyAvg absmSurveyAvg = new AbsmSurveyAvg();
+                        absmSurveyAvg.setCaId(caId);
+                        // 설문조사 파일의 모형적용값은 cell 두개가 병합
+                        absmSurveyAvg.setSuVal1(CommonUtil.removeDot(row.getCell(2).toString()));
+                        absmSurveyAvg.setSuVal2(CommonUtil.removeDot(row.getCell(3).toString()));
+                        absmSurveyAvg.setSuVal3(CommonUtil.removeDot(row.getCell(4).toString()));
+                        absmSurveyAvg.setSuVal4(CommonUtil.removeDot(row.getCell(5).toString()));
+                        absmSurveyAvg.setSuVal5(CommonUtil.removeDot(row.getCell(6).toString()));
+                        absmSurveyAvg.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
+                        absmSurveyAvg.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
+                        absmSurveyAvg.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
+                        logger.info(absmSurveyAvg.toString());
+                        absmSurveyAvgRepository.save(absmSurveyAvg);
                     }
                     else if(!"평균".equals(str) &&
                             !"이상치(0,24)제외".equals(str) &&

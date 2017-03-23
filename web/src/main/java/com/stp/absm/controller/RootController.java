@@ -125,7 +125,8 @@ public class RootController {
     @Autowired
     protected  AbsmSurveyRepository absmSurveyRepository;
 
-
+    @Autowired
+    protected AbsmSurveyAvgRepository absmSurveyAvgRepository;
 
     /**
      * Mapper
