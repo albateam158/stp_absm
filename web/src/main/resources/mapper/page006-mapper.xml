@@ -253,6 +253,6 @@
 
 
     <select id="selectEvents" parameterType="map" resultMap="EventMap">
-        <include refid="selectBoardSql"></include>
+        <include refid="selectEventSql"></include>
     </select>
 </mapper>
