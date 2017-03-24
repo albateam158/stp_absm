@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,19 @@ public class Page006Controller extends RootController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/result/pri_combo" , method={RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody List<AbsmPrivate> smallClassComboAjax(
+            final HttpServletRequest request, final HttpServletResponse response) {
+        String  caId = request.getParameter("caId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("caId",caId);
+
+        List<AbsmPrivate> LPris = page006Mapper.selectPrivates(params);
+
+        return LPris;
+    }
+
 
     @RequestMapping(value = "/result/chart", method = RequestMethod.GET)
     public @ResponseBody Map<String, Object> chartInfoAjax(
