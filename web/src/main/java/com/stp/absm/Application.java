@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @ComponentScan(basePackages = {"com.stp.absm" })
 @SpringBootApplication(exclude =
-        {       RedisHttpSessionConfiguration.class,
-                DataSourceTransactionManagerAutoConfiguration.class,
+        {       DataSourceTransactionManagerAutoConfiguration.class,
                 DataSourceAutoConfiguration.class,})
 @MapperScan(basePackages="com.stp.absm.mybatis.mapper")
 @EnableTransactionManagement
