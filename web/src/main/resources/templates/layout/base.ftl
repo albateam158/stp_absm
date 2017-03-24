@@ -25,7 +25,7 @@
     <header>
         <div class="inner_box">
             <h1>
-                <a href="#"><img src="/images/logo2.gif" alt="홈" /></a>
+                <a href="/"><img src="/images/logo2.gif" alt="홈" /></a>
             </h1>
             <!-- navigation -->
             <nav class="navi">

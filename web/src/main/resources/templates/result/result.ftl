@@ -10,7 +10,7 @@
                 <form id="ResultForm">
                     <label for="caId" class="wd55">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80">
-                        <option value="${aPri.caId}">선택하세요</option>
+                        <option value="${aPri.caId!}">선택하세요</option>
                         <#list cases as case>
                             <option value="${case.caId!}"
                                     <#if aPri.caId?exists && aPri.caId == case.caId>selected</#if>
@@ -20,7 +20,7 @@
                     <label for="name" class="wd35">이름</label>
                     <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
                     <select name="name" id="name"  class="box_bd wd80">
-                        <option value="${aPri.prNo}">선택하세요</option>
+                        <option value="${aPri.prNo!}">선택하세요</option>
                          <#list LPris as LPri>
                             <option value="${LPri.prNo}"
                                     <#if aPri.prNo?exists && aPri.prNo == LPri.prNo>selected</#if>

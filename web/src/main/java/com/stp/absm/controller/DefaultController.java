@@ -1,5 +1,6 @@
 package com.stp.absm.controller;
 
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class DefaultController {
+public class DefaultController implements ErrorController {
 
 
 	@RequestMapping(value = "/")
@@ -36,11 +37,18 @@ public class DefaultController {
 		return "modal/" + modal;
 	}
 
-//	@RequestMapping(value = "/error")
-//	public String error(@RequestParam String message, Model model) {
-//		model.addAttribute("message", message);
-//		return "error";
-//	}
+	private static final String PATH = "/error";
+
+	@RequestMapping(value = PATH)
+	public String error(Model model) {
+		model.addAttribute("message", "");
+		return "error";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return PATH;
+	}
 
 
 }
