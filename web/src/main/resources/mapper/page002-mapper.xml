@@ -120,7 +120,7 @@
         <include refid="selectBoardSql"></include>
     </select>
 
-    <insert id="createFilterValCd2" parameterType="absmFilter">
+    <insert id="createFilterValCd2" parameterType="com.stp.absm.model.AbsmFilter">
         insert into
         absm_filter
         (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
@@ -139,7 +139,7 @@
         and pr_id = #{prId}
     </insert>
 
-    <insert id="createFilterValCd3" parameterType="absmFilter">
+    <insert id="createFilterValCd3" parameterType="com.stp.absm.model.AbsmFilter">
         insert into
         absm_filter
         (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
@@ -158,7 +158,7 @@
         and pr_id = #{prId}
     </insert>
 
-    <insert id="createModel" parameterType="absmModel">
+    <insert id="createModel" parameterType="com.stp.absm.model.AbsmModel">
         insert into absm_model(
         ca_id, pr_id, se_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
         select  DISTINCT a.ca_id, a.pr_id, a.se_cd

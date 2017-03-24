@@ -12,33 +12,18 @@ endpoints:
 
 spring:
     profiles:
-        active: dev
+        active: local
     datasource:
-        master:
-            dataSourceClassName: org.gjt.mm.mysql.Driver
-            url: jdbc:mysql://127.0.0.1:3306/traffic?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            #url: jdbc:mysql://127.0.0.1:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            databaseName: traffic
-            serverName: localDB
-            username: map_user
-            password: map_user
-            #password: wicrowd2016!@#$
-            validationQuery: SELECT 1
-            testOnBorrow: true
-#        slave:
-#            dataSourceClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-##            dataSourceClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-#            url: jdbc:sqlserver://192.168.120.50:3433;DatabaseName=dzicube;characterEncoding=utf8;useUnicode=true
-#            databaseName: dzicube
-#            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-#            #databaseName: ka_intra
-#            serverName: dzicube
-#            username: dzicube
-#            #password: K$asseti44
-#            password: ejwhs123$
-#            validationQuery: SELECT 1
-#            testOnBorrow: true
+          dataSourceClassName: org.gjt.mm.mysql.Driver
+          url: jdbc:mysql://127.0.0.1:3306/absm?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          databaseName: absm
+          serverName: kasset6
+          username: root
+          password: qkrtkd!23
+          #password: wicrowd2016!@#$
+          validationQuery: SELECT 1
+          testOnBorrow: true
     jpa:
         showSql: true
         properties:
@@ -82,7 +67,7 @@ multipart:
 develop: true
 
 upload:
-    fileLocation: E:\MyProject\traffic\upload
+    fileLocation: D:\private\projectA\upload
     videoUrl: http://localhost:8080/video/
 
 logging:

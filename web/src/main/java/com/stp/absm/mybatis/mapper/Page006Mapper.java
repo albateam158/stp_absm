@@ -1,7 +1,6 @@
 package com.stp.absm.mybatis.mapper;
 
 import com.stp.absm.model.*;
-import com.stp.absm.repository.support.Master;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 /**
  * 결과보기 화면
  */
-@Master
 public interface Page006Mapper {
 
     List<AbsmFilter> selectFilters(Map<String, Object> params);

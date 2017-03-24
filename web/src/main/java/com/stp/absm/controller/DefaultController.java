@@ -1,6 +1,5 @@
 package com.stp.absm.controller;
 
-import com.stp.absm.model.XAdmin;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DefaultController {
 
+
 	@RequestMapping(value = "/")
-	public String home(@AuthenticationPrincipal XAdmin userDetail, Model model) {
+	public String home() {
 
 		return "redirect:/main/form";
 	}
@@ -36,9 +36,11 @@ public class DefaultController {
 		return "modal/" + modal;
 	}
 
-	@RequestMapping(value = "/error")
-	public String error(@RequestParam String message, Model model) {
-		model.addAttribute("message", message);
-		return "error";
-	}
+//	@RequestMapping(value = "/error")
+//	public String error(@RequestParam String message, Model model) {
+//		model.addAttribute("message", message);
+//		return "error";
+//	}
+
+
 }

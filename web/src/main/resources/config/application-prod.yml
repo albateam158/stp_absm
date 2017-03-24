@@ -16,29 +16,28 @@ spring:
     datasource:
         master:
             dataSourceClassName: org.gjt.mm.mysql.Driver
-            #url: jdbc:mysql://172.31.11.200:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
-            #databaseName: wicrowd_db
-            url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            databaseName: ka_intra
-            serverName: kasset
+            url: jdbc:mysql://127.0.0.1:3306/absm?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+            databaseName: absm
+            serverName: kasset6
             username: root
-            password: K$asseti44
+            password: qkrtkd!23
             #password: wicrowd2016!@#$
             validationQuery: SELECT 1
             testOnBorrow: true
-        slave:
-            dataSourceClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#            dataSourceClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-            url: jdbc:sqlserver://192.168.120.50:3433;DatabaseName=dzicube;characterEncoding=utf8;useUnicode=true
-            databaseName: dzicube
-            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            #databaseName: ka_intra
-            serverName: dzicube
-            username: dzicube
-            #password: K$asseti44
-            password: ejwhs123$
-            validationQuery: SELECT 1
-            testOnBorrow: true
+#        slave:
+#            dataSourceClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+##            dataSourceClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#            url: jdbc:sqlserver://192.168.120.50:3433;DatabaseName=dzicube;characterEncoding=utf8;useUnicode=true
+#            databaseName: dzicube
+#            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+#            #databaseName: ka_intra
+#            serverName: dzicube
+#            username: dzicube
+#            #password: K$asseti44
+#            password: ejwhs123$
+#            validationQuery: SELECT 1
+#            testOnBorrow: true
     jpa:
         showSql: true
         properties:
@@ -76,13 +75,14 @@ pdf:
     zipmakerUrl: http://52.79.135.24:8080/add
 
 multipart:
-    maxFileSize: 10Mb
-    maxRequestSize: 30Mb
+    maxFileSize: 200Mb
+    maxRequestSize: 300Mb
 
 develop: true
 
 upload:
-    fileLocation: /
+    fileLocation: D:\private\projectA\upload
+    videoUrl: http://localhost:8080/video/
 
 logging:
     config: classpath:logback.xml

@@ -20,8 +20,8 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private XAdminDetailService xAdminDetailsService;
+//	@Autowired
+//	private XAdminDetailService xAdminDetailsService;
 
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
@@ -58,14 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.userDetailsService(xAdminDetailsService).passwordEncoder(passwordEncoder());
+//		auth.userDetailsService(xAdminDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 
-	@Override
-	protected UserDetailsService userDetailsService() {
-		return xAdminDetailsService;
-	}
+//	@Override
+//	protected UserDetailsService userDetailsService() {
+////		return xAdminDetailsService;
+//
+//	}
 
 
 	public static void main(String[] args){

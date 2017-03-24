@@ -5,11 +5,12 @@ package com.stp.absm.mybatis;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import com.stp.absm.common.AES;
-import com.stp.absm.repository.support.Master;
-import com.stp.absm.repository.support.Slave;
+import com.stp.absm.config.JdbcConnectionSettings;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -21,17 +22,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
-/**
- * @author stunstun(minhyuck.jung@nhnent.com)
- *
- */
-public abstract class MyBatisConfig {
-	
-	public static final String BASE_PACKAGE = "com.stp.absm";
-	public static final String TYPE_ALIASES_PACKAGE = "com.stp.absm";
-	public static final String CONFIG_LOCATION_PATH = "mapper/mybatis-config.xml";
-	public static final String MAPPER_LOCATIONS_PATH = "mapper/**/*.xml";
+@Configuration
+public class MyBatisConfig {
+
 	public static AES aes;
 
 	@Autowired
@@ -40,61 +36,64 @@ public abstract class MyBatisConfig {
 	}
 
 
-	protected void configureSqlSessionFactory(SqlSessionFactoryBean sessionFactoryBean, DataSource dataSource) throws IOException {
-		PathMatchingResourcePatternResolver pathResolver = new PathMatchingResourcePatternResolver();
-		sessionFactoryBean.setDataSource(dataSource);
-		sessionFactoryBean.setTypeAliasesPackage(TYPE_ALIASES_PACKAGE);
-		sessionFactoryBean.setConfigLocation(new ClassPathResource("mapper/mybatis-config.xml"));
-		Resource categoryMapper                         = new ClassPathResource("mapper/category-mapper.xml");
-		Resource noticeMapper                           = new ClassPathResource("mapper/notice-mapper.xml");
-		Resource userMapper                           = new ClassPathResource("mapper/user-mapper.xml");
-		Resource empMapper                           = new ClassPathResource("mapper/emp-mapper.xml");
-		Resource recordMapper                           = new ClassPathResource("mapper/record-mapper.xml");
-		Resource inRuleMapper                           = new ClassPathResource("mapper/inrule-mapper.xml");
-		Resource boardMapper                           = new ClassPathResource("mapper/board-mapper.xml");
+	@Autowired
+	private JdbcConnectionSettings jdbcConnectionSettings;
+
+
+	@Autowired
+	private DataSource dataSource;
+
+	@Bean
+	public DataSource dataSource() {
+
+		BasicDataSource ds = new BasicDataSource();
+
+
+		ds.setDriverClassName(jdbcConnectionSettings.getDataSourceClassName());
+		ds.setUsername(jdbcConnectionSettings.getUsername());
+		ds.setPassword(jdbcConnectionSettings.getPassword());
+		ds.setUrl(jdbcConnectionSettings.getUrl());
+		ds.setValidationQuery("/* ping */ select 1");
+
+
+		return ds;
+	}
+
+
+	@Bean
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
+
+
+		final SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
+		sqlSessionFactory.setDataSource(dataSource());
+		sqlSessionFactory.setConfigLocation(new ClassPathResource("mapper/mybatis-config.xml"));
+		sqlSessionFactory.setFailFast(true);
+
 
 		//absm mapper
-		Resource page001Mapper                           = new ClassPathResource("mapper/page001-mapper.xml");
-		Resource page002Mapper                           = new ClassPathResource("mapper/page002-mapper.xml");
-		Resource page003Mapper                           = new ClassPathResource("mapper/page003-mapper.xml");
-		Resource page004Mapper                           = new ClassPathResource("mapper/page004-mapper.xml");
-		Resource page005Mapper                           = new ClassPathResource("mapper/page005-mapper.xml");
-		Resource page006Mapper                           = new ClassPathResource("mapper/page006-mapper.xml");
+		Resource page001Mapper = new ClassPathResource("mapper/page001-mapper.xml");
+		Resource page002Mapper = new ClassPathResource("mapper/page002-mapper.xml");
+		Resource page003Mapper = new ClassPathResource("mapper/page003-mapper.xml");
+		Resource page004Mapper = new ClassPathResource("mapper/page004-mapper.xml");
+		Resource page005Mapper = new ClassPathResource("mapper/page005-mapper.xml");
+		Resource page006Mapper = new ClassPathResource("mapper/page006-mapper.xml");
 
-		sessionFactoryBean.setMapperLocations(new Resource[]{  categoryMapper, noticeMapper, userMapper, empMapper, recordMapper, inRuleMapper, boardMapper,
+		sqlSessionFactory.setMapperLocations(new Resource[]{
 				page001Mapper, page002Mapper, page003Mapper, page004Mapper, page005Mapper, page006Mapper});
-		//sessionFactoryBean.setMapperLocations(pathResolver.getResources(MAPPER_LOCATIONS_PATH));
+
+		return sqlSessionFactory.getObject();
 	}
-}
 
-@Configuration
-@MapperScan(basePackages = MyBatisConfig.BASE_PACKAGE, annotationClass = Master.class, sqlSessionFactoryRef = "masterSqlSessionFactory")
-class MasterMyBatisConfig extends MyBatisConfig {
+	@Autowired
+	EntityManagerFactory emf;
 
-	@Bean(name = "masterSqlSessionFactory")
-	public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource") DataSource masterDataSource) throws Exception {
-		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-		configureSqlSessionFactory(sessionFactoryBean, masterDataSource);
-		return sessionFactoryBean.getObject();
+	@Bean(name = "transactionManager")
+	public PlatformTransactionManager transactionManager() {
+		JpaTransactionManager tm =
+				new JpaTransactionManager();
+		tm.setEntityManagerFactory(emf);
+		tm.setDataSource(dataSource);
+		return tm;
 	}
-	@Bean(name = "masterSqlSessionTemplate")
-    public SqlSessionTemplate masterSqlSessionTemplate(@Qualifier("masterSqlSessionFactory") SqlSessionFactory masterSqlSessionFactory) throws Exception {
-        return new SqlSessionTemplate(masterSqlSessionFactory);
-    }
-}
 
-//@Configuration
-//@MapperScan(basePackages = MyBatisConfig.BASE_PACKAGE, annotationClass = Slave.class, sqlSessionFactoryRef = "slaveSqlSessionFactory")
-//class SlaveMyBatisConfig extends MyBatisConfig {
-//
-//	@Bean(name = "slaveSqlSessionFactory")
-//	public SqlSessionFactory slaveSqlSessionFactory(@Qualifier("slaveDataSource") DataSource slaveDataSource) throws Exception {
-//		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-//		configureSqlSessionFactory(sessionFactoryBean, slaveDataSource);
-//		return sessionFactoryBean.getObject();
-//	}
-//	@Bean(name = "slaveSqlSessionTemplate")
-//	public SqlSessionTemplate slaveSqlSessionTemplate(@Qualifier("slaveSqlSessionFactory") SqlSessionFactory slaveSqlSessionFactory) throws Exception {
-//		return new SqlSessionTemplate(slaveSqlSessionFactory);
-//	}
-//}
+}

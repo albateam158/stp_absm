@@ -1,11 +1,10 @@
 package com.stp.absm.config;
 
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-//@Component
-//@ConfigurationProperties(prefix="spring.datasource.master")
+@Component
+@ConfigurationProperties(prefix="spring.datasource")
 public class JdbcConnectionSettings {
     private String dataSourceClassName;
     private String url;
