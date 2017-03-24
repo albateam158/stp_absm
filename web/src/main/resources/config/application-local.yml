@@ -30,35 +30,8 @@ spring:
             hibernate:
                 format_sql: true
 
-    redis:
-        host: 127.0.0.1
-        port: 6379
-
     messages:
          basename: messages/messages
-
-    social:
-        twitter:
-            consumerKey: lor0w57qTyYaiv7OCkffqOwZV
-            consumerSecret: YO3guSJaRFJkpd2J8EPqSpv78I6g8fyMq3X8I3qs2uWSbbJrBI
-        facebook:
-            appId: '1865799810313126'
-            appSecret: 522f20a5760565c1461847eeb20772df
-
-    mail:
-        host: 119.206.195.229
-        username: wicrowd@kasset.co.kr
-        password: asdf6256
-        port: 25
-
-xcrowdfund:
-   restUrl: http://127.0.0.1:8070
-
-pdf:
-    projectDocument: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/testdata
-    cssfile: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/test.css
-    fontFile: /Users/bridge/Documents/develop/intellij-workspace/wicrowd-java/testdata/font/MALGUN.TTF
-    zipmakerUrl: http://52.79.135.24:8080/add
 
 multipart:
     maxFileSize: 200Mb
@@ -75,18 +48,4 @@ logging:
 
 aeskey: M3OuXbwA3AcJq9oa-c_YRONCiYk8SiEd9KsRFaj1oTM
 
-sms:
-  from: '025506256'
-
-
-social:
-  facebook:
-      fbAppId: '1865799810313126'
-
-admin:
-  email: webmaster@kasset.co.kr
-
-subscribe:
-    has_encrypt: N
-    hd_ep_type: CERT
 
