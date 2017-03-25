@@ -23,7 +23,7 @@
                         <option value="남">남</option>
                         <option value="여">여</option>
                     </select>
-                    <label for="searchCode" class="wd35">조회항목</label>
+                    <label for="searchCode" class="wd80">조회항목</label>
                     <select name="searchCode" id="searchCode" class="box_bd wd80" class="box_bd wd80 mb10">
                         <option value="1">개인자료</option>
                         <option value="2">설문조사</option>
