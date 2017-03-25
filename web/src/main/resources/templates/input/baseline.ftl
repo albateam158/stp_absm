@@ -32,6 +32,14 @@
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>
+
+                <div class="toasts">
+                    <a href="#" class="default">Default Toast</a>
+                    <a href="#" class="danger">Danger Toast</a>
+                    <a href="#" class="info">Info Toast</a>
+                    <a href="#" class="success">Success Toast</a>
+                </div>
+
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
@@ -40,6 +48,34 @@
 
 	<@layout.put block="script">
     <script type="text/javascript">
+
+        function createToast(t){
+            var message = '<h4>오류</h4><span class="line3"></span>결과가 존재하지 않습니다.';
+            var options = {
+                duration: 3000,
+                sticky: !!Math.round(Math.random() * 1),
+                type: t
+            };
+
+            switch(t){
+                case 'danger': message = '<h4>오류</h4><span class="line3"></span>데이터가 존재하지 않습니다.'; break;
+                case 'info': message = '<h4>오류</h4><span class="line3"></span>결과가 존재하지 않습니다.'; break;
+                case 'success': message = '<h4>오류</h4><span class="line3"></span>데이터가 존재하지 않습니다.'; break;
+            }
+
+            $.toast(message, options);
+        }
+
+        $(document).ready(function() {
+            $.toast.config.align = 'center';
+            $.toast.config.width = 200;
+
+            $('.toasts a').click(function(){
+                createToast($(this).attr('class'));
+                return false;
+            });
+        });
+
         var clients = [];
 
         // var countries = [

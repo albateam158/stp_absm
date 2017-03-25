@@ -25,6 +25,13 @@ public class AbsmFile implements Serializable {
     private String dt;
     @Transient
     private String caseNm;
+    private String name;
+    @Transient
+    private String age;
+    @Transient
+    private String sex;
+    @Transient
+    private Integer pNo;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

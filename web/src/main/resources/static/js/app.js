@@ -253,7 +253,7 @@ function saveVideo() {
 
     var form = $('#VideoForm')[0];
     var formData = new FormData(form);
-    console.log("formData " + formData);
+    //console.log("formData " + formData);
 
     $.ajax({
         type : "POST",
@@ -313,75 +313,218 @@ function getVideoInfo(caId, prId) {
 }
 
 // 자료 조회
-function getAbsmInfo() {
+function searchData(searchCode) {
 
-    console.log("getAbsmInfo Start");
+    console.log("searchData Start");
 
     var form = $('#SearchForm')[0];
     var formData = new FormData(form);
-    console.log("formData " + formData);
+    /*console.log("formData " + formData);
 
     console.log("formData " + formData.get("caId"));
     console.log("formData " + formData.get("name"));
     console.log("formData " + formData.get("age"));
-    console.log("formData " + formData.get("sex"));
-
+    console.log("formData " + formData.get("sex"));*/
+    var searchCode = formData.get("searchCode");
 
     $.ajax({
         type : "GET",
-        url : "/search/search_div",
+        url : '/search/search_div',
         data: {
             "caId": formData.get("caId"),
             "name": formData.get("name"),
             "age": formData.get("age"),
-            "sex": formData.get("sex")
+            "sex": formData.get("sex"),
+            "searchCode": searchCode
         },
 
         success: function(data) {
 
             var gridData = data.boards;
 
-            $("#jsGrid").jsGrid({
-                width: "100%",
-                height: "400px",
+            setGrid(gridData, searchCode)
 
-                //inserting: true,
-                // editing: true,
-                sorting: true,
-                paging: true,
-
-                data: gridData.rows,
-
-                fields: [
-                    { name: "caId", type: "text", width: 100 , visible: false},
-                    { name: "참가번호", type: "text", width: 100 , align: "center"},
-                    { name: "이름", type: "text", width: 100 , align: "center"},
-                    { name: "나이", type: "text", width: 100 , align: "center"},
-                    { name: "성별", type: "text",  width: 100 , align: "center"},
-                    { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
-                    { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
-                    { name: "지하철 탑승", type: "number", width: 100 , align: "center"},
-                    { name: "지하철 하차", type: "number", width: 100 , align: "center"},
-                    { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
-                    { name: "버스정류장", type: "number", width: 100 , align: "center"},
-                    { name: "버스탑승", type: "number", width: 100 , align: "center"},
-                    { name: "버스하차", type: "number", width: 100 , align: "center"},
-                ],
-                rowDoubleClick: function(args) {
-                    //console.log("args " + args);
-                    var caId  = args.item.caId;
-                    var pNo  = args.item.참가번호;
-
-                    var url = "/result/result?caId="+caId+"&pNo="+pNo;
-                    $(location).attr('href',url);
-                },
-            });
 
         },
         error: function(request, status, error) {
             alert("개인정보 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
         }
     });
+
+}
+
+/**
+ * 조회 항목에  맞게 그리드 생성
+ *
+ */
+function setGrid(gridData, searchCode) {
+
+    if (searchCode == 1) {
+        
+        // 개인정보 그리드 
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+
+            data: gridData.rows,
+
+            fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
+                { name: "케이스명", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "number", width: 100 , align: "center"},
+                { name: "이름", type: "text",  width: 100 , align: "center"},
+                { name: "나이", type: "text",  width: 100 , align: "center"},
+                { name: "성별", type: "text",  width: 100 , align: "center"}
+            ]
+        });
+
+    }
+    else if (searchCode == 2) {
+        
+        // 설문조사 그리드
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+
+            data: gridData.rows,
+
+            fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
+                { name: "케이스명", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "text", width: 100 , align: "center"},
+                { name: "이름", type: "text", width: 100 , align: "center"},
+                { name: "나이", type: "text", width: 100 , align: "center"},
+                { name: "성별", type: "text",  width: 100 , align: "center"},
+                { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 탑승", type: "number", width: 100 , align: "center"},
+                { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                { name: "버스하차", type: "number", width: 100 , align: "center"},
+            ],
+            rowDoubleClick: function(args) {
+                //console.log("args " + args);
+                var caId  = args.item.caId;
+                var pNo  = args.item.참가번호;
+
+                var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                $(location).attr('href',url);
+            },
+        });
+        
+    }
+    else if (searchCode == 3) {
+        
+        // 이벤트 그리드
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+
+            data: gridData.rows,
+
+            fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
+                { name: "케이스명", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "text", width: 100 , align: "center"},
+                { name: "이름", type: "text", width: 100 , align: "center"},
+                { name: "나이", type: "text", width: 100 , align: "center"},
+                { name: "성별", type: "text",  width: 100 , align: "center"},
+                { name: "대기지점출발", type: "number", width: 100 , align: "center"},
+                { name: "판교역 출입구", type: "number",  width: 100 , align: "center"},
+                { name: "판교역 플랫폼", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 탑승", type: "number",  width: 100 , align: "center"},
+                { name: "지하철 하차", type: "number", width: 100 , align: "center"},
+                { name: "강남역 출입구", type: "number", width: 100 , align: "center"},
+                { name: "버스정류장", type: "number", width: 100 , align: "center"},
+                { name: "버스탑승", type: "number", width: 100 , align: "center"},
+                { name: "버스하차", type: "number", width: 100 , align: "center"},
+                { name: "대기지점", type: "number", width: 100 , align: "center"},
+            ],
+            rowDoubleClick: function(args) {
+
+            var caId  = args.item.caId;
+            var pNo  = args.item.참가번호;
+
+            var url = "/result/result?caId="+caId+"&pNo="+pNo;
+            $(location).attr('href',url);
+        },
+        });
+        
+    }
+    else if (searchCode == 4) {
+        
+        // 생체정보 그리드
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+
+            data: gridData.rows,
+
+            fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
+                { name: "케이스명", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "text", width: 100 , align: "center"},
+                { name: "이름", type: "text", width: 100 , align: "center"},
+                { name: "나이", type: "text", width: 100 , align: "center"},
+                { name: "성별", type: "text",  width: 100 , align: "center"},
+                { name: "ECG/GSR구분", type: "text",  width: 100 , align: "center"},
+                { name: "측정시간", type: "text",  width: 100 , align: "center"},
+                { name: "측정값", type: "text",  width: 100 , align: "center"}
+            ],
+
+            rowDoubleClick: function(args) {
+                //console.log("args " + args);
+                var caId  = args.item.caId;
+                var pNo  = args.item.참가번호;
+
+                var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                $(location).attr('href',url);
+            },
+        });
+    }
+    else if (searchCode == 5) {
+
+        // 업로드 파일 그리드
+        $("#jsGrid").jsGrid({
+            width: "100%",
+            height: "400px",
+            sorting: true,
+            paging: true,
+
+            data: gridData.rows,
+
+            fields: [
+                { name: "caId", type: "text", width: 100 , visible: false},
+                { name: "케이스명", type: "text", width: 100 , align: "center"},
+                { name: "참가번호", type: "text", width: 100 , align: "center"},
+                { name: "이름", type: "text", width: 100 , align: "center"},
+                { name: "나이", type: "text", width: 100 , align: "center"},
+                { name: "성별", type: "text",  width: 100 , align: "center"},
+                { name: "파일명", type: "number",  width: 100 , align: "center"},
+                { name: "파일구분", type: "number",  width: 100 , align: "center"},
+                { name: "업로드일자", type: "number", width: 100 , align: "center"},
+                { name: "파일다운", type: "number", width: 100 , align: "center"},
+            ],
+            rowDoubleClick: function(args) {
+                //console.log("args " + args);
+                var caId  = args.item.caId;
+                var pNo  = args.item.참가번호;
+
+                var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                $(location).attr('href',url);
+            },
+        });
+    }
 
 }
 
@@ -428,6 +571,17 @@ function getChartInfo() {
                     filterChart.push([index, item.scl]);
             });
 
+            var markings = [
+                { xaxis: { from: 1, to: 2 }, color: "#E8E8E8" },
+                { xaxis: { from: 4, to: 5 }, color: "#E8E8E8" },
+                { xaxis: { from: 7, to: 8 }, color: "#E8E8E8" },
+                { xaxis: { from: 10, to: 11 }, color: "#E8E8E8" },
+                { xaxis: { from: 13, to: 14 }, color: "#E8E8E8" },
+                { xaxis: { from: 16, to: 17 }, color: "#E8E8E8" },
+                { xaxis: { from: 19, to: 20 }, color: "#E8E8E8" }
+
+            ];
+
             // 한번 조회가 완료되면 그 후에는 동영상으로 로드하지 않음
             if (isSearch == false) {
                 isSearch = true;
@@ -471,7 +625,8 @@ function getChartInfo() {
                 },
                 xaxis: {
                     show: true
-                }
+                },
+                markings: markings
             });
             $("#line-chart").bind("plotclick", function (event, pos, item) {
 

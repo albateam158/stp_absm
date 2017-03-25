@@ -1,8 +1,6 @@
 package com.stp.absm.controller;
 
-import com.stp.absm.model.AbsmCase;
-import com.stp.absm.model.AbsmPrivate;
-import com.stp.absm.model.AbsmSurvey;
+import com.stp.absm.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -62,6 +60,7 @@ public class Page005Controller extends RootController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "age", required = false) String age,
             @RequestParam(value = "sex", required = false) String sex,
+            @RequestParam(value = "searchCode", required = false) String searchCode,
             Pageable pageable,
             ModelAndView mav,
             HttpServletRequest request
@@ -73,46 +72,129 @@ public class Page005Controller extends RootController {
         params.put("name", name);
         params.put("age", age);
         params.put("sex", sex);
-        //params.put("pageable", pageable);
-
-        logger.info("param info " + params.toString());
-
-        //int count = page005Mapper.selectBoardsCount(params);
-        List<AbsmSurvey> boards = page005Mapper.selectPrivateInfo(params);
-        //String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
+        params.put("searchCode", searchCode);
 
         JSONObject jsonObject = new JSONObject();
         JSONArray cell = new JSONArray();
 
-        for(int i=0; i < boards.size(); i++) {
+        List<Map<String, Object>> searchList = page005Mapper.selectAbsmData(params);
 
-            AbsmSurvey absmSurvey = (AbsmSurvey)boards.get(i);
-            JSONObject obj = new JSONObject();
+        if ("1".equals(searchCode)) {
+            // 개인자료
 
-            obj.put( "caId"      , absmSurvey.getCaId());
-            obj.put( "참가번호"   , absmSurvey.getPNo());
-            obj.put( "이름"       , absmSurvey.getName());
-            obj.put( "나이"       , absmSurvey.getAge());
-            obj.put( "성별"       , absmSurvey.getSex());
-            obj.put( "설문조사1"  , absmSurvey.getSuVal1());
-            obj.put( "설문조사2"  , absmSurvey.getSuVal2());
-            obj.put( "설문조사3"  , absmSurvey.getSuVal3());
-            obj.put( "설문조사4"  , absmSurvey.getSuVal4());
-            obj.put( "설문조사5"  , absmSurvey.getSuVal5());
-            obj.put( "설문조사6"  , absmSurvey.getSuVal6());
-            obj.put( "설문조사7"  , absmSurvey.getSuVal7());
-            obj.put( "설문조사8"  , absmSurvey.getSuVal8());
-            cell.add(obj);
+            for(int i=0; i < searchList.size(); i++) {
+
+                HashMap<String, Object> searchMap = (HashMap<String, Object>)searchList.get(i);
+                JSONObject obj = new JSONObject();
+
+                obj.put( "caId"      , searchMap.get("ca_id"));
+                obj.put( "케이스명"   , searchMap.get("case_nm"));
+                obj.put( "참가번호"   , searchMap.get("p_no"));
+                obj.put( "이름"       , searchMap.get("name"));
+                obj.put( "나이"       , searchMap.get("age"));
+                obj.put( "성별"       , searchMap.get("sex"));
+                cell.add(obj);
+            }
+        }
+        else if ("2".equals(searchCode)) {
+            // 설문조사
+
+            for(int i=0; i < searchList.size(); i++) {
+
+                HashMap<String, Object> searchMap = (HashMap<String, Object>)searchList.get(i);
+                JSONObject obj = new JSONObject();
+
+                obj.put( "caId"      , searchMap.get("ca_id"));
+                obj.put( "케이스명"   , searchMap.get("case_nm"));
+                obj.put( "참가번호"   , searchMap.get("p_no"));
+                obj.put( "이름"       , searchMap.get("name"));
+                obj.put( "나이"       , searchMap.get("age"));
+                obj.put( "성별"       , searchMap.get("sex"));
+                obj.put( "판교역 출입구"  , searchMap.get("su_val1"));
+                obj.put( "판교역 플랫폼"  , searchMap.get("su_val2"));
+                obj.put( "지하철 탑승"    , searchMap.get("su_val3"));
+                obj.put( "지하철 하차"    , searchMap.get("su_val4"));
+                obj.put( "강남역 출입구"  , searchMap.get("su_val5"));
+                obj.put( "버스정류장"     , searchMap.get("su_val6"));
+                obj.put( "버스탑승"       , searchMap.get("su_val7"));
+                obj.put( "버스하차"       , searchMap.get("su_val8"));
+                cell.add(obj);
+            }
+        }
+        else if ("3".equals(searchCode)) {
+            // 이벤트
+
+            for(int i=0; i < searchList.size(); i++) {
+
+                HashMap<String, Object> searchMap = (HashMap<String, Object>)searchList.get(i);
+                JSONObject obj = new JSONObject();
+
+                obj.put( "caId"      , searchMap.get("ca_id"));
+                obj.put( "케이스명"   , searchMap.get("case_nm"));
+                obj.put( "참가번호"   , searchMap.get("p_no"));
+                obj.put( "이름"       , searchMap.get("name"));
+                obj.put( "나이"       , searchMap.get("age"));
+                obj.put( "성별"       , searchMap.get("sex"));
+                obj.put( "대기지점출발"  , searchMap.get("ev_dt1"));
+                obj.put( "판교역 출입구"  , searchMap.get("ev_dt2"));
+                obj.put( "판교역 플랫폼"  , searchMap.get("ev_dt3"));
+                obj.put( "지하철 탑승"    , searchMap.get("ev_dt4"));
+                obj.put( "지하철 하차"    , searchMap.get("ev_dt5"));
+                obj.put( "강남역 출입구"  , searchMap.get("ev_dt6"));
+                obj.put( "버스정류장"     , searchMap.get("ev_dt7"));
+                obj.put( "버스탑승"       , searchMap.get("ev_dt8"));
+                obj.put( "버스하차"       , searchMap.get("ev_dt9"));
+                obj.put( "대기지점"       , searchMap.get("ev_dt10"));
+
+                cell.add(obj);
+            }
+        }
+        else if ("4".equals(searchCode)) {
+            // 생체정보
+            for(int i=0; i < searchList.size(); i++) {
+
+                HashMap<String, Object> searchMap = (HashMap<String, Object>)searchList.get(i);
+                JSONObject obj = new JSONObject();
+
+                obj.put( "caId"      , searchMap.get("ca_id"));
+                obj.put( "케이스명"   , searchMap.get("case_nm"));
+                obj.put( "참가번호"   , searchMap.get("p_no"));
+                obj.put( "이름"       , searchMap.get("name"));
+                obj.put( "나이"       , searchMap.get("age"));
+                obj.put( "성별"       , searchMap.get("sex"));
+                obj.put( "ECG/GSR구분"  , searchMap.get("eg_cd"));
+                obj.put( "측정시간"  , searchMap.get("me_tm"));
+                obj.put( "측정값"  , searchMap.get("me_val"));
+
+                cell.add(obj);
+            }
+
+        }
+        else if ("5".equals(searchCode)) {
+            // 업로드파일
+            for(int i=0; i < searchList.size(); i++) {
+
+                HashMap<String, Object> searchMap = (HashMap<String, Object>)searchList.get(i);
+                JSONObject obj = new JSONObject();
+
+                obj.put( "caId"      , searchMap.get("ca_id"));
+                obj.put( "케이스명"   , searchMap.get("case_nm"));
+                obj.put( "참가번호"   , searchMap.get("p_no"));
+                obj.put( "이름"       , searchMap.get("name"));
+                obj.put( "나이"       , searchMap.get("age"));
+                obj.put( "성별"       , searchMap.get("sex"));
+                obj.put( "파일명"  , searchMap.get("file_name"));
+                obj.put( "파일구분"  , searchMap.get("file_cd"));
+                obj.put( "업로드일자"  , searchMap.get("reg_date"));
+                obj.put( "파일다운"  , searchMap.get("url"));
+                cell.add(obj);
+            }
+
         }
 
         jsonObject.put("rows", cell);
-
         result.put("boards", jsonObject);
-        //result.put("paging", paging);
 
-        //mav.addObject("boards", boards);
-        //mav.addObject("paging", paging);
-        //mav.setViewName("search/search_div");
         return result;
     }
 

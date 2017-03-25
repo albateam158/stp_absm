@@ -23,7 +23,15 @@
                         <option value="남">남</option>
                         <option value="여">여</option>
                     </select>
-                    <button type="button" id="search" name="search" class="sch_btn fr" onclick="getAbsmInfo();">조회</button>
+                    <label for="searchCode" class="wd35">조회항목</label>
+                    <select name="searchCode" id="searchCode" class="box_bd wd80" class="box_bd wd80 mb10">
+                        <option value="1">개인자료</option>
+                        <option value="2">설문조사</option>
+                        <option value="3">이벤트</option>
+                        <option value="4">생체정보</option>
+                        <option value="5">업로드파일</option>
+                    </select>
+                    <button type="button" id="search" name="search" class="sch_btn fr" onclick="searchData();">조회</button>
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>

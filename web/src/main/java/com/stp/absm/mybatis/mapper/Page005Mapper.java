@@ -1,6 +1,6 @@
 package com.stp.absm.mybatis.mapper;
 
-import com.stp.absm.model.AbsmSurvey;
+import com.stp.absm.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +14,6 @@ public interface Page005Mapper {
 
     Integer selectBoardsCount(Map<String, Object> params);
 
-    List<AbsmSurvey> selectPrivateInfo(Map<String, Object> params);
+    List<Map<String, Object>> selectAbsmData(Map<String, Object> params);
 
 }

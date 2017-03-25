@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -32,6 +31,12 @@ public class AbsmEvent implements Serializable {
     private String dt;
     @Transient
     private String caseNm;
+    @Transient
+    private String name;
+    @Transient
+    private String age;
+    @Transient
+    private String sex;
     private Date regDate;
     private Date updateDate;
     private Date deleteDate;

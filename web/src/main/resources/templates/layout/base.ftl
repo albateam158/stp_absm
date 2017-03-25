@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/css/common.css" />
     <link rel="stylesheet" href="/css/jsgrid.css" />
     <link rel="stylesheet" href="/css/jquery-ui.css" />
+    <!-- 20170324 추가 jquery.toast -->
+    <link rel="stylesheet" href="../../css/jquery.toast.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -86,7 +88,8 @@
     <script src="/js/jsgrid.min.js"></script>
     <!-- 20170316 추가 datepicker -->
     <script src="/js/jquery-ui.min.js"></script>
-
+    <!-- 20170324 추가 jquery.toast -->
+    <script src="../../js/jquery.toast.js"></script>
 <@layout.block name="script">
 </@layout.block>
 </body>
