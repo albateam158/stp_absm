@@ -377,7 +377,15 @@ function setGrid(gridData, searchCode) {
                 { name: "이름", type: "text",  width: 100 , align: "center"},
                 { name: "나이", type: "text",  width: 100 , align: "center"},
                 { name: "성별", type: "text",  width: 100 , align: "center"}
-            ]
+            ],
+            rowDoubleClick: function(args) {
+                //console.log("args " + args);
+                var caId  = args.item.caId;
+                var pNo  = args.item.참가번호;
+
+                var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                $(location).attr('href',url);
+            },
         });
 
     }

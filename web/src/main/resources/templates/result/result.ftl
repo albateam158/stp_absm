@@ -264,6 +264,40 @@
         });
 
         /* END LINE CHART */
+
+        $("#caId").change(function() {
+            comboChange1($(this).val());
+        });
+
+        function comboChange1() {
+            var caId = $("#caId option:selected").val();
+
+            $.ajax({
+                type:"get",
+                url:"/result/pri_combo",
+                datatype: "json",
+                data: "caId="+caId,
+                success: function(data) {
+                    var html = '<option value="">선택</option>';
+
+                    if(data != "") {
+                        $("#name").find("option").remove();
+
+                        $.each(data, function(index, item) {
+                            html += '<option value="'+ item.prNo +'" >'+item.name  +'</option>' ;
+                        });
+                        $("#name").find("option").remove().end().append(html);
+                    } else {
+                        $("#name").find("option").remove().end().append(html);
+                        return;
+                    }
+                },
+                error: function(x, o, e) {
+                    var msg = "페이지 호출 중 에러 발생 \n" + x.status + " : " + o + " : " + e;
+                    alert(msg);
+                }
+            });
+        }
     </script>
     </@layout.put>
 
