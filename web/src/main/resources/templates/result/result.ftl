@@ -17,9 +17,9 @@
                             >${case.caseNm}</option>
                         </#list>
                     </select>
-                    <label for="name" class="wd35">이름</label>
+                    <label for="prNo" class="wd35">이름</label>
                     <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
-                    <select name="name" id="name"  class="box_bd wd80">
+                    <select name="pNo" id="pNo"  class="box_bd wd80">
                         <option value="">선택하세요</option>
                          <#list LPris as LPri>
                             <option value="${LPri.prNo}"
@@ -281,14 +281,14 @@
                     var html = '<option value="">선택</option>';
 
                     if(data != "") {
-                        $("#name").find("option").remove();
+                        $("#pNo").find("option").remove();
 
                         $.each(data, function(index, item) {
                             html += '<option value="'+ item.prNo +'" >'+item.name  +'</option>' ;
                         });
-                        $("#name").find("option").remove().end().append(html);
+                        $("#pNo").find("option").remove().end().append(html);
                     } else {
-                        $("#name").find("option").remove().end().append(html);
+                        $("#pNo").find("option").remove().end().append(html);
                         return;
                     }
                 },

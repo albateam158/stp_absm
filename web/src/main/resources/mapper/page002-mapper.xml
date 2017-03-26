@@ -185,8 +185,16 @@
     </insert>
 
     <select id="selectModelResult" parameterType="map" resultMap="ModelMap">
-        select a1.ca_id,a1.pr_id,a1.se_cd,a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4,
-        case when greatest(a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4) = a1.mo_pre1 then 1
+        select a1.mo_id, a1.ca_id,a1.pr_id,a1.se_cd,a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4
+        , a1.mean_rri
+        , a1.std_rri
+        , a1.mean_hrv
+        , a1.std_hrv
+        , a1.rmssdd
+        , a1.pnn50
+        , a1.lfhf
+        , a1.scl
+        , case when greatest(a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4) = a1.mo_pre1 then 1
              when greatest(a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4) = a1.mo_pre2 then 2
              when greatest(a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4) = a1.mo_pre3 then 3
              when greatest(a1.mo_pre1,a1.mo_pre2,a1.mo_pre3,a1.mo_pre4) = a1.mo_pre4 then 4
@@ -206,7 +214,15 @@
         , round(
             (1-(1- exp(-exp(b.param3-(b.param4*a.std_rri + b.param5*a.mean_hrv + b.param6*a.pnn50 + b.param7*a.scl)))))
           ,2) mo_pre4
-        , st_level, ca_id,pr_id,se_cd
+        , st_level, ca_id,pr_id,se_cd,a.mo_id
+        , a.mean_rri
+        , a.std_rri
+        , a.mean_hrv
+        , a.std_hrv
+        , a.rmssdd
+        , a.pnn50
+        , a.lfhf
+        , a.scl
         from absm_model a
         left outer join absm_mosu b
         on b.mo_cd = '1'

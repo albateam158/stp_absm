@@ -8,12 +8,14 @@ import kr.pe.kwonnam.freemarker.inheritance.PutDirective;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -29,10 +31,22 @@ import java.util.Map;
  */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+
     private final Logger log = LoggerFactory.getLogger(WebMvcConfig.class);
+
+    @Value(value = "${upload.fileLocation")
+    private  String fileLocation;
+
+
 
     @Autowired
     protected DurationFromNow durationFromNow;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry){
+        registry.addResourceHandler("/file/**").addResourceLocations("file:///"+fileLocation);
+    }
+
     @Bean
     public Map<String, TemplateModel> freemarkerLayoutDirectives() {
         Map<String, TemplateModel> freemarkerLayoutDirectives = new HashMap<String, TemplateModel>();

@@ -259,6 +259,7 @@ public class Page002Controller extends RootController {
                     map.put("prId",prId);
                     List<AbsmModel> modelResults = page002Mapper.selectModelResult(map);
                     for(AbsmModel modelResult : modelResults){
+                        modelResult.setMoId(modelResult.getMoId());
                         modelResult.setCaId(modelResult.getCaId());
                         modelResult.setPrId(modelResult.getPrId());
                         modelResult.setSeCd(modelResult.getSeCd());
