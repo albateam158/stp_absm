@@ -1,7 +1,9 @@
 @charset "utf-8";
 
+@import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans");
 @import url("http://fonts.googleapis.com/earlyaccess/nanumgothic.css");
-
+@import url('https://fonts.googleapis.com/css?family=Raleway:900');
 
 body, div, h1, h2, h3, h4, h5, h6, p, address, 
 blockquote, hr, ul, ol, dl, li, dt, dd, table,
@@ -12,7 +14,7 @@ form, fieldset, input, textarea{
 
 body{
 	font-size:10px; 
-	font-family:'Noto Sans KR',"Malgun Gothic","Dotum", sans-serif;
+	font-family:'Noto Sans KR','Noto Sans','Malgun Gothic','Dotum', sans-serif;
 }
 
 ul, ol{list-style:none}
@@ -30,6 +32,7 @@ fieldset{border:0}
 
 input{outline:none}
 
+address{font-family:'Noto Sans','Noto Sans KR','Malgun Gothic','Dotum', sans-serif;;}
 
 
 /* 기본 설정 클래스 */

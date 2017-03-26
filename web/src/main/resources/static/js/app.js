@@ -269,7 +269,7 @@ function saveVideo() {
             var retMsg  = data.retMsg;
             var caId    = data.caId;
             var prId    = data.prId;
-            
+
             if (retCode == "S_PAGE4001") {
                 // 조회 api 호출
                 getVideoInfo(caId, prId);
@@ -293,7 +293,7 @@ function getVideoInfo(caId, prId) {
         data: {
             "caId": caId,
             "prId": prId,
-            "fileCd": "VIDEO"
+            "fileCd": "08"
         },
         success: function(data) {
 
@@ -319,12 +319,6 @@ function searchData(searchCode) {
 
     var form = $('#SearchForm')[0];
     var formData = new FormData(form);
-    /*console.log("formData " + formData);
-
-    console.log("formData " + formData.get("caId"));
-    console.log("formData " + formData.get("name"));
-    console.log("formData " + formData.get("age"));
-    console.log("formData " + formData.get("sex"));*/
     var searchCode = formData.get("searchCode");
 
     $.ajax({
@@ -342,9 +336,12 @@ function searchData(searchCode) {
 
             var gridData = data.boards;
 
-            setGrid(gridData, searchCode)
-
-
+            if (gridData.rows.length <= 0) {
+                createToast('info', "조회 결과가 없습니다.");
+            }
+            else {
+                setGrid(gridData, searchCode);
+            }
         },
         error: function(request, status, error) {
             alert("개인정보 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
@@ -360,8 +357,8 @@ function searchData(searchCode) {
 function setGrid(gridData, searchCode) {
 
     if (searchCode == 1) {
-        
-        // 개인정보 그리드 
+
+        // 개인정보 그리드
         $("#jsGrid").jsGrid({
             width: "100%",
             height: "400px",
@@ -390,7 +387,7 @@ function setGrid(gridData, searchCode) {
 
     }
     else if (searchCode == 2) {
-        
+
         // 설문조사 그리드
         $("#jsGrid").jsGrid({
             width: "100%",
@@ -425,10 +422,10 @@ function setGrid(gridData, searchCode) {
                 $(location).attr('href',url);
             },
         });
-        
+
     }
     else if (searchCode == 3) {
-        
+
         // 이벤트 그리드
         $("#jsGrid").jsGrid({
             width: "100%",
@@ -458,17 +455,17 @@ function setGrid(gridData, searchCode) {
             ],
             rowDoubleClick: function(args) {
 
-            var caId  = args.item.caId;
-            var pNo  = args.item.참가번호;
+                var caId  = args.item.caId;
+                var pNo  = args.item.참가번호;
 
-            var url = "/result/result?caId="+caId+"&pNo="+pNo;
-            $(location).attr('href',url);
-        },
+                var url = "/result/result?caId="+caId+"&pNo="+pNo;
+                $(location).attr('href',url);
+            },
         });
-        
+
     }
     else if (searchCode == 4) {
-        
+
         // 생체정보 그리드
         $("#jsGrid").jsGrid({
             width: "100%",
@@ -536,6 +533,16 @@ function setGrid(gridData, searchCode) {
 
 }
 
+// 결과화면에서 case 변경 시 동영상 조회 flag 초기화
+$('#ResultForm select#pNo').on('change', function(){
+    isSearch = false;
+});
+
+// 결과화면에서 참가인원 변경 시 동영상 조회 flag 초기화
+$('#ResultForm select#caId').on('change', function(){
+    isSearch = false;
+});
+
 /* 결과 화면의 데이터 조회 */
 function getChartInfo() {
 
@@ -580,13 +587,13 @@ function getChartInfo() {
             });
 
             var markings = [
-                { xaxis: { from: 1, to: 2 }, color: "#E8E8E8" },
-                { xaxis: { from: 4, to: 5 }, color: "#E8E8E8" },
-                { xaxis: { from: 7, to: 8 }, color: "#E8E8E8" },
-                { xaxis: { from: 10, to: 11 }, color: "#E8E8E8" },
-                { xaxis: { from: 13, to: 14 }, color: "#E8E8E8" },
-                { xaxis: { from: 16, to: 17 }, color: "#E8E8E8" },
-                { xaxis: { from: 19, to: 20 }, color: "#E8E8E8" }
+                { xaxis: { from: 1, to: 2 }, color: "#000" },
+                { xaxis: { from: 4, to: 5 }, color: "#000" },
+                { xaxis: { from: 7, to: 8 }, color: "#000" },
+                { xaxis: { from: 10, to: 11 }, color: "#000" },
+                { xaxis: { from: 13, to: 14 }, color: "#000" },
+                { xaxis: { from: 16, to: 17 }, color: "#000" },
+                { xaxis: { from: 19, to: 20 }, color: "#000" }
 
             ];
 
@@ -653,6 +660,24 @@ function getChartInfo() {
         }
     });
 
+}
+
+// Toast 메세지 생성
+function createToast(t, msg){
+    var message = "";
+    var options = {
+        duration: 3000, // 3초 동안 나타남
+        sticky: !!Math.round(Math.random() * 1),
+        type: t
+    };
+
+    switch(t){
+        case 'danger': message = '<h4>오류</h4><span class="line3"></span>' + msg; break;
+        case 'info': message = '<h4>알림</h4><span class="line3"></span>'+ msg; break;
+        case 'success': message = '<h4>성공</h4><span class="line3"></span>'+ msg; break;
+    }
+
+    $.toast(message, options);
 }
 
 // 케이스 목록 조회

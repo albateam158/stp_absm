@@ -1,9 +1,9 @@
 <@layout.extends name="layout/base.ftl">
 
-	<@layout.put block="head">
+    <@layout.put block="head">
 
-	</@layout.put>
-	<@layout.put block="contents">
+    </@layout.put>
+    <@layout.put block="contents">
     <section class="mb10">
         <div class="pd7">
             <h2 class="lookup">자료 조회</h2>
@@ -25,24 +25,45 @@
                     </select>
                     <label for="searchCode" class="wd80">조회항목</label>
                     <select name="searchCode" id="searchCode" class="box_bd wd80" class="box_bd wd80 mb10">
+                        <option value="">선택하세요</option>
                         <option value="1">개인자료</option>
                         <option value="2">설문조사</option>
                         <option value="3">이벤트</option>
                         <option value="4">생체정보</option>
                         <option value="5">업로드파일</option>
                     </select>
-                    <button type="button" id="search" name="search" class="sch_btn fr" onclick="searchData();">조회</button>
+                    <button type="button" id="search" name="search" class="sch_btn fr" onclick="vaildationCheck();">조회</button>
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
-	</@layout.put>
+    </@layout.put>
 
 
-	<@layout.put block="script">
+    <@layout.put block="script">
     <script type="text/javascript">
+
+        function vaildationCheck() {
+
+            var msg = '';
+
+            if ($('#caId').val() == '') {
+                msg = '케이스명을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#searchCode').val() == '') {
+                msg = '조회 항목을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            searchData();
+
+        }
 
         $(document).ready(function() {
             getCaseList("SearchForm");
@@ -79,6 +100,6 @@
 
         });
     </script>
-	</@layout.put>
+    </@layout.put>
 
 </@layout.extends>

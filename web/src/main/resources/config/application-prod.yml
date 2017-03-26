@@ -41,7 +41,7 @@ develop: true
 
 upload:
     fileLocation: C:\workspace\absm\upload
-    videoUrl: http://localhost:8080/video/
+    videoUrl: http://localhost:8080/file/
 
 logging:
     config: classpath:logback.xml

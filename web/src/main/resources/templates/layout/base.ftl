@@ -89,7 +89,9 @@
     <!-- 20170316 추가 datepicker -->
     <script src="/js/jquery-ui.min.js"></script>
     <!-- 20170324 추가 jquery.toast -->
-    <script src="../../js/jquery.toast.js"></script>
+    <script src="/js/jquery.toast.js"></script>
+    <!-- 170326 추가 bxslider -->
+    <script src="/js/jquery.bxslider.min.js"></script>
 <@layout.block name="script">
 </@layout.block>
 </body>

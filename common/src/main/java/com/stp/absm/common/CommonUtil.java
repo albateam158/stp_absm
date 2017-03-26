@@ -90,7 +90,7 @@ public class CommonUtil {
 
         if(!fileName.trim().equals("")) {
 
-            filePath = uploadPath + "\\" + fileName;
+            filePath = uploadPath + fileName;
 
             logger.info("CommonUtil >>> Upload File Path " + filePath);
 

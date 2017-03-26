@@ -1,9 +1,9 @@
 <@layout.extends name="layout/base.ftl">
 
-	<@layout.put block="head">
+    <@layout.put block="head">
 
-	</@layout.put>
-	<@layout.put block="contents">
+    </@layout.put>
+    <@layout.put block="contents">
     <section class="mb10">
         <div class="pd7">
             <h2 class="input">이벤트 자료 입력</h2>
@@ -18,21 +18,38 @@
                     <label for="file1" id="" class="file_label">파일찾기</label>
                     <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('eventFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="EVENT" />
-                    <button type="button" id="" name="save" class="input_btn fr" onclick="saveEvent();">입력</button>
+                    <button type="button" id="" name="save" class="input_btn fr" onclick="vaildationCheck();">입력</button>
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
-	</@layout.put>
+    </@layout.put>
 
 
-	<@layout.put block="script">
+    <@layout.put block="script">
     <script type="text/javascript">
 
-        $(window).ready(function(){
-        });
+        function vaildationCheck() {
+
+            var msg = '';
+
+            if ($('#caId').val() == '') {
+                msg = '케이스명을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file1')[0].files.length == 0) {
+                msg = '이벤트 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            saveEvent();
+
+        }
 
         $(document).ready(function() {
             getCaseList("EventForm");
@@ -66,6 +83,6 @@
             ]
         });
     </script>
-	</@layout.put>
+    </@layout.put>
 
 </@layout.extends>

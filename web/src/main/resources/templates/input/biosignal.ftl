@@ -1,9 +1,9 @@
 <@layout.extends name="layout/base.ftl">
 
-	<@layout.put block="head">
+    <@layout.put block="head">
 
-	</@layout.put>
-	<@layout.put block="contents">
+    </@layout.put>
+    <@layout.put block="contents">
     <section class="mb10">
         <div class="pd7">
             <h2 class="input">생체신호 측정자료 입력</h2>
@@ -47,7 +47,7 @@
                     <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >
                     <!--<input type="hidden" name="fileType" value="MODEL" />-->
                     <input type="hidden" name="fileType" value="FILTER" />
-                    <button type="button" id="" name="save" class="input_btn fr" onclick="saveBiosignal();">입력</button>
+                    <button type="button" id="" name="save" class="input_btn fr" onclick="vaildationCheck();">입력</button>
 
                 </form>
                 <span class="line"></span>
@@ -56,14 +56,56 @@
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
-	</@layout.put>
+    </@layout.put>
 
-	<@layout.put block="script">
+    <@layout.put block="script">
     <script type="text/javascript">
 
         $(document).ready(function() {
             getCaseList("BioForm");
         });
+
+        function vaildationCheck() {
+
+            var msg = '';
+
+            if ($('#caId').val() == '') {
+                msg = '케이스명을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#name').val() == '') {
+                msg = '이름을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file1')[0].files.length == 0) {
+                msg = 'ECG 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file2')[0].files.length == 0) {
+                msg = 'GSR 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file3')[0].files.length == 0) {
+                msg = '분단위 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file4')[0].files.length == 0) {
+                msg = 'SPSS 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+            saveBiosignal();
+        }
 
         // select box 변경시 히든 prId 설정
         $('#BioForm select#name').on('change', function(){
@@ -104,6 +146,6 @@
             ]
         });
     </script>
-	</@layout.put>
+    </@layout.put>
 
 </@layout.extends>

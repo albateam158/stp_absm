@@ -40,8 +40,8 @@ multipart:
 develop: true
 
 upload:
-    fileLocation: D:\private\projectA\upload
-    videoUrl: http://localhost:8080/video/
+    fileLocation: C:\workspace\absm\upload
+    videoUrl: http://localhost:8080/file/
 
 logging:
     config: classpath:logback.xml

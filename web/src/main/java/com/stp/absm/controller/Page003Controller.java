@@ -139,16 +139,16 @@ public class Page003Controller extends RootController {
             JSONObject obj = new JSONObject();
 
             obj.put( "이름"     , absmEvent.getCaseNm());
-            obj.put( "이벤트1"  , absmEvent.getEvDt1());
-            obj.put( "이벤트2"  , absmEvent.getEvDt2());
-            obj.put( "이벤트3"  , absmEvent.getEvDt3());
-            obj.put( "이벤트4"  , absmEvent.getEvDt4());
-            obj.put( "이벤트5"  , absmEvent.getEvDt5());
-            obj.put( "이벤트6"  , absmEvent.getEvDt6());
-            obj.put( "이벤트7"  , absmEvent.getEvDt7());
-            obj.put( "이벤트8"  , absmEvent.getEvDt8());
-            obj.put( "이벤트9"  , absmEvent.getEvDt9());
-            obj.put( "이벤트10"  , absmEvent.getEvDt10());
+            obj.put( "대기지점출발"  , absmEvent.getEvDt1());
+            obj.put( "판교역 출입구"  , absmEvent.getEvDt2());
+            obj.put( "판교역 플랫폼"  , absmEvent.getEvDt3());
+            obj.put( "지하철 탑승"  , absmEvent.getEvDt4());
+            obj.put( "지하철 하차"  , absmEvent.getEvDt5());
+            obj.put( "강남역 출입구"  , absmEvent.getEvDt6());
+            obj.put( "버스정류장"  , absmEvent.getEvDt7());
+            obj.put( "버스탑승"  , absmEvent.getEvDt8());
+            obj.put( "버스하차"  , absmEvent.getEvDt9());
+            obj.put( "대기지점"  , absmEvent.getEvDt10());
 
             cell.add(obj);
         }

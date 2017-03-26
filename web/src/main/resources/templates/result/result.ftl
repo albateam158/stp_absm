@@ -18,10 +18,10 @@
                         </#list>
                     </select>
                     <label for="prNo" class="wd35">이름</label>
-                    <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
+                <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
                     <select name="pNo" id="pNo"  class="box_bd wd80">
                         <option value="">선택하세요</option>
-                         <#list LPris as LPri>
+                        <#list LPris as LPri>
                             <option value="${LPri.prNo}"
                                     <#if aPri.prNo?exists && aPri.prNo == LPri.prNo>selected</#if>
                             >${LPri.name}</option>
@@ -40,7 +40,7 @@
                         <option value="8">n-meanSCL</option>
                     </select>
                     <div class="btns fr">
-                        <button type="button" id="search" name="search" class="sch_btn fl" onclick="getChartInfo();">조회</button><!-- fl 클래스명은 왼쪽으로 붙는 클래스명입니다. -->
+                        <button type="button" id="search" name="search" class="sch_btn fl" onclick="vaildationCheck();">조회</button><!-- fl 클래스명은 왼쪽으로 붙는 클래스명입니다. -->
                         <button type="button" id="isShow" name="isShow" class="graph_btn fl">그래프2 보기</button>
                     </div>
                 </form>
@@ -101,13 +101,31 @@
     <@layout.put block="script">
     <script type="text/javascript">
 
-        /*$(document).ready(function() {
-            //getCaseList("SearchForm");
-            /!* 넘어온 파라미터 정보로 바로 조회 *!/
-            var vid = document.getElementById("MyVideo");
-            vid.play();
-        });
-*/
+        function vaildationCheck() {
+
+            var msg = '';
+
+            if ($('#caId').val() == '') {
+                msg = '케이스명을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#name').val() == '') {
+                msg = '이름을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#filter').val() == '') {
+                msg = '측정자료를 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            getChartInfo();
+
+        }
 
         $(function () {
             /*

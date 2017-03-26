@@ -1,9 +1,9 @@
 <@layout.extends name="layout/base.ftl">
 
-	<@layout.put block="head">
+    <@layout.put block="head">
 
-	</@layout.put>
-	<@layout.put block="contents">
+    </@layout.put>
+    <@layout.put block="contents">
     <section class="mb10">
         <div class="pd7">
             <h2 class="input">기초자료 및 개인특성 자료 입력</h2>
@@ -28,62 +28,53 @@
                     <input id="file2" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('file_sch2').value=this.value" onkeydown="return false" ><!-- input의 id : file2 -->
                     <input type="hidden" name="fileType" value="SURVEY" />
 
-                    <button type="button" id="" name="save" class="input_btn fr" onclick="savePrivate();">입력</button>
+                    <button type="button" id="" name="save" class="input_btn fr" onclick="vaildationCheck();">입력</button>
                 </form>
                 <span class="line"></span>
                 <div id="jsGrid"></div>
-
-                <div class="toasts">
-                    <a href="#" class="default">Default Toast</a>
-                    <a href="#" class="danger">Danger Toast</a>
-                    <a href="#" class="info">Info Toast</a>
-                    <a href="#" class="success">Success Toast</a>
-                </div>
-
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
-	</@layout.put>
+    </@layout.put>
 
 
-	<@layout.put block="script">
+    <@layout.put block="script">
     <script type="text/javascript">
 
-        function createToast(t){
-            var message = '<h4>오류</h4><span class="line3"></span>결과가 존재하지 않습니다.';
-            var options = {
-                duration: 3000,
-                sticky: !!Math.round(Math.random() * 1),
-                type: t
-            };
+        function vaildationCheck() {
 
-            switch(t){
-                case 'danger': message = '<h4>오류</h4><span class="line3"></span>데이터가 존재하지 않습니다.'; break;
-                case 'info': message = '<h4>오류</h4><span class="line3"></span>결과가 존재하지 않습니다.'; break;
-                case 'success': message = '<h4>오류</h4><span class="line3"></span>데이터가 존재하지 않습니다.'; break;
+            var msg = '';
+
+            if ($('#datePicker').val() == '') {
+                msg = '측정일자를 선택하세요';
+                createToast('info', msg);
+                return;
             }
 
-            $.toast(message, options);
+            if ($('#caseNm').val() == '') {
+                msg = '케이스명을 입력하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file1')[0].files.length == 0) {
+                msg = '개인특성 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            if ($('#file2')[0].files.length == 0) {
+                msg = '설문조사 파일을 선택하세요';
+                createToast('info', msg);
+                return;
+            }
+
+            savePrivate();
+
         }
-
-        $(document).ready(function() {
-            $.toast.config.align = 'center';
-            $.toast.config.width = 200;
-
-            $('.toasts a').click(function(){
-                createToast($(this).attr('class'));
-                return false;
-            });
-        });
 
         var clients = [];
 
-        // var countries = [
-        //     { Name: "", Id: 0 },
-        //     { Name: "United States", Id: 1 },
-        //     { Name: "Canada", Id: 2 },
-        //     { Name: "United Kingdom", Id: 3 }
-        // ];
 
         $("#jsGrid").jsGrid({
             width: "100%",
@@ -105,6 +96,6 @@
             ]
         });
     </script>
-	</@layout.put>
+    </@layout.put>
 
 </@layout.extends>
