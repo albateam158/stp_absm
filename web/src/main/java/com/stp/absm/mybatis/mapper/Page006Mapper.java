@@ -30,6 +30,7 @@ public interface Page006Mapper {
 
     AbsmPrivate selectPrivate(Map<String, Object> params);
 
+    List<AbsmOrg> selectGraph(Map<String, Object> params);
 
 
 }
