@@ -299,6 +299,7 @@ function getVideoInfo(caId, prId) {
 
             if (data.url != "") {
                 var video = $('#video1')[0];
+                video.type = "video/mp4";
                 video.src = data.url;
                 video.load();
                 video.play();
