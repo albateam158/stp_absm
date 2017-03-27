@@ -185,7 +185,7 @@ public class Page005Controller extends RootController {
                 obj.put( "성별"       , searchMap.get("sex"));
                 obj.put( "파일명"  , searchMap.get("file_name"));
                 obj.put( "파일구분"  , searchMap.get("file_cd"));
-                obj.put( "업로드일자"  , searchMap.get("reg_date"));
+                obj.put( "업로드일자"  , searchMap.get("reg_date").toString());
                 obj.put( "파일다운"  , searchMap.get("url"));
                 cell.add(obj);
             }
