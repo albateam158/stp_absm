@@ -43,6 +43,7 @@ public class ModelFileService implements DataFileService {
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
+        String url      = fileUploadInfo.getUrl();
         int caId        = fileUploadInfo.getCaId();
         int prId        = fileUploadInfo.getPrId();
         long fileSize   = fileUploadInfo.getFileSize();
@@ -99,7 +100,7 @@ public class ModelFileService implements DataFileService {
             absmFile.setFileCd("07");
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
-            absmFile.setUrl(fileName);
+            absmFile.setUrl(url);
 
             absmFileRepository.save(absmFile);
 

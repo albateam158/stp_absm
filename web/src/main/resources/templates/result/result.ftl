@@ -258,27 +258,7 @@
                     show: true
                 }
             });
-            //Initialize tooltip on hover
-            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
-                position: "absolute",
-                display: "none",
-                opacity: 0.8
-            }).appendTo("body");
 
-            $("#line-chart").bind("plothover", function (event, pos, item) {
-
-                if (item) {
-                    var x = item.datapoint[0].toFixed(2),
-                            y = item.datapoint[1].toFixed(2);
-
-                    $("#line-chart-tooltip").html(item.series.label + " of " + x + " = " + y)
-                            .css({top: item.pageY + 5, left: item.pageX + 5})
-                            .fadeIn(200);
-                } else {
-                    $("#line-chart-tooltip").hide();
-                }
-
-            });
         });
 
         /* END LINE CHART */

@@ -43,6 +43,7 @@ public class EventFileService implements DataFileService{
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
+        String url      = fileUploadInfo.getUrl();
         int caId        = fileUploadInfo.getCaId();
         int prId        = fileUploadInfo.getPrId();
         long fileSize   = fileUploadInfo.getFileSize();
@@ -89,7 +90,7 @@ public class EventFileService implements DataFileService{
             absmFile.setFileCd("05");
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
-            absmFile.setUrl(fileName);
+            absmFile.setUrl(url);
 
             absmFileRepository.save(absmFile);
 

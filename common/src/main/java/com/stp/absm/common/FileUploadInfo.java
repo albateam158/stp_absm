@@ -9,6 +9,7 @@ import lombok.Data;
 public class FileUploadInfo {
     private String fileName;
     private String fileType;
+    private String url;
     private long fileSize;
     private int caId;
     private int prId;

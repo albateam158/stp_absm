@@ -41,6 +41,7 @@ public class MeasureFileService implements DataFileService {
 
         String fileType = fileUploadInfo.getFileType();
         String fileName = fileUploadInfo.getFileName();
+        String url      = fileUploadInfo.getUrl();
         int caId        = fileUploadInfo.getCaId();
         int prId        = fileUploadInfo.getPrId();
         long fileSize   = fileUploadInfo.getFileSize();
@@ -118,7 +119,7 @@ public class MeasureFileService implements DataFileService {
 
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
-            absmFile.setUrl(fileName);
+            absmFile.setUrl(url);
 
             absmFileRepository.save(absmFile);
 

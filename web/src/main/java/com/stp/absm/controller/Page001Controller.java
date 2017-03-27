@@ -34,6 +34,9 @@ public class Page001Controller extends RootController {
     @Value(value = "${upload.fileLocation}")
     private String fileLocation;
 
+    @Value(value = "${upload.fileUrl}")
+    private String fileUrl;
+
     @Autowired
     protected PrivateFileService privateFileService;
 
@@ -176,7 +179,8 @@ public class Page001Controller extends RootController {
                 /* after move file upload file data */
                 FileUploadInfo fileUploadInfo = new FileUploadInfo();
                 fileUploadInfo.setCaId(caId);
-                fileUploadInfo.setFileName(filePath);
+                fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
+                fileUploadInfo.setFileName(file.getOriginalFilename());
                 fileUploadInfo.setFileType(fileType[i]);
                 fileUploadInfo.setFileSize(file.getSize());
 
