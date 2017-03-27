@@ -20,6 +20,7 @@
                     <input type="text" name="age" class="box_bd wd80" id="age"/>
                     <label for="sex" class="wd35">성별</label>
                     <select name="sex" id="sex" class="box_bd wd80" class="box_bd wd80 mb10">
+                        <option value="">전체</option>
                         <option value="남">남</option>
                         <option value="여">여</option>
                     </select>
