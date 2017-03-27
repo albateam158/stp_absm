@@ -258,6 +258,13 @@
         where ca_id = #{caId}
     </delete>
 
+    <delete id="deleteFile" parameterType="map">
+        delete from absm_file
+        where ca_id = #{caId}
+        and pr_id = #{prId}
+        and file_cd = #{fileCd}
+    </delete>
+
     <delete id="deleteOrg" parameterType="map">
         delete from absm_org
         where ca_id = #{caId}

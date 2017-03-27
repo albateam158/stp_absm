@@ -89,6 +89,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
          * 문제가 있어서 설정과 동일한 경로로 직접 하드코딩 입력
          */
         registry.addResourceHandler("/file/**").addResourceLocations("file:///C:\\workspace\\absm\\upload\\");
+//        registry.addResourceHandler("/file/**").addResourceLocations("file:///"+fileLocation);
+
     }
 
 

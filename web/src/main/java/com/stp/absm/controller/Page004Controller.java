@@ -149,6 +149,13 @@ public class Page004Controller extends RootController {
         //String filePath = CommonUtil.fileTransferTo(file, fileLocation);
         CommonUtil.fileTransferTo(file, fileLocation);
 
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("caId",caId);
+        param.put("prId",prId);
+        param.put("fileCd","08");
+
+        //파일 데이터삭제
+        page002Mapper.deleteFile(param);
         // File Table Insert
         AbsmFile absmFile = new AbsmFile();
         absmFile.setCaId(caId);

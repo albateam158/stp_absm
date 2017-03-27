@@ -32,6 +32,7 @@ public interface Page002Mapper {
 
     Integer deleteSurveyAvg(Map<String, Object> params);
 
+    Integer deleteFile(Map<String, Object> params);
 
     Integer deleteOrg(Map<String, Object> params);
 
