@@ -35,8 +35,8 @@ public class Page004Controller extends RootController {
     @Value(value = "${upload.fileLocation}")
     private String fileLocation;
 
-    @Value(value = "${upload.videoUrl}")
-    private String videoUrl;
+    @Value(value = "${upload.fileUrl}")
+    private String fileUrl;
 
     /**
      * 조회화면
@@ -163,7 +163,7 @@ public class Page004Controller extends RootController {
         absmFile.setFileCd("08");
         absmFile.setFileName(file.getOriginalFilename());
         absmFile.setFileSize(file.getSize());
-        absmFile.setUrl(videoUrl+file.getOriginalFilename());
+        absmFile.setUrl(fileUrl+file.getOriginalFilename());
 
         absmFileRepository.save(absmFile);
 
