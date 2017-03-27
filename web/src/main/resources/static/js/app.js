@@ -506,20 +506,21 @@ function setGrid(gridData, searchCode) {
             height: "400px",
             sorting: true,
             paging: true,
-
+            shrinkToFit: false,
+            autowidth :true,
             data: gridData.rows,
 
             fields: [
-                { name: "caId", type: "text", width: 100 , visible: false},
-                { name: "케이스명", type: "text", width: 100 , align: "center"},
-                { name: "참가번호", type: "text", width: 100 , align: "center"},
-                { name: "이름", type: "text", width: 100 , align: "center"},
-                { name: "나이", type: "text", width: 100 , align: "center"},
-                { name: "성별", type: "text",  width: 100 , align: "center"},
-                { name: "파일명", type: "number",  width: 100 , align: "center"},
-                { name: "파일구분", type: "number",  width: 100 , align: "center"},
-                { name: "업로드일자", type: "number", width: 100 , align: "center"},
-                { name: "파일다운", type: "number", width: 100 , align: "center"},
+                { name: "caId", type: "text", visible: false},
+                { name: "케이스명", type: "text", align: "center"},
+                { name: "참가번호", type: "text", align: "center"},
+                { name: "이름", type: "text", align: "center"},
+                { name: "나이", type: "text", align: "center"},
+                { name: "성별", type: "text",  align: "center"},
+                { name: "파일명", type: "text", width: "100%", align: "center"},
+                { name: "파일구분", type: "text",  visible: false},
+                { name: "업로드일자", type: "text", align: "center"},
+                { name: "파일다운", type: "text", width: "100%", align: "center"},
             ],
             rowDoubleClick: function(args) {
                 //console.log("args " + args);
@@ -643,6 +644,28 @@ function getChartInfo() {
                     show: true
                 },
                 markings: markings
+            });
+
+            //Initialize tooltip on hover
+            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+                position: "absolute",
+                display: "none",
+                opacity: 0.8
+            }).appendTo("body");
+
+            $("#line-chart").bind("plothover", function (event, pos, item) {
+
+                if (item) {
+                    var x = item.datapoint[0].toFixed(0),
+                        y = item.datapoint[1].toFixed(5);
+
+                    $("#line-chart-tooltip").html("구간 측정정보 (" + x + "분 측정값 = " + y + ")")
+                        .css({top: item.pageY + 5, left: item.pageX + 5})
+                        .fadeIn(200);
+                } else {
+                    $("#line-chart-tooltip").hide();
+                }
+
             });
             $("#line-chart").bind("plotclick", function (event, pos, item) {
 
