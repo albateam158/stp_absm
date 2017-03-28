@@ -86,11 +86,12 @@ public class Page006Controller extends RootController {
         params.put("chartId", chartId);
 
         // Filter Data
-        List<AbsmFilter>   chartInfo    = page006Mapper.selectResultData(params);
+        //List<AbsmFilter>   chartInfo    = page006Mapper.selectResultData(params);
+        List<AbsmOrg> chartInfo = page006Mapper.selectGraph(params);
         // Video Data
-        AbsmFile           absmFile     = page006Mapper.selectVideoUrl(params);
+        AbsmFile absmFile = page006Mapper.selectVideoUrl(params);
         // Event Data
-        List<AbsmEvent>    events = page006Mapper.selectEvents(params);
+        List<AbsmEvent> events = page006Mapper.selectEvents(params);
 
         result.put("chartInfo", chartInfo);
         result.put("videoInfo", absmFile);

@@ -151,6 +151,7 @@
         <result property="evDt9" column="ev_dt9"/>
         <result property="evDt10" column="ev_dt10"/>
         <result property="seCd" column="se_cd"/>
+        <result property="codeName" column="code_name"/>
         <result property="mMeanRri" column="m_mean_rri"/>
         <result property="mStdRri" column="m_std_rri"/>
         <result property="mMeanHrv" column="m_mean_hrv"/>
@@ -351,6 +352,7 @@
             , c1.ev_dt9
             , c1.ev_dt10
             , c1.se_cd
+            , c3.code_name
             , c2.mean_rri m_mean_rri
             , c2.std_rri m_std_rri
             , c2.mean_hrv m_mean_hrv
@@ -390,7 +392,7 @@
                     STR_TO_DATE(a2.ev_dt9,'%H:%i:%s') as ev_dt9,
                     STR_TO_DATE(a2.ev_dt10,'%H:%i:%s') as ev_dt10,
                     DATE_ADD(STR_TO_DATE(a2.ev_dt1,'%H:%i:%s'), interval a1.fi_tm MINUTE) as cur_dt
-                     FROM absm.absm_org a1
+                     FROM absm_org a1
                     inner join
                     (
                     SELECT a.*,b.pr_id FROM absm_event a
@@ -398,7 +400,7 @@
                     on a.p_no = b.p_no
                     and a.ca_id = b.ca_id
                     where a.ca_id = #{caId}
-                    and a.p_no = 1
+                    and a.p_no = #{pNo}
                     ) a2
                     on a1.ca_id = a2.ca_id
                     and a1.pr_id =a2.pr_id
@@ -411,6 +413,8 @@
                 and c1.pr_id = c2.pr_id
                 and c1.se_cd = c2.se_cd
                 and c1.p_no = #{pNo}
+                inner join absm_code c3
+                on CONCAT('E0',c1.se_cd) = c3.data
                 order by  CAST(c1.fi_tm AS UNSIGNED)
 
     </select>

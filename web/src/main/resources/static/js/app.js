@@ -568,36 +568,32 @@ function getChartInfo() {
             var chartInfo = data.chartInfo;
 
             var filterChart = [];
+            var eventChart = [];
+            var i = 0;
 
             $.each(chartInfo, function(index, item) {
                 if (chartId == 1)
-                    filterChart.push([index, item.meanRri]);
+                    filterChart.push([index, item.omeanRri]);
                 else if (chartId == 2)
-                    filterChart.push([index, item.stdRri]);
+                    filterChart.push([index, item.ostdRri]);
                 else if (chartId == 3)
-                    filterChart.push([index, item.meanHrv]);
+                    filterChart.push([index, item.omeanHrv]);
                 else if (chartId == 4)
-                    filterChart.push([index, item.stdHrv]);
+                    filterChart.push([index, item.ostdHrv]);
                 else if (chartId == 5)
-                    filterChart.push([index, item.rmssdd]);
+                    filterChart.push([index, item.ormssdd]);
                 else if (chartId == 6)
-                    filterChart.push([index, item.pnn50]);
+                    filterChart.push([index, item.opnn50]);
                 else if (chartId == 7)
-                    filterChart.push([index, item.lfhf]);
+                    filterChart.push([index, item.olfhf]);
                 else if (chartId == 8)
-                    filterChart.push([index, item.scl]);
+                    filterChart.push([index, item.oscl]);
+
+                eventChart[i] = new Array();
+                eventChart[i][0] = item.codeName;
+                eventChart[i][1] = item.stLevel;
+                i++;
             });
-
-            var markings = [
-                { xaxis: { from: 1, to: 2 }, color: "#000" },
-                { xaxis: { from: 4, to: 5 }, color: "#000" },
-                { xaxis: { from: 7, to: 8 }, color: "#000" },
-                { xaxis: { from: 10, to: 11 }, color: "#000" },
-                { xaxis: { from: 13, to: 14 }, color: "#000" },
-                { xaxis: { from: 16, to: 17 }, color: "#000" },
-                { xaxis: { from: 19, to: 20 }, color: "#000" }
-
-            ];
 
             // 한번 조회가 완료되면 그 후에는 동영상으로 로드하지 않음
             if (isSearch == false) {
@@ -643,14 +639,13 @@ function getChartInfo() {
                 xaxis: {
                     show: true
                 },
-                markings: markings
             });
 
             //Initialize tooltip on hover
             $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
                 position: "absolute",
                 display: "none",
-                opacity: 0.8
+                opacity: 0.9
             }).appendTo("body");
 
             $("#line-chart").bind("plothover", function (event, pos, item) {
@@ -658,8 +653,10 @@ function getChartInfo() {
                 if (item) {
                     var x = item.datapoint[0].toFixed(0),
                         y = item.datapoint[1].toFixed(5);
-
-                    $("#line-chart-tooltip").html("구간 측정정보 (" + x + "분 측정값 = " + y + ")")
+                    
+                    // 구간명 바인딩
+                    var sectionName = eventChart[item.dataIndex][0];
+                    $("#line-chart-tooltip").html(sectionName + " 구간 측정정보 (" + x + "분 측정값 = " + y + ")")
                         .css({top: item.pageY + 5, left: item.pageX + 5})
                         .fadeIn(200);
                 } else {
@@ -671,7 +668,9 @@ function getChartInfo() {
 
                 if (item) {
                     vid.currentTime = (item.dataIndex) * 60;
-                    vid.play();
+                    vid.play()
+                    // TODO 그래프 클릭시 얼굴 이미지 변경 이벤트 처리
+                    // eventChart[item.dataIndex][0]
                 } else {
                     $("#line-chart-tooltip").hide();
                 }

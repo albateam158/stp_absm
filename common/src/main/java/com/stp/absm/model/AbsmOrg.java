@@ -1,11 +1,10 @@
 package com.stp.absm.model;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -96,6 +95,8 @@ public class AbsmOrg implements Serializable {
     //구간코드
     @Transient
     private String seCd;
+    @Transient
+    private String codeName;
 
     @Transient
     private Double surAvg;
