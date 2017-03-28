@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +177,7 @@ public class Page003Controller extends RootController {
     public Map<String, Object> pageFormSubmit(
             HttpServletRequest request
     ) {
+        Date now        = new Date();
 
         Map<String, Object> result = new HashMap<String, Object>();
 
@@ -216,7 +218,7 @@ public class Page003Controller extends RootController {
         FileUploadInfo fileUploadInfo = new FileUploadInfo();
         fileUploadInfo.setCaId(caId);
         fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
-        fileUploadInfo.setFileName(file.getOriginalFilename());
+        fileUploadInfo.setFileName(filePath);
         fileUploadInfo.setFileType(fileType);
         fileUploadInfo.setFileSize(file.getSize());
 

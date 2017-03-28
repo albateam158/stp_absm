@@ -196,7 +196,7 @@
         Inner JOIN absm_case b
         ON a.ca_id = b.ca_id
         AND b.ca_id = #{caId}
-        Inner JOIN absm_private d
+        left outer JOIN absm_private d
 
         <choose>
             <when test='searchCode == "2"'>

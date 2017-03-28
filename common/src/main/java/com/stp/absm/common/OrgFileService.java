@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-22.
@@ -39,6 +40,7 @@ public class OrgFileService implements DataFileService {
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -107,7 +109,7 @@ public class OrgFileService implements DataFileService {
                         absmOrg.setScl(0.0);
 
                     logger.info(absmOrg.toString());
-
+                    absmOrg.setRegDate(now);
                     absmOrgRepository.save(absmOrg);
 
                 }
@@ -122,7 +124,7 @@ public class OrgFileService implements DataFileService {
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {

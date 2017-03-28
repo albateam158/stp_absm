@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -45,6 +46,7 @@ public class SurveyFileService implements DataFileService {
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -81,6 +83,7 @@ public class SurveyFileService implements DataFileService {
                         absmSurveyAvg.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
                         absmSurveyAvg.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
                         absmSurveyAvg.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
+                        absmSurveyAvg.setRegDate(now);
                         logger.info(absmSurveyAvg.toString());
                         absmSurveyAvgRepository.save(absmSurveyAvg);
                     }
@@ -100,6 +103,7 @@ public class SurveyFileService implements DataFileService {
                         absmSurvey.setSuVal6(CommonUtil.removeDot(row.getCell(7).toString()));
                         absmSurvey.setSuVal7(CommonUtil.removeDot(row.getCell(8).toString()));
                         absmSurvey.setSuVal8(CommonUtil.removeDot(row.getCell(9).toString()));
+                        absmSurvey.setRegDate(now);
                         logger.info(absmSurvey.toString());
 
                         absmSurveyRepository.save(absmSurvey);
@@ -116,7 +120,7 @@ public class SurveyFileService implements DataFileService {
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {

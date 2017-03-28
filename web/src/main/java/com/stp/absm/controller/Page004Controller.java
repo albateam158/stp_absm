@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,7 @@ public class Page004Controller extends RootController {
     ) {
 
         Map<String, Object> result = new HashMap<String, Object>();
+        Date now        = new Date();
 
          /*
 		 * validate request type
@@ -164,7 +166,7 @@ public class Page004Controller extends RootController {
         absmFile.setFileName(file.getOriginalFilename());
         absmFile.setFileSize(file.getSize());
         absmFile.setUrl(fileUrl+file.getOriginalFilename());
-
+        absmFile.setRegDate(now);
         absmFileRepository.save(absmFile);
 
         result.put("caId", caId);

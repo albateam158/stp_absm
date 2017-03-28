@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -40,6 +41,7 @@ public class PrivateFileService implements DataFileService {
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -68,7 +70,7 @@ public class PrivateFileService implements DataFileService {
                 absmPrivate.setAge(Integer.valueOf(CommonUtil.removeDot(row.getCell(2).toString())));
                 absmPrivate.setSex(row.getCell(3).toString());
                 logger.info(absmPrivate.toString());
-
+                absmPrivate.setRegDate(now);
                 absmPrivateRepository.save(absmPrivate);
             }
 
@@ -81,7 +83,7 @@ public class PrivateFileService implements DataFileService {
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {

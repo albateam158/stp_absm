@@ -16,10 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 실험대상자 측정자료입력 화면
@@ -153,6 +150,7 @@ public class Page002Controller extends RootController {
             HttpServletRequest request
     ) {
         Map<String, Object> result = new HashMap<String, Object>();
+        Date now        = new Date();
 
         /*
 		 * validate request type
@@ -217,7 +215,7 @@ public class Page002Controller extends RootController {
                 fileUploadInfo.setCaId(caId);
                 fileUploadInfo.setPrId(prId);
                 fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
-                fileUploadInfo.setFileName(file.getOriginalFilename());
+                fileUploadInfo.setFileName(filePath);
                 fileUploadInfo.setFileType(fileType[i]);
                 fileUploadInfo.setFileSize(file.getSize());
 
@@ -247,6 +245,7 @@ public class Page002Controller extends RootController {
 
                     absmFilter.setCaId(caId);
                     absmFilter.setPrId(prId);
+                    absmFilter.setRegDate(now);
                     //평균 필터데이터생성
                     page002Mapper.createFilterValCd2(absmFilter);
 
@@ -255,6 +254,7 @@ public class Page002Controller extends RootController {
 
                     absmModel.setCaId(caId);
                     absmModel.setPrId(prId);
+                    absmModel.setRegDate(now);
                     //Z표준화 모델데이터생성
                     page002Mapper.createModel(absmModel);
 
@@ -272,6 +272,7 @@ public class Page002Controller extends RootController {
                         modelResult.setMoPre3(modelResult.getMoPre3());
                         modelResult.setMoPre4(modelResult.getMoPre4());
                         modelResult.setStLevel(modelResult.getStLevel());
+                        modelResult.setRegDate(now);
                         absmModelRepository.save(modelResult);
                     }
 

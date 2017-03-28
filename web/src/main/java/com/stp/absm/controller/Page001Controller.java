@@ -136,7 +136,7 @@ public class Page001Controller extends RootController {
             result.put("retMsg", Message.C001);
             return result;
         }
-
+        Date now        = new Date();
         final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         logger.info("multiRequest data " + multiRequest.getParameterMap().toString());
 
@@ -150,7 +150,7 @@ public class Page001Controller extends RootController {
         absmCase.setDt(dt);
         absmCase.setCaseNm(caseNm);
         absmCase.setNote(note);
-
+        absmCase.setRegDate(now);
         absmCaseRepository.save(absmCase);
 
         // 등록된 Case Id를 조회하여 개인정보 입력시 사용
@@ -180,7 +180,8 @@ public class Page001Controller extends RootController {
                 FileUploadInfo fileUploadInfo = new FileUploadInfo();
                 fileUploadInfo.setCaId(caId);
                 fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
-                fileUploadInfo.setFileName(file.getOriginalFilename());
+                //fileUploadInfo.setFileName(file.getOriginalFilename());
+                fileUploadInfo.setFileName(filePath);
                 fileUploadInfo.setFileType(fileType[i]);
                 fileUploadInfo.setFileSize(file.getSize());
 

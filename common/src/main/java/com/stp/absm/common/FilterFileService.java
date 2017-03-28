@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -40,6 +41,7 @@ public class FilterFileService implements DataFileService{
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -146,7 +148,7 @@ public class FilterFileService implements DataFileService{
                     //absmFilter.setMoPre3(Double.valueOf(row.getCell(13).toString()));
                     //absmFilter.setMoPre4(Double.valueOf(row.getCell(14).toString()));
                     //absmFilter.setStLevel(Integer.valueOf(CommonUtil.removeDot(row.getCell(15).toString())));
-
+                    absmFilter.setRegDate(now);
                     logger.info(absmFilter.toString());
 
                     absmFilterRepository.save(absmFilter);
@@ -164,7 +166,7 @@ public class FilterFileService implements DataFileService{
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {

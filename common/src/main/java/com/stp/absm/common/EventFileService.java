@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -40,6 +41,7 @@ public class EventFileService implements DataFileService{
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -75,6 +77,7 @@ public class EventFileService implements DataFileService{
                     absmEvent.setEvDt8(row.getCell(10).toString());
                     absmEvent.setEvDt9(row.getCell(11).toString());
                     absmEvent.setEvDt10(row.getCell(12).toString());
+                    absmEvent.setRegDate(now);
                     logger.info(absmEvent.toString());
 
                     absmEventRepository.save(absmEvent);
@@ -91,7 +94,7 @@ public class EventFileService implements DataFileService{
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {

@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -38,6 +39,7 @@ public class MeasureFileService implements DataFileService {
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         String fileType = fileUploadInfo.getFileType();
         String fileName = fileUploadInfo.getFileName();
@@ -75,7 +77,7 @@ public class MeasureFileService implements DataFileService {
                         absmMeasure.setEgCd(egCd);
                         absmMeasure.setMeTm(dataArray[0] + " " + dataArray[1]);
                         absmMeasure.setMeVal(Double.valueOf(dataArray[4]));
-
+                        absmMeasure.setRegDate(now);
                         logger.info(absmMeasure.toString());
                         absmMeasureRepository.save(absmMeasure);
                     }
@@ -95,7 +97,7 @@ public class MeasureFileService implements DataFileService {
                         absmMeasure.setEgCd(egCd);
                         absmMeasure.setMeTm(dataArray[0]);
                         absmMeasure.setMeVal(Double.valueOf(dataArray[1]));
-
+                        absmMeasure.setRegDate(now);
                         logger.info(absmMeasure.toString());
                         absmMeasureRepository.save(absmMeasure);
                     }
@@ -120,7 +122,7 @@ public class MeasureFileService implements DataFileService {
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         }

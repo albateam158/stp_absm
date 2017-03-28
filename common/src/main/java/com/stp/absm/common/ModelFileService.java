@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by thomas on 2017-03-13.
@@ -40,6 +41,7 @@ public class ModelFileService implements DataFileService {
 
     @Override
     public int doParse() {
+        Date now        = new Date();
 
         // file open db insert
         String fileName = fileUploadInfo.getFileName();
@@ -84,7 +86,7 @@ public class ModelFileService implements DataFileService {
                     absmModel.setMoPre3(Double.valueOf(row.getCell(13).toString()));
                     absmModel.setMoPre4(Double.valueOf(row.getCell(14).toString()));
                     absmModel.setStLevel(Integer.valueOf(CommonUtil.removeDot(row.getCell(15).toString())));
-
+                    absmModel.setRegDate(now);
                     logger.info(absmModel.toString());
 
                     absmModelRepository.save(absmModel);
@@ -101,7 +103,7 @@ public class ModelFileService implements DataFileService {
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);
             absmFile.setUrl(url);
-
+            absmFile.setRegDate(now);
             absmFileRepository.save(absmFile);
 
         } catch (FileNotFoundException fe) {
