@@ -70,27 +70,35 @@
                             <source src="" type="video/mp4">
                         </video>
                     </div>
+                    <!-- 20170327 결과보기 수정 -->
                     <div class="fl result_box">
                         <h3>스트레스 측정 결과</h3>
                         <div class="stress_box">
-                            <p>스트레스지수</p>
-                            <div class="stress_boxin">
-                                <div>
-                                    <img src="/images/tri.png" alt="스트레스 표시" class="stress_mark"/>
-                                </div>
-                                <img src="/images/stress_bar.jpg" alt="스트레스 지수 측정" class="stress_bar"/>
-                                <ul>
-                                    <li class="taL">정상</li>
-                                    <li class="taC">초기</li>
-                                    <li class="taC">진행</li>
-                                    <li class="taR">만성</li>
-                                </ul>
-                                <span class="line2"></span>
-                                <h4>스트레스 지수해석</h4>
-                                <article>스트레스 정도를 보여주는 가로 Bar와 지수에 대한 해석 정보가 나타남 스트레스 정도를 보여주는 가로 Bar와 지수에 대한 해석 정보가 나타남</article>
-                            </div><!-- //stress_boxin -->
+                            <ul class="p_info">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="face_ul">
+                                <li class="level1 on"></li><!-- class명 on / off로 이미지변경됩니다. -->
+                                <li class="level2 off"></li>
+                                <li class="level3 off"></li>
+                                <li class="level4 off"></li>
+                            </ul>
+                            <div class="mark_div">
+                                <img src="/images/tri.png" alt="스트레스 표시" class="stress_mark"/><!-- left값이 px기준, 0~559px까지로 100%(는 559px로 표기)를 제외한 것은 %로 위치를 바꿀 수 있습니다. -->
+                            </div>
+                            <img src="/images/stress_bar.jpg" alt="스트레스 지수 측정" class="stress_bar"/>
+                            <ul class="step">
+                                <li>정상</li>
+                                <li>초기</li>
+                                <li>진행</li>
+                                <li>만성</li>
+                            </ul>
+                            <span class="line2"></span>
+                            <article>스트레스 정도를 보여주는 가로 Bar와 지수에 대한 해석 정보가 나타남 </article>
                         </div><!-- //stress_box -->
-                    </div><!-- //result_box -->
+                    </div><!-- //result_box -->  <!-- //20170327 결과보기 수정 -->
                 </div><!-- //row_box -->
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
@@ -100,6 +108,10 @@
 
     <@layout.put block="script">
     <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('.stress_mark').css( 'left','11%');
+        });
 
         function vaildationCheck() {
 

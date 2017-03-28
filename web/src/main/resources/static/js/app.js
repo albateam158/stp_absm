@@ -551,9 +551,24 @@ function getChartInfo() {
     // 결과 조회를 위한 param 세팅
     // TODO : 조회 화면에서 넘겨받은 데이터로 설정
     var caId    = $('#caId option:selected').val();
+    var caseNm  = $('#caId option:selected').text();
+
     var pNo     = $('#pNo option:selected').val();
+    var pName   = $('#pNo option:selected').text();
     var chartId = $('#filter option:selected').val();
+    var chartName = $('#filter option:selected').text();
+
     var vid = document.getElementById("MyVideo");
+
+    // 측정자 정보
+    $('.p_info').find('li').remove();
+    /*$('.p_info').find('li').append(caseNm);
+     $('.p_info').find('li').append(pName);
+     $('.p_info').find('li').append(chartName);*/
+    $('.p_info').text(caseNm + ' / ' + pName + ' / ' + chartName);
+    //$('.p_info').text('<li class='+pName+'></li>');
+    //$('.p_info').text('<li class='+chartName+'></li>');
+
 
     $.ajax({
         type : "GET",
@@ -668,9 +683,39 @@ function getChartInfo() {
 
                 if (item) {
                     vid.currentTime = (item.dataIndex) * 60;
-                    vid.play()
+                    vid.play();
+
                     // TODO 그래프 클릭시 얼굴 이미지 변경 이벤트 처리
-                    // eventChart[item.dataIndex][0]
+                    // stress level
+                    var stLevel = eventChart[item.dataIndex][1];
+                    if (stLevel != '') {
+                        $('.face_ul li').removeClass("on off");
+
+                        if (stLevel == 1) {
+                            $('.level1').siblings().addClass("off");
+                            $('.level1').addClass("on");
+                            $('.stress_mark').css( 'left','11%');
+
+                        }
+                        else if (stLevel == 2) {
+                            $('.level2').siblings().addClass("off");
+                            $('.level2').addClass("on");
+                            $('.stress_mark').css( 'left','36%');
+
+                        }
+                        else if (stLevel == 3) {
+                            $('.level3').siblings().addClass("off");
+                            $('.level3').addClass("on");
+                            $('.stress_mark').css( 'left','61%');
+
+                        }
+                        else if (stLevel == 4) {
+                            $('.level4').siblings().addClass("off");
+                            $('.level4').addClass("on");
+                            $('.stress_mark').css( 'left','86%');
+
+                        }
+                    }
                 } else {
                     $("#line-chart-tooltip").hide();
                 }
