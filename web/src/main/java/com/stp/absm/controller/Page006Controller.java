@@ -32,10 +32,12 @@ public class Page006Controller extends RootController {
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("caId",caId);
+        params.put("pNo",pNo);
 
         List<AbsmCase> cases = absmCaseRepository.findByOrderByCaIdAsc();
 //        List<AbsmPrivate> LPris = absmPrivateRepository.findByCaIdOrderByPrIdAsc(caId);
         List<AbsmPrivate> LPris = page006Mapper.selectPrivates(params);
+        AbsmPrivate LPri = page006Mapper.selectPrivate(params);
 
 //        Map<String , Object> params = new HashMap<String, Object>();
 //        params.put("caId", caId);
@@ -48,7 +50,7 @@ public class Page006Controller extends RootController {
         mav.addObject("cases", cases);
         mav.addObject("LPris", LPris);
         mav.addObject("aPri", aPri);
-
+        mav.addObject("LPri", LPri);
         //mav.addObject("chartData", filters);
         //mav.addObject("bioChartData", filters);
         //mav.addObject("privateData");
@@ -85,6 +87,8 @@ public class Page006Controller extends RootController {
         params.put("pNo"    , pNo);
         params.put("chartId", chartId);
 
+        AbsmPrivate LPri = page006Mapper.selectPrivate(params);
+
         // Filter Data
         //List<AbsmFilter>   chartInfo    = page006Mapper.selectResultData(params);
         List<AbsmOrg> chartInfo = page006Mapper.selectGraph(params);
@@ -96,6 +100,7 @@ public class Page006Controller extends RootController {
         result.put("chartInfo", chartInfo);
         result.put("videoInfo", absmFile);
         result.put("events", events);
+        result.put("LPri", LPri);
 
         return result;
     }

@@ -8,6 +8,9 @@
             <h2 class="result">결과 보기</h2><!-- result, input, search 클래스 명에 따라 왼쪽 아이콘이 달라집니다. -->
             <div class="bg_wh">
                 <form id="ResultForm">
+                    <input id="sex" type="hidden" value="${(LPri.sex)!}">
+                    <input id="age" type="hidden" value="${(LPri.age)!}">
+
                     <label for="caId" class="wd55">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd80">
                         <option value="">선택하세요</option>
@@ -68,6 +71,9 @@
                         <h3>동영상</h3>
                         <video id="MyVideo" width="100%" height="280px" controls>
                             <source src="" type="video/mp4">
+                            <source src="" type="video/avi">
+                            <source src="" type="video/ogg">
+                            <source src="" type="video/wmv">
                         </video>
                     </div>
                     <!-- 20170327 결과보기 수정 -->

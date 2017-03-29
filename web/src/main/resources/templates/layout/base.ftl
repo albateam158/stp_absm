@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>교통연구원 시안 | 기초자료 및 개인특성 자료 입력</title>
+    <title>교통연구원 | 기초자료 및 개인특성 자료 입력</title>
     <link rel="icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/reset.css" />
     <link rel="stylesheet" href="/css/font.css" />

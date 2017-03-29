@@ -296,10 +296,23 @@ function getVideoInfo(caId, prId) {
             "fileCd": "08"
         },
         success: function(data) {
-
+            var str = data.url
+            var strs = str.split(".");
+console.log("str="+strs[1]);
             if (data.url != "") {
                 var video = $('#video1')[0];
-                video.type = "video/mp4";
+                if(strs[1] == "mp4"){
+                    video.type = "video/mp4";
+                }else if(strs[1] == "avi"){
+                    video.type = "video/avi";
+                }else if(strs[1] == "mpeg"){
+                    video.type = "video/mpeg";
+                }else if(strs[1] == "ogg"){
+                    video.type = "video/ogg";
+                }else if(strs[1] == "wmv"){
+                    video.type = "video/wmv";
+                }
+
                 video.src = data.url;
                 video.load();
                 video.play();
@@ -568,6 +581,8 @@ function getChartInfo() {
     var pName   = $('#pNo option:selected').text();
     var chartId = $('#filter option:selected').val();
     var chartName = $('#filter option:selected').text();
+    var sex = $('#sex').val();
+    var age = $('#age').val();
 
     var vid = document.getElementById("MyVideo");
 
@@ -576,7 +591,7 @@ function getChartInfo() {
     /*$('.p_info').find('li').append(caseNm);
      $('.p_info').find('li').append(pName);
      $('.p_info').find('li').append(chartName);*/
-    $('.p_info').text(caseNm + ' / ' + pName + ' / ' + chartName);
+    $('.p_info').text(pName + ' / ' + sex + ' / ' + age +'세');
     //$('.p_info').text('<li class='+pName+'></li>');
     //$('.p_info').text('<li class='+chartName+'></li>');
 
