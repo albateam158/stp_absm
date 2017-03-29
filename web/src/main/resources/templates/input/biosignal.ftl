@@ -56,6 +56,11 @@
             </div><!-- //bg_wh -->
         </div><!-- //pd7 -->
     </section>
+    <!-- 20170326 추가 loading -->
+    <div class="loading hide">
+        <img src="/images/loading.gif" class="loading_img" alt="로딩중입니다." />
+    </div>
+    <!-- //20170326 추가 loading -->
     </@layout.put>
 
     <@layout.put block="script">

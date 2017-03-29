@@ -46,11 +46,13 @@
 
 .jsgrid-cell {
     padding: 0.5em 0.5em;
+    word-break: break-all;/*20170329 추가*/
 }
 
 .jsgrid-сell,
 .jsgrid-header-cell {
     box-sizing: border-box;
+    word-break: break-all;/*20170329 추가*/
 }
 
 .jsgrid-align-left {

@@ -344,6 +344,17 @@ function searchData(searchCode) {
                 setGrid(gridData, searchCode);
             }
         },
+        beforeSend:function() {
+            // $('.loading').show(function(){
+                $('html, body').addClass('no_scroll');
+                $('.loading').show();
+                //$('.loading').removeClass('display-none');
+         //   });
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
+        },
         error: function(request, status, error) {
             alert("개인정보 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
         }
