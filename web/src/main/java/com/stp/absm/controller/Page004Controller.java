@@ -148,7 +148,7 @@ public class Page004Controller extends RootController {
 
         logger.info("fileLocation " + fileLocation);
 
-        //String filePath = CommonUtil.fileTransferTo(file, fileLocation);
+        String filePath = CommonUtil.fileTransferTo(file, fileLocation);
 //        CommonUtil.fileTransferTo(file, fileLocation);
 
         Map<String, Object> param = new HashMap<String, Object>();

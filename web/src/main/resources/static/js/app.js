@@ -253,7 +253,7 @@ function saveVideo() {
 
     var form = $('#VideoForm')[0];
     var formData = new FormData(form);
-    //console.log("formData " + formData);
+    console.log("formData " + formData);
 
     $.ajax({
         type : "POST",
