@@ -9,10 +9,10 @@
             <h2 class="input">기초자료 및 개인특성 자료 입력</h2>
             <div class="bg_wh">
                 <form id="PrivateForm">
-                    <label for="dt" class="wd102">측정일자</label><input type="text" id="datePicker" name="dt" class="box_bd wd80"><!-- 20170316 추가 datepicker -->
+                    <label for="dt" class="wd102">측정일자</label><input type="text" id="datePicker" name="dt" class="box_bd wd160"><!-- 20170316 추가 datepicker -->
                     <label for="caseNm">케이스명</label>
-                    <input type="text" id="caseNm" name="caseNm" class="box_bd wd80" />
-                    <label for="note" class="wd35">설명</label><input type="text" id="note" name="note" class="box_bd wd150 mb10" /><br />
+                    <input type="text" id="caseNm" name="caseNm" class="box_bd wd160" />
+                    <label for="note" class="wd35">설명</label><input type="text" id="note" name="note" class="box_bd wd189 mb10" /><br />
 
                     <label for="" class="wd100">개인특성 파일명</label>
                     <input type="text" class="box_bd mr0 mb10 wd189" title="파일찾기" readonly="readonly"  id="file_sch1">

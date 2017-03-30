@@ -10,9 +10,10 @@
                 <form id="ResultForm">
                     <input id="sex" type="hidden" value="${(LPri.sex)!}">
                     <input id="age" type="hidden" value="${(LPri.age)!}">
+                    <input id="aPri" type="hidden" value="${(aPri.caId)!}">
 
                     <label for="caId" class="wd55">케이스명</label>
-                    <select name="caId" id="caId"  class="box_bd wd80">
+                    <select name="caId" id="caId"  class="box_bd wd160">
                         <option value="">선택하세요</option>
                         <#list cases as case>
                             <option value="${case.caId!}"
@@ -22,7 +23,7 @@
                     </select>
                     <label for="prNo" class="wd35">이름</label>
                 <#--<input type="text" id="name" name="name" class="box_bd wd80" />-->
-                    <select name="pNo" id="pNo"  class="box_bd wd80">
+                    <select name="pNo" id="pNo"  class="box_bd wd160">
                         <option value="">선택하세요</option>
                         <#list LPris as LPri>
                             <option value="${LPri.prNo}"
@@ -31,7 +32,7 @@
                         </#list>
                     </select>
                     <label for="filter">측정자료</label>
-                    <select name="filter" id="filter"  class="box_bd wd80">
+                    <select name="filter" id="filter"  class="box_bd wd160">
                         <option value="1">meanRR(s)</option>
                         <option value="2">SDNN(s)</option>
                         <option value="3">RMSD(s)</option>
@@ -123,8 +124,9 @@
 
 
             $('.stress_mark').css( 'left','11%');
-
-            vaildationCheck();
+            if($("#aPri").val() != '') {
+                vaildationCheck();
+            }
 
         });
 
@@ -149,7 +151,6 @@
                 createToast('info', msg);
                 return;
             }
-
             getChartInfo();
 
         }

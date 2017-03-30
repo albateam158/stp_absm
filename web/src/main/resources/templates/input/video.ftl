@@ -10,11 +10,11 @@
             <div class="bg_wh">
                 <form id="VideoForm">
                     <label for="caId" class="wd100">케이스명</label>
-                    <select name="caId" id="caId"  class="box_bd wd80 mb10">
+                    <select name="caId" id="caId"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
                     </select>
                     <label for="name" class="wd35">이름</label>
-                    <select name="name" id="name"  class="box_bd wd80 mb10">
+                    <select name="name" id="name"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
                     </select>
                     <br />

@@ -10,12 +10,12 @@
             <div class="bg_wh">
                 <form id="SearchForm">
                     <label for="caId" class="wd80">케이스명</label>
-                    <select name="caId" id="caId"  class="box_bd wd80 mb10">
+                    <select name="caId" id="caId"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
                     </select>
                     <br />
                     <label for="name" class="wd80">이름</label>
-                    <input type="text" name="name" class="box_bd wd80" id="name"/>
+                    <input type="text" name="name" class="box_bd wd160" id="name"/>
                     <label for="age" class="wd35">나이</label>
                     <input type="text" name="age" class="box_bd wd80" id="age"/>
                     <label for="sex" class="wd35">성별</label>
@@ -25,7 +25,7 @@
                         <option value="여">여</option>
                     </select>
                     <label for="searchCode" class="wd80">조회항목</label>
-                    <select name="searchCode" id="searchCode" class="box_bd wd80" class="box_bd wd80 mb10">
+                    <select name="searchCode" id="searchCode" class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
                         <option value="1">개인자료</option>
                         <option value="2">설문조사</option>
