@@ -75,8 +75,9 @@ public class MeasureFileService implements DataFileService {
                         absmMeasure.setCaId(caId);
                         absmMeasure.setPrId(prId);
                         absmMeasure.setEgCd(egCd);
-                        absmMeasure.setMeTm(dataArray[0] + " " + dataArray[1]);
-                        absmMeasure.setMeVal(Double.valueOf(dataArray[4]));
+                        //absmMeasure.setMeTm(dataArray[0] + " " + dataArray[1]);
+                        absmMeasure.setMeTm(dataArray[0]);
+                        absmMeasure.setMeVal(Double.valueOf(dataArray[3]));
                         absmMeasure.setRegDate(now);
                         logger.info(absmMeasure.toString());
                         absmMeasureRepository.save(absmMeasure);

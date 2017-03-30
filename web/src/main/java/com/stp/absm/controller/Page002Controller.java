@@ -224,8 +224,9 @@ public class Page002Controller extends RootController {
                 param.put("prId",prId);
 
                 if ("ECG".equals(fileType[i]) || "GSR".equals(fileType[i])) {
-                    //측정 데이터삭제
-                    page002Mapper.deleteMeasure(param);
+                    //측정 데이터삭제 ECG일 경우만 삭제
+                    if ("ECG".equals(fileType[i]))
+                        page002Mapper.deleteMeasure(param);
 
                     measureFileService.setFileInfo(fileUploadInfo);
                     measureFileService.doParse();
