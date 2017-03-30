@@ -608,13 +608,7 @@ function getChartInfo() {
 
     // 측정자 정보
     $('.p_info').find('li').remove();
-    /*$('.p_info').find('li').append(caseNm);
-     $('.p_info').find('li').append(pName);
-     $('.p_info').find('li').append(chartName);*/
     $('.p_info').text(pName + ' / ' + sex + ' / ' + age +'세');
-    //$('.p_info').text('<li class='+pName+'></li>');
-    //$('.p_info').text('<li class='+chartName+'></li>');
-
 
     $.ajax({
         type : "GET",
@@ -662,10 +656,27 @@ function getChartInfo() {
 
                 var videoInfo = data.videoInfo;
 
-                /* video url load */
-                vid.src = videoInfo.url;
-                vid.load();
-                vid.play();
+                if (videoInfo != null && videoInfo.url != '') {
+                    /* video url load */
+                    vid.src = videoInfo.url;
+                    vid.load();
+                    vid.play();
+                }
+            }
+
+            if (videoInfo == null || videoInfo.url == '') {
+
+                if (chartInfo.length == 0) {
+                    createToast('info', "조회 결과가 없습니다.");
+                }
+                else {
+                    createToast('info', "동영상 결과가 없습니다.");
+                }
+            }
+            else {
+                if (chartInfo.length == 0) {
+                    createToast('info', "그래프 결과가 없습니다.");
+                }
             }
 
             var line_data1 = {
