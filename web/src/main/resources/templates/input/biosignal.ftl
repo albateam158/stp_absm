@@ -9,6 +9,8 @@
             <h2 class="input">생체신호 측정자료 입력</h2>
             <div class="bg_wh">
                 <form id="BioForm">
+                    <h3> 선택한 1명의 피험자의 생체신호정보, 분단위정보, SPSS정보 입력</h3>
+
                     <label for="caId" class="wd100">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
@@ -22,26 +24,26 @@
                     <input type="hidden" name="caId" value="" />
                     <input type="hidden" name="prId" value="" />
 
-                    <label for="" class="wd100">ECG 파일명</label>
+                    <label for="" class="wd160">ECG 파일명(txt)</label>
                     <input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="ecgFindFile">
                     <label for="file1" id="" class="file_label">파일찾기</label>
                     <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('ecgFindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="ECG" />
 
-                    <label for="" class="wd100">GSR 파일명</label>
+                    <label for="" class="wd160">GSR 파일명(txt)</label>
                     <input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="gsrfindFile">
                     <label for="file2" id="" class="file_label">파일찾기</label>
                     <input id="file2" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('gsrfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="GSR" />
                     <br />
 
-                    <label for="" class="wd100">분단위 파일명</label>
+                    <label for="" class="wd160">분단위 파일명(엑셀)</label>
                     <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="orgfindFile">
                     <label for="file3" id="" class="file_label">파일찾기</label>
                     <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('orgfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="ORG" />
 
-                    <label for="" class="wd100">SPSS 파일명</label>
+                    <label for="" class="wd160">SPSS 파일명(엑셀)</label>
                     <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="filterfindFile">
                     <label for="file4" id="" class="file_label">파일찾기</label>
                     <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >

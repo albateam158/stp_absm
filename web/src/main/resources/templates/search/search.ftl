@@ -9,6 +9,8 @@
             <h2 class="lookup">자료 조회</h2>
             <div class="bg_wh">
                 <form id="SearchForm">
+                    <h3> 입력한 피험자들의 정보들의 조회화면입니다. 업로드파일정보 조회후 파일명을 클릭하면 다운로드 받을수 있습니다.</h3>
+
                     <label for="caId" class="wd80">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
