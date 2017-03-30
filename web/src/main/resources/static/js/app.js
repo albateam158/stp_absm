@@ -36,6 +36,14 @@ function savePrivate() {
                 alert(retMsg);
             }
         },
+        beforeSend:function() {
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
+        },
         error: function(request, status, error) {
             alert("개인정보 등록 실패 " + request.status + "\n" + "error message: " + error + "\n");
         }
@@ -111,6 +119,14 @@ function saveBiosignal() {
             else {
                 alert(retMsg);
             }
+        },
+        beforeSend:function() {
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
         },
         error: function(request, status, error) {
             alert("개인정보 등록 실패 " + request.status + "\n" + "error message: " + error + "\n");
@@ -190,6 +206,14 @@ function saveEvent() {
             else {
                 alert(retMsg);
             }
+        },
+        beforeSend:function() {
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
         },
         error: function(request, status, error) {
             alert("개인정보 등록 실패 " + request.status + "\n" + "error message: " + error + "\n");
@@ -278,13 +302,21 @@ function saveVideo() {
                 alert(retMsg);
             }
         },
+        beforeSend:function() {
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
+        },
         error: function(request, status, error) {
             alert("동영상 등록 실패 " + request.status + "\n" + "error message: " + error + "\n");
         }
     });
 }
 
-// 이벤트 등록 후 조회
+// 동영상 등록 후 재생
 function getVideoInfo(caId, prId) {
 
     $.ajax({
@@ -296,27 +328,12 @@ function getVideoInfo(caId, prId) {
             "fileCd": "08"
         },
         success: function(data) {
-            var str = data.url
-            var strs = str.split(".");
-console.log("str="+strs[1]);
-            if (data.url != "") {
-                var video = $('#video1')[0];
-                if(strs[1] == "mp4"){
-                    video.type = "video/mp4";
-                }else if(strs[1] == "avi"){
-                    video.type = "video/avi";
-                }else if(strs[1] == "mpeg"){
-                    video.type = "video/mpeg";
-                }else if(strs[1] == "ogg"){
-                    video.type = "video/ogg";
-                }else if(strs[1] == "wmv"){
-                    video.type = "video/wmv";
-                }
 
-                video.src = data.url;
-                video.load();
-                video.play();
-            }
+            var video = $('#video1')[0];
+            video.type = "video/mp4";
+            video.src = data.url;
+            video.load();
+            video.play();
 
         },
         error: function(request, status, error) {
@@ -358,11 +375,8 @@ function searchData(searchCode) {
             }
         },
         beforeSend:function() {
-            // $('.loading').show(function(){
-                $('html, body').addClass('no_scroll');
-                $('.loading').show();
-                //$('.loading').removeClass('display-none');
-         //   });
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
         },
         complete:function() {
             $('html, body').removeClass('no_scroll');
@@ -754,6 +768,14 @@ function getChartInfo() {
 
             });
 
+        },
+        beforeSend:function() {
+            $('html, body').addClass('no_scroll');
+            $('.loading').show();
+        },
+        complete:function() {
+            $('html, body').removeClass('no_scroll');
+            $('.loading').hide();
         },
         error: function(request, status, error) {
             alert("결과 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
