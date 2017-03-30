@@ -183,7 +183,12 @@
                 </when>
                 <when test='searchCode == "4"'>
                     SELECT *
-                    FROM absm_measure AS c
+                    FROM (
+                    SELECT a1.*,a2.code_name FROM absm.absm_model a1
+                    inner join absm.absm_code a2
+                    on a2.data = a1.se_cd
+                    and a2.code_group = 'SEC'
+                    ) AS c
                 </when>
                 <when test='searchCode == "5"'>
                     SELECT *

@@ -162,10 +162,15 @@ public class Page005Controller extends RootController {
                 obj.put( "이름"       , searchMap.get("name"));
                 obj.put( "나이"       , searchMap.get("age"));
                 obj.put( "성별"       , searchMap.get("sex"));
-                obj.put( "ECG/GSR구분"  , searchMap.get("eg_cd"));
-                obj.put( "측정시간"  , searchMap.get("me_tm"));
-                obj.put( "측정값"  , searchMap.get("me_val"));
-
+                obj.put( "구간"  , searchMap.get("code_name"));
+                obj.put( "mean_rri"  , searchMap.get("mean_rri"));
+                obj.put( "std_rri"  , searchMap.get("std_rri"));
+                obj.put( "mean_hrv"  , searchMap.get("mean_hrv"));
+                obj.put( "std_hrv"  , searchMap.get("std_hrv"));
+                obj.put( "rmssdd"  , searchMap.get("rmssdd"));
+                obj.put( "pnn50"  , searchMap.get("pnn50"));
+                obj.put( "lfhf"  , searchMap.get("lfhf"));
+                obj.put( "scl"  , searchMap.get("scl"));
                 cell.add(obj);
             }
 

@@ -507,9 +507,15 @@ function setGrid(gridData, searchCode) {
                 { name: "이름", type: "text", width: 100 , align: "center"},
                 { name: "나이", type: "text", width: 100 , align: "center"},
                 { name: "성별", type: "text",  width: 100 , align: "center"},
-                { name: "ECG/GSR구분", type: "text",  width: 100 , align: "center"},
-                { name: "측정시간", type: "text",  width: 100 , align: "center"},
-                { name: "측정값", type: "text",  width: 100 , align: "center"}
+                { name: "구간", type: "text",  width: 100 , align: "center"},
+                { name: "mean_rri", type: "text",  width: 100 , align: "center"},
+                { name: "std_rri", type: "text",  width: 100 , align: "center"},
+                { name: "mean_hrv", type: "text",  width: 100 , align: "center"},
+                { name: "std_hrv", type: "text",  width: 100 , align: "center"},
+                { name: "rmssdd", type: "text",  width: 100 , align: "center"},
+                { name: "pnn50", type: "text",  width: 100 , align: "center"},
+                { name: "lfhf", type: "text",  width: 100 , align: "center"},
+                { name: "scl", type: "text",  width: 100 , align: "center"},
             ],
 
             rowDoubleClick: function(args) {

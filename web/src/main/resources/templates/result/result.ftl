@@ -32,7 +32,6 @@
                     </select>
                     <label for="filter">측정자료</label>
                     <select name="filter" id="filter"  class="box_bd wd80">
-                        <option value="">선택하세요</option>
                         <option value="1">meanRR(s)</option>
                         <option value="2">SDNN(s)</option>
                         <option value="3">RMSD(s)</option>
@@ -121,7 +120,12 @@
     <script type="text/javascript">
 
         $(document).ready(function(){
+
+
             $('.stress_mark').css( 'left','11%');
+
+            vaildationCheck();
+
         });
 
         function vaildationCheck() {
