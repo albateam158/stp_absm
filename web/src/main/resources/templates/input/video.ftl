@@ -9,6 +9,8 @@
             <h2 class="input">동영상 자료 입력</h2>
             <div class="bg_wh">
                 <form id="VideoForm">
+                    <h3> 선택한 1명의 피험자의 동영상파일 입력, 파일제한크기는 1기가바이트입니다. </h3>
+
                     <label for="caId" class="wd100">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd160 mb10">
                         <option value="">선택하세요</option>
@@ -22,7 +24,7 @@
                     <input type="hidden" name="caId" value="" />
                     <input type="hidden" name="prId" value="" />
 
-                    <label for="" class="wd100">동영상 파일명</label>
+                    <label for="" class="wd160">동영상 파일명(mp4)</label>
                     <input type="text" class="box_bd mr0 mb10 wd164" title="파일찾기" readonly="readonly"  id="videoFindFile">
                     <label for="file1" id="" class="file_label">파일찾기</label>
                     <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('videoFindFile').value=this.value" onkeydown="return false" >

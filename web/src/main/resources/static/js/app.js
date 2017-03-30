@@ -589,6 +589,11 @@ $('#ResultForm select#caId').on('change', function(){
     isSearch = false;
 });
 
+// 결과화면에서 참가인원 변경 시 동영상 조회 flag 초기화
+$('#ResultForm select#filter').on('change', function(){
+    isSearch = false;
+});
+
 /* 결과 화면의 데이터 조회 */
 function getChartInfo() {
 
