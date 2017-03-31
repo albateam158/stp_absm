@@ -57,67 +57,6 @@ public class FilterFileService implements DataFileService{
             // 엑셀 파일 오픈
             XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
 
-            /*for (Row row : wb.getSheetAt(0)) {
-
-                if (row.getRowNum() < 1)
-                    continue;
-
-                if (row.getCell(0) != null) {
-
-                    AbsmFilter absmFilter = new AbsmFilter();
-                    absmFilter.setCaId(caId);
-                    absmFilter.setPrId(prId);
-                    absmFilter.setValCd("1");
-
-                    //absmFilter.setFiTm(CommonUtil.removeDot(row.getCell(0).toString()));
-
-                    if (row.getCell(1) != null)
-                        absmFilter.setMeanRri(Double.valueOf(row.getCell(1).toString()));
-                    else
-                        absmFilter.setMeanRri(0.0);
-
-                    if (row.getCell(2) != null)
-                        absmFilter.setStdRri(Double.valueOf(row.getCell(2).toString()));
-                    else
-                        absmFilter.setStdRri(0.0);
-
-                    if (row.getCell(3) != null)
-                        absmFilter.setRmssdd(Double.valueOf(row.getCell(3).toString()));
-                    else
-                        absmFilter.setRmssdd(0.0);
-
-                    if (row.getCell(4) != null)
-                        absmFilter.setPnn50(Double.valueOf(row.getCell(4).toString()));
-                    else
-                        absmFilter.setPnn50(0.0);
-
-                    if (row.getCell(5) != null)
-                        absmFilter.setMeanHrv(Double.valueOf(row.getCell(5).toString()));
-                    else
-                        absmFilter.setMeanHrv(0.0);
-
-                    if (row.getCell(6) != null)
-                        absmFilter.setStdHrv(Double.valueOf(row.getCell(6).toString()));
-                    else
-                        absmFilter.setStdHrv(0.0);
-
-                    if (row.getCell(7) != null)
-                        absmFilter.setLfhf(Double.valueOf(row.getCell(7).toString()));
-                    else
-                        absmFilter.setLfhf(0.0);
-
-                    if (row.getCell(10) != null)
-                        absmFilter.setScl(Double.valueOf(row.getCell(10).toString()));
-                    else
-                        absmFilter.setScl(0.0);
-
-                    logger.info(absmFilter.toString());
-
-                    absmFilterRepository.save(absmFilter);
-
-                }
-            }*/
-
             /* section code */
             int seCd = 2;
             for (Row row : wb.getSheetAt(0)) {
@@ -143,11 +82,6 @@ public class FilterFileService implements DataFileService{
                     absmFilter.setScl(Double.valueOf(row.getCell(9).toString()));
 
                     absmFilter.setSurAvg(Double.valueOf(row.getCell(10).toString()));
-                    //absmFilter.setMoPre1(Double.valueOf(row.getCell(11).toString()));
-                    //absmFilter.setMoPre2(Double.valueOf(row.getCell(12).toString()));
-                    //absmFilter.setMoPre3(Double.valueOf(row.getCell(13).toString()));
-                    //absmFilter.setMoPre4(Double.valueOf(row.getCell(14).toString()));
-                    //absmFilter.setStLevel(Integer.valueOf(CommonUtil.removeDot(row.getCell(15).toString())));
                     absmFilter.setRegDate(now);
                     logger.info(absmFilter.toString());
 
