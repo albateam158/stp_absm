@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.stp.absm.common.AES;
 import com.stp.absm.common.DurationFromNow;
 import com.stp.absm.config.Settings;
+import com.stp.absm.model.AbsmBatch;
 import com.stp.absm.mybatis.mapper.*;
 import com.stp.absm.repository.*;
 import com.stp.absm.common.PagingUtil;
@@ -72,6 +73,10 @@ abstract public class RootController {
 
     @Autowired
     protected AbsmSurveyAvgRepository absmSurveyAvgRepository;
+
+
+    @Autowired
+    protected AbsmBatchRepository absmBatchRepository;
 
     /**
      * Mapper

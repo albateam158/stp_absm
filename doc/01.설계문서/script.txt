@@ -1,0 +1,4 @@
+gradle -p D:\github_workspace\stp_absm :web:build -x test
+
+
+java -Djava.awt.headless=true -Dspring.profiles.active=local -Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -XX:+UseParallelOldGC -Xms2048m -Xmx4096m -XX:NewRatio=3 -XX:NewRatio=3 -XX:NewSize=512m -XX:MaxNewSize=2048m -XX:PermSize=512m -XX:MaxPermSize=4096m -jar C:\workspace\absm\web.war --logging.config=C:\workspace\absm\logback.xml --server.port=8080

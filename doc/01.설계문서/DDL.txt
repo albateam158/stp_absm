@@ -1,0 +1,289 @@
+
+CREATE DATABASE `absm` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+
+
+
+
+DROP TABLE `absm_case`;
+
+CREATE TABLE `absm_case` (
+`ca_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`ca_id`)
+,`dt` VARCHAR(8)   
+,`case_nm` VARCHAR(100) 
+,`note` VARCHAR(1000) 
+,`reg_date` timestamp   NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+DROP TABLE `absm_private`;
+
+
+CREATE TABLE `absm_private` (
+`pr_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`pr_id`)
+,`ca_id` int(38) NOT NULL
+,`p_no` int(38) 
+,`name` VARCHAR(20) 
+,`age` int(38) 
+,`sex` VARCHAR(1) 
+,`note` VARCHAR(1000) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+DROP TABLE `absm_measure`;
+
+CREATE TABLE `absm_measure` (
+`me_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`me_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`eg_cd` VARCHAR(1) 
+,`me_tm` VARCHAR(50) 
+,`me_val` double(17,10) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+DROP TABLE `absm_survey`; 
+
+
+CREATE TABLE `absm_survey` (
+`su_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`su_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`su_val1` VARCHAR(1) 
+,`su_val2` VARCHAR(1) 
+,`su_val3` VARCHAR(1) 
+,`su_val4` VARCHAR(1) 
+,`su_val5` VARCHAR(1) 
+,`su_val6` VARCHAR(1) 
+,`su_val7` VARCHAR(1) 
+,`su_val8` VARCHAR(1) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE `absm_survey_avg`; 
+
+
+CREATE TABLE `absm_survey_avg` (
+`su_id` int(38) NOT NULL AUTO_INCREMENT ,PRIMARY KEY (`su_id`)
+,`ca_id` int(38) NOT NULL
+,`su_val1` VARCHAR(1) 
+,`su_val2` VARCHAR(1) 
+,`su_val3` VARCHAR(1) 
+,`su_val4` VARCHAR(1) 
+,`su_val5` VARCHAR(1) 
+,`su_val6` VARCHAR(1) 
+,`su_val7` VARCHAR(1) 
+,`su_val8` VARCHAR(1) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+DROP TABLE `absm_event`; 
+
+CREATE TABLE `absm_event` (
+`ev_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`ev_id`)
+,`ca_id` int(38) NOT NULL
+,`p_no` int(38) NOT NULL
+,`ev_dt1` VARCHAR(14) 
+,`ev_dt2` VARCHAR(14) 
+,`ev_dt3` VARCHAR(14) 
+,`ev_dt4` VARCHAR(14) 
+,`ev_dt5` VARCHAR(14) 
+,`ev_dt6` VARCHAR(14) 
+,`ev_dt7` VARCHAR(14) 
+,`ev_dt8` VARCHAR(14) 
+,`ev_dt9` VARCHAR(14) 
+,`ev_dt10` VARCHAR(14) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE `absm_org`; 
+
+CREATE TABLE `absm_org` (
+`or_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`or_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`fi_tm` VARCHAR(20) 
+,`mean_rri` double(17,10) 
+,`std_rri` double(17,10) 
+,`mean_hrv` double(17,10) 
+,`std_hrv` double(17,10) 
+,`rmssdd` double(17,10) 
+,`pnn50` double(17,10) 
+,`lfhf` double(17,10) 
+,`scl` double(17,10) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE `absm_filter`; 
+
+CREATE TABLE `absm_filter` (
+`fi_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`fi_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`se_cd` char(3) NOT NULL
+,`val_cd` char(1) NOT NULL
+,`mean_rri` double(17,10) 
+,`std_rri` double(17,10) 
+,`mean_hrv` double(17,10) 
+,`std_hrv` double(17,10) 
+,`rmssdd` double(17,10) 
+,`pnn50` double(17,10) 
+,`lfhf` double(17,10) 
+,`scl` double(17,10) 
+,`sur_avg` double(17,10) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+DROP TABLE `absm_model`; 
+
+CREATE TABLE `absm_model` (
+`mo_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`mo_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`se_cd` char(3) NOT NULL
+,`mean_rri` double(17,10) 
+,`std_rri` double(17,10) 
+,`mean_hrv` double(17,10) 
+,`std_hrv` double(17,10) 
+,`rmssdd` double(17,10) 
+,`pnn50` double(17,10) 
+,`lfhf` double(17,10) 
+,`scl` double(17,10) 
+,`sur_avg` double(17,10) 
+,`mo_pre1` double(17,10) 
+,`mo_pre2` double(17,10) 
+,`mo_pre3` double(17,10) 
+,`mo_pre4` double(17,10) 
+,`st_level` double(17,10) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ 
+DROP TABLE `absm_file`; 
+
+
+CREATE TABLE `absm_file` (
+ `vi_id` int(38) NOT NULL  AUTO_INCREMENT,PRIMARY KEY (`vi_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`file_cd` varchar(2) 
+,`url` varchar(500) 
+,`file_size` double 
+,`file_name` varchar(500) 
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ 
+
+
+
+
+
+
+
+DROP TABLE `absm_code`;
+CREATE TABLE `absm_code` (
+`co_id` int(38) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`co_id`)
+,`code` char(3) NOT NULL
+,`data` varchar(100) NOT NULL
+,`code_name` varchar(255) NOT NULL
+,`code_group` char(3) NOT NULL
+,`reg_date` timestamp  NULL
+,`update_date` timestamp  NULL
+,`delete_date` timestamp  NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+DROP TABLE `absm_mosu`;
+
+
+CREATE TABLE `absm_mosu` (
+`mo_id` int(38) NOT NULL AUTO_INCREMENT ,PRIMARY KEY (`mo_id`)
+,`mo_cd` char(1) NOT NULL
+,`param1` double(25,20) NOT NULL
+,`param2` double(25,20) NOT NULL
+,`param3` double(25,20) NOT NULL
+,`param4` double(25,20) NOT NULL
+,`param5` double(25,20) NOT NULL
+,`param6` double(25,20) NOT NULL
+,`param7` double(25,20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+DROP TABLE `absm_batch`;
+
+
+
+CREATE TABLE `absm_batch` (
+`ba_id` int(38) NOT NULL AUTO_INCREMENT ,PRIMARY KEY (`ba_id`)
+,`ca_id` int(38) NOT NULL
+,`pr_id` int(38) NOT NULL
+,`vi_id` int(38) NOT NULL
+,`file_cd` varchar(2) 
+,`url` varchar(500) 
+,`file_size` double 
+,`file_name` varchar(500) 
+,`status` varchar(1) 
+,`reg_date` NULL timestamp  
+,`update_date` NULL timestamp  
+,`delete_date` NULL timestamp  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

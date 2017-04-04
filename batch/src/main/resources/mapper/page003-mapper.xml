@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.Page003Mapper">
+
+    <resultMap id="BoardMap" type="com.stp.absm.model.AbsmEvent">
+        <id property="evId" column="ev_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="evDt1" column="ev_dt1"/>
+        <result property="evDt2" column="ev_dt2"/>
+        <result property="evDt3" column="ev_dt3"/>
+        <result property="evDt4" column="ev_dt4"/>
+        <result property="evDt5" column="ev_dt5"/>
+        <result property="evDt6" column="ev_dt6"/>
+        <result property="evDt7" column="ev_dt7"/>
+        <result property="evDt8" column="ev_dt8"/>
+        <result property="evDt9" column="ev_dt9"/>
+        <result property="evDt10" column="ev_dt10"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+    </resultMap>
+
+    <resultMap id="privateMap" type="com.stp.absm.model.AbsmPrivate">
+        <id property="prId" column="pr_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="pNo" column="p_no"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="note" column="note"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+    </resultMap>
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectBoardSql">
+        select a.*
+               ,b.dt
+               ,b.case_nm
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_event AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        AND b.ca_id = #{caId}
+        order by num desc
+    </sql>
+
+    <select id="selectBoardsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectBoardSql"></include>) a
+    </select>
+
+
+    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
+        <include refid="selectBoardSql"></include>
+    </select>
+
+    <select id="selectPrivates" parameterType="java.util.Map" resultMap="privateMap">
+        SELECT
+                pr_id
+                ,name
+        FROM absm_private
+        WHERE ca_id = #{caId}
+    </select>
+
+</mapper>

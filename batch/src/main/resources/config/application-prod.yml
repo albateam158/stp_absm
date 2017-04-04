@@ -12,79 +12,40 @@ endpoints:
 
 spring:
     profiles:
-        active: dev
+        active: local
     datasource:
-        master:
-            dataSourceClassName: org.gjt.mm.mysql.Driver
-            url: jdbc:mysql://127.0.0.1:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            databaseName: ka_intra
-            serverName: kasset6
-            username: root
-            password: qkrtkd!23
-            #password: wicrowd2016!@#$
-            validationQuery: SELECT 1
-            testOnBorrow: true
-        slave:
-            dataSourceClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#            dataSourceClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-            url: jdbc:sqlserver://192.168.120.50:3433;DatabaseName=dzicube;characterEncoding=utf8;useUnicode=true
-            databaseName: dzicube
-            #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
-            #databaseName: ka_intra
-            serverName: dzicube
-            username: dzicube
-            #password: K$asseti44
-            password: ejwhs123$
-            validationQuery: SELECT 1
-            testOnBorrow: true
+          dataSourceClassName: org.gjt.mm.mysql.Driver
+          url: jdbc:mysql://127.0.0.1:3306/absm?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          databaseName: absm
+          serverName: absm
+          username: root
+          password: 1234
+          #password: wicrowd2016!@#$
+          validationQuery: SELECT 1
+          testOnBorrow: true
     jpa:
-        showSql: false
+        showSql: true
         properties:
             hibernate:
                 format_sql: true
 
-    redis:
-        host: 127.0.0.1
-        port: 6379
-
     messages:
          basename: messages/messages
 
-    mail:
-        host: 119.206.195.229
-        username: wicrowd@kasset.co.kr
-        password: asdf6256
-        port: 25
-
-xcrowdfund:
-   restUrl: http://127.0.0.1:8070
-
-
 multipart:
-    maxFileSize: 10Mb
-    maxRequestSize: 30Mb
+    maxFileSize: 1000Mb
+    maxRequestSize: 1000Mb
 
-pdf:
-    projectDocument: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/testdata
-    cssfile: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/cms/src/main/resources/static/assets/css/pdf.css
-    fontFile: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/cms/src/main/resources/static/assets/font/MALGUN.TTF
-    zipmakerUrl: http://52.79.61.249:7777/add
-
-develop: false
+develop: true
 
 upload:
-    fileLocation: /
+    fileLocation: c:\\workspace\\absm\\upload\\
+    fileUrl: http://localhost:8080/file/
 
 logging:
     config: classpath:logback.xml
 
 aeskey: M3OuXbwA3AcJq9oa-c_YRONCiYk8SiEd9KsRFaj1oTM
 
-sms:
-  from: '025506256'
 
-
-social:
-  facebook:
-      fbAppId: '1865799810313126'
