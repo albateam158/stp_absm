@@ -237,54 +237,6 @@ public class Page002Controller extends RootController {
                     measureFileService.setFileInfo(fileUploadInfo);
                     measureFileService.doParse();
                 }
-                else if ("FILTER".equals(fileType[i])) {
-                    //필터 데이터삭제
-                    page002Mapper.deleteFilter(param);
-                    //모델 데이터삭제
-                    page002Mapper.deleteModel(param);
-
-                    filterFileService.setFileInfo(fileUploadInfo);
-                    filterFileService.doParse();
-
-                    AbsmFilter absmFilter = new AbsmFilter();
-                    AbsmModel absmModel = new AbsmModel();
-                    Map<String, Object> map = new HashMap<String, Object>();
-
-                    absmFilter.setCaId(caId);
-                    absmFilter.setPrId(prId);
-                    absmFilter.setRegDate(now);
-                    //평균 필터데이터생성
-                    page002Mapper.createFilterValCd2(absmFilter);
-
-                    //표준편차 필터데이터생성
-                    page002Mapper.createFilterValCd3(absmFilter);
-
-                    absmModel.setCaId(caId);
-                    absmModel.setPrId(prId);
-                    absmModel.setRegDate(now);
-                    //Z표준화 모델데이터생성
-                    page002Mapper.createModel(absmModel);
-
-                    //모형식 모델업데이트
-                    map.put("caId",caId);
-                    map.put("prId",prId);
-                    List<AbsmModel> modelResults = page002Mapper.selectModelResult(map);
-                    for(AbsmModel modelResult : modelResults){
-                        modelResult.setMoId(modelResult.getMoId());
-                        modelResult.setCaId(modelResult.getCaId());
-                        modelResult.setPrId(modelResult.getPrId());
-                        modelResult.setSeCd(modelResult.getSeCd());
-                        modelResult.setMoPre1(modelResult.getMoPre1());
-                        modelResult.setMoPre2(modelResult.getMoPre2());
-                        modelResult.setMoPre3(modelResult.getMoPre3());
-                        modelResult.setMoPre4(modelResult.getMoPre4());
-                        modelResult.setStLevel(modelResult.getStLevel());
-                        modelResult.setRegDate(now);
-                        absmModelRepository.save(modelResult);
-                    }
-
-
-                }
                 else if ("ORG".equals(fileType[i])) {
 
                     //원본 데이터삭제

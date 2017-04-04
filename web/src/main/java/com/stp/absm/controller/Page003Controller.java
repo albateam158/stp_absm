@@ -1,12 +1,7 @@
 package com.stp.absm.controller;
 
-import com.stp.absm.common.CommonUtil;
-import com.stp.absm.common.EventFileService;
-import com.stp.absm.common.FileUploadInfo;
-import com.stp.absm.common.Message;
-import com.stp.absm.model.AbsmCase;
-import com.stp.absm.model.AbsmEvent;
-import com.stp.absm.model.AbsmPrivate;
+import com.stp.absm.common.*;
+import com.stp.absm.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -23,10 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 이벤트자료입력 화면
@@ -46,6 +38,8 @@ public class Page003Controller extends RootController {
     @Autowired
     protected EventFileService eventFileService;
 
+    @Autowired
+    protected FilterFileService filterFileService;
     /**
      * 조회화면
      * @param request
@@ -177,8 +171,7 @@ public class Page003Controller extends RootController {
     public Map<String, Object> pageFormSubmit(
             HttpServletRequest request
     ) {
-        Date now        = new Date();
-
+        Date now = new Date();
         Map<String, Object> result = new HashMap<String, Object>();
 
         /*
@@ -194,7 +187,7 @@ public class Page003Controller extends RootController {
         final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 
 		/* Form Data */
-        String strCaId  = (String)request.getParameter("caId");
+        String strCaId  = request.getParameter("caId");
 
         int caId = 0;
         if (!"".equals(strCaId)) {
@@ -207,31 +200,65 @@ public class Page003Controller extends RootController {
         }
 
         /* get multipart file */
-        MultipartFile file = multiRequest.getFile("fileName");
-        String fileType = request.getParameter("fileType");
-
-        logger.info("fileLocation " + fileLocation);
-
-        String filePath = CommonUtil.fileTransferTo(file, fileLocation);
-
-        /* after move file upload file data */
-        FileUploadInfo fileUploadInfo = new FileUploadInfo();
-        fileUploadInfo.setCaId(caId);
-        fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
-        fileUploadInfo.setFileName(filePath);
-        fileUploadInfo.setFileType(fileType);
-        fileUploadInfo.setFileSize(file.getSize());
+        final List<MultipartFile> files = multiRequest.getFiles("fileName");
+        String[] fileType = request.getParameterValues("fileType");
 
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("caId",caId);
 
-        if ("EVENT".equals(fileType)) {
+        Iterator<MultipartFile> itr = files.iterator();
+        MultipartFile file;
+        String filePath = "";
+        int i = 0;
 
-            //이벤트 데이터삭제
-            page002Mapper.deleteEvent(param);
+        while (itr.hasNext()) {
+            file = itr.next();
 
-            eventFileService.setFileInfo(fileUploadInfo);
-            eventFileService.doParse();
+            if (file != null && !"".equals(file.getOriginalFilename())) {
+
+                filePath = CommonUtil.fileTransferTo(file, fileLocation);
+
+                /* after move file upload file data */
+                FileUploadInfo fileUploadInfo = new FileUploadInfo();
+                fileUploadInfo.setCaId(caId);
+                fileUploadInfo.setUrl(fileUrl+file.getOriginalFilename());
+                fileUploadInfo.setFileName(filePath);
+                fileUploadInfo.setFileType(fileType[i]);
+                fileUploadInfo.setFileSize(file.getSize());
+
+                if ("EVENT".equals(fileType[i])) {
+
+                    //이벤트 데이터삭제
+                    page002Mapper.deleteEvent(param);
+
+                    eventFileService.setFileInfo(fileUploadInfo);
+                    eventFileService.doParse();
+
+                } else if ("FILTER".equals(fileType[i])) {
+
+                    //필터 데이터삭제
+                    page002Mapper.deleteFilter(param);
+                    //모델 데이터삭제
+                    page002Mapper.deleteModel(param);
+
+                    filterFileService.setFileInfo(fileUploadInfo);
+                    filterFileService.doParse();
+
+                    logger.info("Page003 param data " + param.toString());
+
+                    List<AbsmFilter> absmFilterList = page002Mapper.selectFilterPrId(param);
+                    Iterator iterator = absmFilterList.iterator();
+
+                    while (iterator.hasNext()) {
+
+                        AbsmFilter absmFilter = (AbsmFilter)iterator.next();
+                        logger.info("Page003 absmFilter data " + absmFilter.toString());
+
+                        modelData(absmFilter.getCaId(), absmFilter.getPrId(), now);
+                    }
+                }
+            }
+            i++;
         }
 
         result.put("caId", caId);
@@ -242,4 +269,48 @@ public class Page003Controller extends RootController {
     }
 
 
+    private void modelData(int caId, int prId, Date now) {
+
+        AbsmFilter absmFilter = new AbsmFilter();
+        AbsmModel absmModel = new AbsmModel();
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        logger.info("Page003 modelData prId data " + prId);
+        logger.info("Page003 modelData caId data " + caId);
+        logger.info("Page003 modelData absmFilter data " + absmFilter.toString());
+
+        absmFilter.setCaId(caId);
+        absmFilter.setPrId(prId);
+        absmFilter.setRegDate(now);
+        //평균 필터데이터생성
+        page002Mapper.createFilterValCd2(absmFilter);
+
+        //표준편차 필터데이터생성
+        page002Mapper.createFilterValCd3(absmFilter);
+
+        absmModel.setCaId(caId);
+        absmModel.setPrId(prId);
+        absmModel.setRegDate(now);
+        //Z표준화 모델데이터생성
+        page002Mapper.createModel(absmModel);
+
+        //모형식 모델업데이트
+        map.put("caId",caId);
+        map.put("prId",prId);
+        List<AbsmModel> modelResults = page002Mapper.selectModelResult(map);
+        for(AbsmModel modelResult : modelResults){
+            modelResult.setMoId(modelResult.getMoId());
+            modelResult.setCaId(modelResult.getCaId());
+            modelResult.setPrId(modelResult.getPrId());
+            modelResult.setSeCd(modelResult.getSeCd());
+            modelResult.setMoPre1(modelResult.getMoPre1());
+            modelResult.setMoPre2(modelResult.getMoPre2());
+            modelResult.setMoPre3(modelResult.getMoPre3());
+            modelResult.setMoPre4(modelResult.getMoPre4());
+            modelResult.setStLevel(modelResult.getStLevel());
+            modelResult.setRegDate(now);
+            absmModelRepository.save(modelResult);
+        }
+
+    }
 }

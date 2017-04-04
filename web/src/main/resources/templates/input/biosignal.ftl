@@ -43,12 +43,12 @@
                     <input id="file3" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('orgfindFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="ORG" />
 
-                    <label for="" class="wd160">SPSS 파일명(엑셀)</label>
+                    <#--<label for="" class="wd160">SPSS 파일명(엑셀)</label>
                     <input type="text" class="box_bd mr0 wd164" title="파일찾기" readonly="readonly"  id="filterfindFile">
                     <label for="file4" id="" class="file_label">파일찾기</label>
                     <input id="file4" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" >
-                    <!--<input type="hidden" name="fileType" value="MODEL" />-->
-                    <input type="hidden" name="fileType" value="FILTER" />
+                    <!--<input type="hidden" name="fileType" value="MODEL" />&ndash;&gt;
+                    <input type="hidden" name="fileType" value="FILTER" />-->
                     <button type="button" id="" name="save" class="input_btn fr" onclick="vaildationCheck();">입력</button>
 
                 </form>
@@ -106,11 +106,11 @@
                 return;
             }
 
-            if ($('#file4')[0].files.length == 0) {
+            /*if ($('#file4')[0].files.length == 0) {
                 msg = 'SPSS 파일을 선택하세요';
                 createToast('info', msg);
                 return;
-            }
+            }*/
             saveBiosignal();
         }
 

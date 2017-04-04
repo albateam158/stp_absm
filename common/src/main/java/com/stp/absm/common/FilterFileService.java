@@ -47,7 +47,7 @@ public class FilterFileService implements DataFileService{
         String fileName = fileUploadInfo.getFileName();
         String url      = fileUploadInfo.getUrl();
         int caId        = fileUploadInfo.getCaId();
-        int prId        = fileUploadInfo.getPrId();
+        //int prId        = fileUploadInfo.getPrId();
         long fileSize   = fileUploadInfo.getFileSize();
 
         try {
@@ -57,36 +57,73 @@ public class FilterFileService implements DataFileService{
             // 엑셀 파일 오픈
             XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
 
-            /* section code */
-            int seCd = 2;
+
             for (Row row : wb.getSheetAt(0)) {
 
-                if (row.getRowNum() < 1)
+                if (row.getRowNum() < 2)
                     continue;
 
                 if (row.getCell(1) != null) {
 
-                    AbsmFilter absmFilter = new AbsmFilter();
-                    absmFilter.setCaId(caId);
-                    absmFilter.setPrId(prId);
-                    absmFilter.setValCd("1");
-                    absmFilter.setSeCd(String.valueOf(seCd));
+                    /*
+                    pr_id는 기존 생체정보 화면이 아니라 케이스별 등록 화면으로 이동했기 때문에
+                    Bnri Sheet의 이름 정보에서 추출한 참가번호로 대체함
+                     */
+                    String[] rowDatas = row.getCell(1).toString().split("_");
+                    String prId = rowDatas[0].substring(1,rowDatas[0].length());
 
-                    absmFilter.setMeanRri(Double.valueOf(row.getCell(2).toString()));
-                    absmFilter.setStdRri(Double.valueOf(row.getCell(3).toString()));
-                    absmFilter.setMeanHrv(Double.valueOf(row.getCell(4).toString()));
-                    absmFilter.setStdHrv(Double.valueOf(row.getCell(5).toString()));
-                    absmFilter.setRmssdd(Double.valueOf(row.getCell(6).toString()));
-                    absmFilter.setPnn50(Double.valueOf(row.getCell(7).toString()));
-                    absmFilter.setLfhf(Double.valueOf(row.getCell(8).toString()));
-                    absmFilter.setScl(Double.valueOf(row.getCell(9).toString()));
+                    logger.info("Pr_id : " + prId);
 
-                    absmFilter.setSurAvg(Double.valueOf(row.getCell(10).toString()));
-                    absmFilter.setRegDate(now);
-                    logger.info(absmFilter.toString());
+                    int startIdx = 2;
+                    int offset = 11;
+                    int idx = 0;
 
-                    absmFilterRepository.save(absmFilter);
-                    seCd++;
+                    for (int i = 0; i < 11; i++) {
+
+                        AbsmFilter absmFilter = new AbsmFilter();
+                        absmFilter.setCaId(caId);
+
+                        absmFilter.setPrId(Integer.valueOf(prId));
+                        absmFilter.setValCd("1");
+
+                        /* 구간코드 생성 */
+                        if ((i+1) < 10)
+                            absmFilter.setSeCd("E0"+(i+1));
+                        else
+                            absmFilter.setSeCd("E"+(i+1));
+
+                        absmFilter.setMeanRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setStdRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setMeanHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setStdHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setRmssdd(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setPnn50(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setLfhf(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        idx++;
+                        absmFilter.setScl(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+
+                        //absmFilter.setSurAvg(Double.valueOf(row.getCell(10).toString()));
+                        absmFilter.setRegDate(now);
+                        logger.info(absmFilter.toString());
+
+                        absmFilterRepository.save(absmFilter);
+
+                        startIdx++;
+                        idx = 0;
+                    }
 
                 }
             }
@@ -95,7 +132,7 @@ public class FilterFileService implements DataFileService{
             AbsmFile absmFile = new AbsmFile();
             absmFile.setCaId(caId);
             /* 개인정보 또는 설문조사 파일은 개인이 아니라 case 별로 올라감 */
-            absmFile.setPrId(prId);
+            absmFile.setPrId(0);
             absmFile.setFileCd("06");
             absmFile.setFileName(fileName);
             absmFile.setFileSize(fileSize);

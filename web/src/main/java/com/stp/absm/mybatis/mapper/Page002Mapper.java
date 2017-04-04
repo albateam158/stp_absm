@@ -41,4 +41,6 @@ public interface Page002Mapper {
     Integer deleteFilter(Map<String, Object> params);
 
     Integer deleteModel(Map<String, Object> params);
+
+    List<AbsmFilter> selectFilterPrId(Map<String, Object> params);
 }
