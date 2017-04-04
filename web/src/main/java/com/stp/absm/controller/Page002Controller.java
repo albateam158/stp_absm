@@ -91,7 +91,7 @@ public class Page002Controller extends RootController {
         params.put("pageable", pageable);
 
         int count = page002Mapper.selectBoardsCount(params);
-        List<AbsmMeasure> boards = page002Mapper.selectBoards(params);
+        List<AbsmOrg> boards = page002Mapper.selectBoards(params);
         String paging = pagingUtil.getPagingLink((int) Math.ceil((double) count / pageable.getPageSize()), count, pageable.getPageNumber() + 1, request.getRequestURI(), params);
 
         JSONObject jsonObject = new JSONObject();
@@ -99,14 +99,20 @@ public class Page002Controller extends RootController {
 
         for(int i=0; i < boards.size(); i++) {
 
-            AbsmMeasure absmMeasure = (AbsmMeasure)boards.get(i);
+            AbsmOrg absmOrg = (AbsmOrg)boards.get(i);
             JSONObject obj = new JSONObject();
 
-            obj.put( "케이스명"     , absmMeasure.getCaseNm());
-            obj.put( "참가번호"     , absmMeasure.getPrId());
-            obj.put( "ECG/GSR구분"  , absmMeasure.getEgCd());
-            obj.put( "측정시간"     , absmMeasure.getMeTm());
-            obj.put( "측정값"       , absmMeasure.getMeVal());
+            obj.put( "케이스명"     , absmOrg.getCaseNm());
+            obj.put( "참가번호"     , absmOrg.getPrId());
+            obj.put( "필터시간"     , absmOrg.getFiTm());
+            obj.put( "mean_rri"     , absmOrg.getMeanRri());
+            obj.put( "std_rri"     , absmOrg.getStdRri());
+            obj.put( "mean_hrv"     , absmOrg.getMeanHrv());
+            obj.put( "std_hrv"     , absmOrg.getStdHrv());
+            obj.put( "rmssdd"     , absmOrg.getRmssdd());
+            obj.put( "pnn50"     , absmOrg.getPnn50());
+            obj.put( "lfhf"     , absmOrg.getLfhf());
+            obj.put( "scl"     , absmOrg.getScl());
 
             cell.add(obj);
         }

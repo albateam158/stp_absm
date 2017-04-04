@@ -153,9 +153,6 @@ function getBioInfo(caId, prId) {
             $("#jsGrid").jsGrid({
                 width: "100%",
                 height: "400px",
-
-                //inserting: true,
-                // editing: true,
                 sorting: true,
                 paging: true,
 
@@ -164,9 +161,15 @@ function getBioInfo(caId, prId) {
                 fields: [
                     { name: "케이스명", type: "text", width: 100 , align: "center"},
                     { name: "참가번호", type: "text", width: 100 , align: "center"},
-                    { name: "ECG/GSR구분", type: "text",  width: 100 , align: "center"},
-                    { name: "측정시간", type: "text",  width: 100 , align: "center"},
-                    { name: "측정값", type: "text",  width: 100 , align: "center"}
+                    { name: "필터시간", type: "text",  width: 100 , align: "center"},
+                    { name: "mean_rri", type: "text",  width: 100 , align: "center"},
+                    { name: "std_rri", type: "text",  width: 100 , align: "center"},
+                    { name: "mean_hrv", type: "text",  width: 100 , align: "center"},
+                    { name: "std_hrv", type: "text",  width: 100 , align: "center"},
+                    { name: "rmssdd", type: "text",  width: 100 , align: "center"},
+                    { name: "pnn50", type: "text",  width: 100 , align: "center"},
+                    { name: "lfhf", type: "text",  width: 100 , align: "center"},
+                    { name: "scl", type: "text",  width: 100 , align: "center"}
                 ]
             });
 

@@ -100,7 +100,7 @@
         from
         (
         SELECT (@row_number:=@row_number + 1) AS num, c.*
-        FROM absm_measure AS c, (SELECT @row_number:=0) AS t
+        FROM absm_org AS c, (SELECT @row_number:=0) AS t
         WHERE 1=1
         AND c.pr_id = #{prId}
         ) a
@@ -116,7 +116,7 @@
     </select>
 
 
-    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
+    <select id="selectBoards" parameterType="map" resultMap="OrgMap">
         <include refid="selectBoardSql"></include>
     </select>
 
