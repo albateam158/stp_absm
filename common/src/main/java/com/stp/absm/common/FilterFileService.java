@@ -2,8 +2,10 @@ package com.stp.absm.common;
 
 import com.stp.absm.model.AbsmFile;
 import com.stp.absm.model.AbsmFilter;
+import com.stp.absm.model.AbsmPrivate;
 import com.stp.absm.repository.AbsmFileRepository;
 import com.stp.absm.repository.AbsmFilterRepository;
+import com.stp.absm.repository.AbsmPrivateRepository;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -31,6 +33,9 @@ public class FilterFileService implements DataFileService{
 
     @Autowired
     protected AbsmFileRepository absmFileRepository;
+
+    @Autowired
+    protected AbsmPrivateRepository absmPrivateRepository;
 
     public FilterFileService() {}
 
@@ -70,58 +75,72 @@ public class FilterFileService implements DataFileService{
                     Bnri Sheet의 이름 정보에서 추출한 참가번호로 대체함
                      */
                     String[] rowDatas = row.getCell(1).toString().split("_");
-                    String prId = rowDatas[0].substring(1,rowDatas[0].length());
+//                    String prId = rowDatas[0].substring(1,rowDatas[0].length());
+                    AbsmPrivate absmPrivate = absmPrivateRepository.findByCaIdAndPNo(caId, Integer.valueOf(CommonUtil.removeDot(row.getCell(0).toString())));
 
-                    logger.info("Pr_id : " + prId);
+                    logger.info("Pr_id : " + absmPrivate.getPrId());
 
                     int startIdx = 2;
                     int offset = 11;
                     int idx = 0;
+                    int seCdIdx = 2;
 
                     for (int i = 0; i < 11; i++) {
 
-                        AbsmFilter absmFilter = new AbsmFilter();
-                        absmFilter.setCaId(caId);
+                        /* 스킵구간 판교역개찰구,강남역개찰구,대기지점 */
+                        if(startIdx == 3 || startIdx == 7 || startIdx == 12){
+                            startIdx++;
+                            continue;
+                        }else{
 
-                        absmFilter.setPrId(Integer.valueOf(prId));
-                        absmFilter.setValCd("1");
+                            AbsmFilter absmFilter = new AbsmFilter();
+                            absmFilter.setCaId(caId);
 
-                        /* 구간코드 생성 */
-                        if ((i+1) < 10)
-                            absmFilter.setSeCd("E0"+(i+1));
-                        else
-                            absmFilter.setSeCd("E"+(i+1));
+                            absmFilter.setPrId(absmPrivate.getPrId());
+                            absmFilter.setValCd("1");
 
-                        absmFilter.setMeanRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            /* 구간코드 생성 판교역개찰구,강남역개찰구,대기지점은  seCd null로함 i=1,5,10*/
+                            if ( i == 1 || i == 5 || i == 10) {
+                                continue;
+                            }
+                            else {
+                                absmFilter.setSeCd(String.valueOf(seCdIdx));
+                                seCdIdx++;
+                            }
 
-                        idx++;
-                        absmFilter.setStdRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            absmFilter.setMeanRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setMeanHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setStdRri(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setStdHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setMeanHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setRmssdd(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setStdHrv(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setPnn50(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setRmssdd(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setLfhf(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setPnn50(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        idx++;
-                        absmFilter.setScl(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
+                            idx++;
+                            absmFilter.setLfhf(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        //absmFilter.setSurAvg(Double.valueOf(row.getCell(10).toString()));
-                        absmFilter.setRegDate(now);
-                        logger.info(absmFilter.toString());
+                            idx++;
+                            absmFilter.setScl(Double.valueOf(row.getCell(startIdx+(offset*idx)).toString()));
 
-                        absmFilterRepository.save(absmFilter);
+                            //absmFilter.setSurAvg(Double.valueOf(row.getCell(10).toString()));
+                            absmFilter.setRegDate(now);
+                            logger.info(absmFilter.toString());
 
-                        startIdx++;
+
+                            absmFilterRepository.save(absmFilter);
+                            startIdx++;
+                        }
+
+
                         idx = 0;
                     }
 

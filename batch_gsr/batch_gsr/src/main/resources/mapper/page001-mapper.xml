@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stp.absm.mybatis.mapper.Page001Mapper">
+
+    <resultMap id="BoardMap" type="com.stp.absm.model.AbsmPrivate">
+        <id property="prId" column="pr_id"/>
+        <result property="caId" column="ca_id"/>
+        <result property="pNo" column="p_no"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="note" column="note"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+    </resultMap>
+
+    <!--========================================== SELECT ============================================== -->
+    <sql id="selectBoardSql">
+        select a.*
+               ,b.dt
+               ,b.case_nm
+        from
+        (
+        SELECT (@row_number:=@row_number + 1) AS num, c.*
+        FROM absm_private AS c, (SELECT @row_number:=0) AS t
+        WHERE 1=1
+        <if test="caId != null and caId != ''">
+            AND c.ca_id = #{caId}
+        </if>
+        <if test="note != null and note != ''">
+            AND c.note = LIKE CONCAT('%', #{note}, '%')
+        </if>
+        ) a
+        Inner JOIN absm_case b
+        ON a.ca_id = b.ca_id
+        <if test="dt != null and dt != ''">
+            AND b.dt = #{dt}
+        </if>
+        order by num desc
+    </sql>
+
+    <select id="selectBoardsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM (<include refid="selectBoardSql"></include>) a
+    </select>
+
+
+    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
+        <include refid="selectBoardSql"></include>
+    </select>
+
+
+    <select id="selectCaseId" resultType="int">
+        SELECT MAX(ca_id) FROM absm_case
+    </select>
+
+    <update id="insertSurveyAvg" parameterType="map">
+        INSERT INTO absm_survey_avg
+          (
+            ca_id,
+            su_val1,
+            su_val2,
+            su_val3,
+            su_val4,
+            su_val5,
+            su_val6,
+            su_val7,
+            su_val8,
+            reg_date,
+            update_date
+          )
+          VALUES
+          (
+            #{caId},
+            #{suVal1},
+            #{suVal2},
+            #{suVal3},
+            #{suVal4},
+            #{suVal5},
+            #{suVal6},
+            #{suVal7},
+            #{suVal8},
+            NOW(),
+            NOW()
+          )
+    </update>
+
+</mapper>

@@ -9,4 +9,7 @@ public interface AbsmPrivateRepository extends JpaRepository<AbsmPrivate, Intege
     List<AbsmPrivate> findByOrderByPrIdAsc();
     List<AbsmPrivate> findByCaIdOrderByPrIdAsc(Integer caId);
 
+    AbsmPrivate findByCaIdAndPNo(Integer caId,Integer pNo);
+
+
 }

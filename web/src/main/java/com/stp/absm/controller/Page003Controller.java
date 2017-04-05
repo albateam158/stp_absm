@@ -279,20 +279,16 @@ public class Page003Controller extends RootController {
         logger.info("Page003 modelData caId data " + caId);
         logger.info("Page003 modelData absmFilter data " + absmFilter.toString());
 
-        absmFilter.setCaId(caId);
-        absmFilter.setPrId(prId);
-        absmFilter.setRegDate(now);
+        map.put("caId",caId);
+        map.put("prId",prId);
         //평균 필터데이터생성
-        page002Mapper.createFilterValCd2(absmFilter);
+        page002Mapper.createFilterValCd2(map);
 
         //표준편차 필터데이터생성
-        page002Mapper.createFilterValCd3(absmFilter);
+        page002Mapper.createFilterValCd3(map);
 
-        absmModel.setCaId(caId);
-        absmModel.setPrId(prId);
-        absmModel.setRegDate(now);
         //Z표준화 모델데이터생성
-        page002Mapper.createModel(absmModel);
+        page002Mapper.createModel(map);
 
         //모형식 모델업데이트
         map.put("caId",caId);

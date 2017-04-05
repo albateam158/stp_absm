@@ -1,0 +1,51 @@
+server:
+    port: 8090
+    session:
+        timeout: 1800
+
+endpoints:
+    enabled: false
+    shutdown:
+        enabled: false
+    jmx:
+        enabled: false
+
+spring:
+    profiles:
+        active: local
+    datasource:
+          dataSourceClassName: org.gjt.mm.mysql.Driver
+          url: jdbc:mysql://127.0.0.1:3306/absm?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          #url: jdbc:mysql://192.168.123.52:3306/ka_intra?characterSetResults=utf8&characterEncoding=utf8&useUnicode=true
+          databaseName: absm
+          serverName: absm
+          username: root
+          password: 1234
+          #password: wicrowd2016!@#$
+          validationQuery: SELECT 1
+          testOnBorrow: true
+    jpa:
+        showSql: true
+        properties:
+            hibernate:
+                format_sql: true
+
+    messages:
+         basename: messages/messages
+
+multipart:
+    maxFileSize: 1000Mb
+    maxRequestSize: 1000Mb
+
+develop: true
+
+upload:
+    fileLocation: c:\\workspace\\absm\\upload\\
+    fileUrl: http://localhost:8080/file/
+
+logging:
+    config: classpath:logback.xml
+
+aeskey: M3OuXbwA3AcJq9oa-c_YRONCiYk8SiEd9KsRFaj1oTM
+
+

@@ -100,7 +100,7 @@
         from
         (
         SELECT (@row_number:=@row_number + 1) AS num, c.*
-        FROM absm_org AS c, (SELECT @row_number:=0) AS t
+        FROM absm_measure AS c, (SELECT @row_number:=0) AS t
         WHERE 1=1
         AND c.pr_id = #{prId}
         ) a
@@ -116,15 +116,15 @@
     </select>
 
 
-    <select id="selectBoards" parameterType="map" resultMap="OrgMap">
+    <select id="selectBoards" parameterType="map" resultMap="BoardMap">
         <include refid="selectBoardSql"></include>
     </select>
 
-    <insert id="createFilterValCd2" parameterType="map" >
+    <insert id="createFilterValCd2" parameterType="com.stp.absm.model.AbsmFilter">
         insert into
         absm_filter
-        (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl, reg_date)
-        SELECT a.ca_id, b.pr_id, a.se_cd, '2' val_cd
+        (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
+        SELECT ca_id, pr_id, se_cd, '2' val_cd
         , avg(a.mean_rri) mean_rri
         , avg(a.std_rri) std_rri
         , avg(a.mean_hrv) mean_hrv
@@ -133,20 +133,17 @@
         , avg(a.pnn50) pnn50
         , avg(a.lfhf) lfhf
         , avg(a.scl) scl
-        , now()
-        FROM absm_filter a inner join absm_private b on(a.pr_id = b.pr_id)
-        and a.val_cd = '1'
-        and a.se_cd != ''
-        and a.ca_id = #{caId}
-        and a.ca_id = b.ca_id
-        and b.pr_id = #{prId}
+        FROM absm_filter a
+        where val_cd = '1'
+        and ca_id = #{caId}
+        and pr_id = #{prId}
     </insert>
 
-    <insert id="createFilterValCd3" parameterType="map" >
+    <insert id="createFilterValCd3" parameterType="com.stp.absm.model.AbsmFilter">
         insert into
         absm_filter
-        (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl, reg_date)
-        SELECT a.ca_id, b.pr_id, a.se_cd, '3' val_cd
+        (ca_id, pr_id, se_cd, val_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
+        SELECT ca_id, pr_id, se_cd, '3' val_cd
         , stddev_samp(a.mean_rri) mean_rri
         , stddev_samp(a.std_rri) std_rri
         , stddev_samp(a.mean_hrv) mean_hrv
@@ -155,18 +152,15 @@
         , stddev_samp(a.pnn50) pnn50
         , stddev_samp(a.lfhf) lfhf
         , stddev_samp(a.scl) scl
-        , now()
-        FROM absm_filter a inner join absm_private b on(a.pr_id = b.pr_id)
-        and a.val_cd = '1'
-        and a.se_cd != ''
-        and a.ca_id = #{caId}
-        and a.ca_id = b.ca_id
-        and b.pr_id = #{prId}
+        FROM absm_filter a
+        where val_cd = '1'
+        and ca_id = #{caId}
+        and pr_id = #{prId}
     </insert>
 
-    <insert id="createModel" parameterType="map">
+    <insert id="createModel" parameterType="com.stp.absm.model.AbsmModel">
         insert into absm_model(
-        ca_id, pr_id, se_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl, reg_date)
+        ca_id, pr_id, se_cd, mean_rri, std_rri, mean_hrv, std_hrv, rmssdd, pnn50, lfhf, scl)
         select  DISTINCT a.ca_id, a.pr_id, a.se_cd
         , (a.mean_rri - b.mean_rri) / c.mean_rri mean_rri
         , (a.std_rri - b.std_rri) / c.std_rri std_rri
@@ -176,7 +170,6 @@
         , (a.pnn50 - b.pnn50) / c.pnn50 pnn50
         , (a.lfhf - b.lfhf) / c.lfhf lfhf
         , (a.scl - b.scl) / c.scl scl
-        , now()
         FROM absm_filter a
         inner join absm_filter b
         on a.ca_id = b.ca_id
@@ -187,7 +180,6 @@
         and a.pr_id = c.pr_id
         and c.val_cd = '3'
         where a.val_cd = '1'
-        and a.se_cd != ''
         and a.ca_id = #{caId}
         and a.pr_id = #{prId}
     </insert>
@@ -282,23 +274,12 @@
     <delete id="deleteFilter" parameterType="map">
         delete from absm_filter
         where ca_id = #{caId}
+        and pr_id = #{prId}
     </delete>
 
     <delete id="deleteModel" parameterType="map">
         delete from absm_model
         where ca_id = #{caId}
+        and pr_id = #{prId}
     </delete>
-
-    <select id="selectFilterPrId" parameterType="map" resultMap="FilterMap">
-         select a.ca_id
-                , a.pr_id
-           from
-             (select *
-               from absm_private
-              where ca_id = #{caId}
-             ) a inner join absm_filter b on (a.ca_id = b.ca_id)
-            and a.pr_id = b.pr_id
-          group by a.ca_id, b.pr_id
-
-    </select>
 </mapper>

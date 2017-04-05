@@ -1,0 +1,73 @@
+server:
+    port: 8090
+    session:
+        timeout: 1800
+
+endpoints:
+    enabled: false
+    shutdown:
+        enabled: false
+    jmx:
+        enabled: false
+
+spring:
+    profiles:
+        active: dev
+    datasource:
+        dataSourceClassName: org.gjt.mm.mysql.Driver
+        url: jdbc:mysql://127.0.0.1:3306/wicrowd_db?useUnicode=true&characterEncoding=utf-8
+        databaseName: wicrowd_db
+        serverName: wicrowd_db
+        username: wicrowd_cms
+        password: wicrowd2016!@#$
+        validationQuery: SELECT 1
+        testOnBorrow: true
+    jpa:
+        showSql: true
+        properties:
+            hibernate:
+                format_sql: true
+
+    redis:
+        host: 127.0.0.1
+        port: 6379
+
+    messages:
+         basename: messages/messages
+
+    mail:
+        host: 119.206.195.229
+        username: wicrowd@kasset.co.kr
+        password: asdf6256
+        port: 25
+
+xcrowdfund:
+   restUrl: http://127.0.0.1:8070
+
+multipart:
+    maxFileSize: 10Mb
+    maxRequestSize: 30Mb
+
+pdf:
+    projectDocument: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/testdata
+    cssfile: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/cms/src/main/resources/static/assets/css/pdf.css
+    fontFile: /Users/sj/Documents/develop/intellij-workspace/wicrowd-java/cms/src/main/resources/static/assets/font/MALGUN.TTF
+    zipmakerUrl: http://52.79.61.249:7777/add
+
+develop: true
+
+upload:
+    fileLocation: /
+
+logging:
+    config: classpath:logback.xml
+
+aeskey: M3OuXbwA3AcJq9oa-c_YRONCiYk8SiEd9KsRFaj1oTM
+
+sms:
+  from: '025506256'
+
+
+social:
+  facebook:
+      fbAppId: '1865799810313126'

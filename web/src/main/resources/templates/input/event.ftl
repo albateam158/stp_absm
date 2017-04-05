@@ -9,7 +9,7 @@
             <h2 class="input">이벤트 자료 입력</h2>
             <div class="bg_wh">
                 <form id="EventForm">
-                    <h3> 전체 피험자의 이벤트정보 입력</h3>
+                    <h3> 전체 피험자의 이벤트정보 및 생체파라미터 입력</h3>
 
                     <label for="caId" class="wd100">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd160 mb10">
@@ -22,7 +22,7 @@
                     <input id="file1" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('eventFile').value=this.value" onkeydown="return false" >
                     <input type="hidden" name="fileType" value="EVENT" />
 
-                    <label for="" class="wd160">SPSS 파일명(엑셀)</label>
+                    <label for="" class="wd160">생체파라미터 파일명(엑셀)</label>
                     <input type="text" class="box_bd mr0 wd189" title="파일찾기" readonly="readonly"  id="filterfindFile">
                     <label for="file2" id="" class="file_label">파일찾기</label><!-- lable의 for : file2 -->
                     <input id="file2" type="file" class="attach_file" name="fileName" onchange="javascript:document.getElementById('filterfindFile').value=this.value" onkeydown="return false" ><!-- input의 id : file2 -->
