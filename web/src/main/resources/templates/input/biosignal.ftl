@@ -9,7 +9,7 @@
             <h2 class="input">생체신호 측정자료 입력</h2>
             <div class="bg_wh">
                 <form id="BioForm">
-                    <h3> 선택한 1명의 피험자의 생체신호정보, 분단위정보, SPSS정보 입력</h3>
+                    <h3> 선택한 1명의 피험자의 생체신호정보, 분단위정보 입력</h3>
 
                     <label for="caId" class="wd100">케이스명</label>
                     <select name="caId" id="caId"  class="box_bd wd160 mb10">

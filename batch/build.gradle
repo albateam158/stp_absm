@@ -19,11 +19,11 @@ apply plugin: 'idea'
 apply plugin: 'war'
 
 bootRepackage {
-    mainClass = 'net.xenix.wicrowd.Application'
+    mainClass = 'com.stp.absm.Application'
 }
 
 springBoot {
-    mainClass = 'net.xenix.wicrowd.Application'
+    mainClass = 'com.stp.absm.Application'
 }
 
 group 'net.xenix.wicrowd'
