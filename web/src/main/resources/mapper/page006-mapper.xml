@@ -369,14 +369,15 @@
             , round(c2.st_level)  st_level
             from(
                 select b1.*
-                , case when b1.cur_dt between b1.ev_dt1 and b1.ev_dt2 then '2'
-                       when b1.cur_dt between b1.ev_dt2 and b1.ev_dt3 then '3'
-                       when b1.cur_dt between b1.ev_dt3 and b1.ev_dt4 then '4'
-                       when b1.cur_dt between b1.ev_dt4 and b1.ev_dt5 then '5'
-                       when b1.cur_dt between b1.ev_dt5 and b1.ev_dt6 then '6'
-                       when b1.cur_dt between b1.ev_dt6 and b1.ev_dt7 then '7'
-                       when b1.cur_dt between b1.ev_dt7 and b1.ev_dt8 then '8'
-                       when b1.cur_dt between b1.ev_dt8 and b1.ev_dt9 then '9'
+                , case when b1.cur_dt between b1.ev_dt1 and b1.ev_dt2 then '1'
+                       when b1.cur_dt between b1.ev_dt2 and b1.ev_dt3 then '2'
+                       when b1.cur_dt between b1.ev_dt3 and b1.ev_dt4 then '3'
+                       when b1.cur_dt between b1.ev_dt4 and b1.ev_dt5 then '4'
+                       when b1.cur_dt between b1.ev_dt5 and b1.ev_dt6 then '5'
+                       when b1.cur_dt between b1.ev_dt6 and b1.ev_dt7 then '6'
+                       when b1.cur_dt between b1.ev_dt7 and b1.ev_dt8 then '7'
+                       when b1.cur_dt between b1.ev_dt8 and b1.ev_dt9 then '8'
+                       when b1.cur_dt between b1.ev_dt9 and b1.ev_dt10 then '9'
                        end se_cd
                 from
                     (
@@ -413,7 +414,7 @@
                 and c1.pr_id = c2.pr_id
                 and c1.se_cd = c2.se_cd
                 and c1.p_no = #{pNo}
-                inner join absm_code c3
+                left outer join absm_code c3
                 on CONCAT('E0',c1.se_cd) = c3.data
                 order by  CAST(c1.fi_tm AS UNSIGNED)
 

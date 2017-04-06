@@ -184,8 +184,8 @@
                 <when test='searchCode == "4"'>
                     SELECT *
                     FROM (
-                    SELECT a1.*,a2.code_name FROM absm.absm_model a1
-                    inner join absm.absm_code a2
+                    SELECT a1.*,a2.code_name FROM absm_model a1
+                    inner join absm_code a2
                     on a2.data = a1.se_cd
                     and a2.code_group = 'SEC'
                     ) AS c
