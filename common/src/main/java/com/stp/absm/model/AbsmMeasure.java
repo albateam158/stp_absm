@@ -32,6 +32,8 @@ public class AbsmMeasure implements Serializable {
     private String sex;
     @Transient
     private Integer pNo;
+    @Transient
+    private String num;
 
     private Date regDate;
     private Date updateDate;

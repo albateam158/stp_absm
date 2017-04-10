@@ -4,6 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stp.absm.mybatis.mapper.Page006Mapper">
 
+    <resultMap id="MeasureMap" type="com.stp.absm.model.AbsmMeasure">
+        <id property="meId" column="me_id"/>
+        <result property="num" column="num"/>
+        <result property="caId" column="ca_id"/>
+        <result property="prId" column="pr_id"/>
+        <result property="egCd" column="eg_cd"/>
+        <result property="meTm" column="me_tm"/>
+        <result property="meVal" column="me_val"/>
+        <result property="dt" column="dt"/>
+        <result property="caseNm" column="case_nm"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="deleteDate" column="delete_date"/>
+
+    </resultMap>
+
     <resultMap id="FilterMap" type="com.stp.absm.model.AbsmFilter">
         <id property="fiId" column="fi_id"/>
         <result property="caId" column="ca_id"/>
@@ -418,5 +434,24 @@
                 on CONCAT('E0',c1.se_cd) = c3.data
                 order by  CAST(c1.fi_tm AS UNSIGNED)
 
+    </select>
+
+    <select id="selectGraph2" parameterType="map" resultMap="MeasureMap">
+
+        select a.*
+          from
+            (
+            select @row_number := @row_number + 1 AS num
+                    ,a1.me_tm
+                    ,ROUND(a1.me_val, 4) AS me_val
+                    ,a1.eg_cd
+                    ,a1.pr_id
+              from absm_measure a1 inner join absm_private c1 on (a1.pr_id = c1.pr_id), (select @row_number := 0) r
+             where a1.ca_id = #{caId}
+               and a1.eg_cd = #{egCd}
+               and c1.p_no = #{pNo}
+            ) a
+          order by num
+          LIMIT #{lastRow}, #{lastRowEnd}
     </select>
 </mapper>

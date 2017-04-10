@@ -32,5 +32,6 @@ public interface Page006Mapper {
 
     List<AbsmOrg> selectGraph(Map<String, Object> params);
 
+    List<AbsmMeasure> selectGraph2(Map<String, Object> params);
 
 }

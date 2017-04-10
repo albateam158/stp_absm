@@ -112,17 +112,22 @@ public class Page006Controller extends RootController {
      */
     @RequestMapping(value = "/result/filter", method = RequestMethod.GET)
     public @ResponseBody
-    List<AbsmFilter> filterFormListAjax(
+    List<AbsmMeasure> filterFormListAjax(
             @RequestParam(value = "caId", required = false) Integer caId,
-            @RequestParam(value = "prId", required = false) Integer prId,
+            @RequestParam(value = "pNo", required = false) Integer pNo,
+            @RequestParam(value = "egCd", required = false) String egCd,
+            @RequestParam(value = "lastRow", required = false) Integer lastRow,
             HttpServletRequest request
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("caId", caId);
-        params.put("prId", prId);
+        params.put("pNo", pNo);
+        params.put("egCd", egCd);
+        params.put("lastRow", lastRow);
+        params.put("lastRowEnd", lastRow+100);
 
-        List<AbsmFilter> filters = page006Mapper.selectFilters(params);
-
+        //List<AbsmFilter> filters = page006Mapper.selectFilters(params);
+        List<AbsmMeasure> filters = page006Mapper.selectGraph2(params);
         return filters;
     }
 
