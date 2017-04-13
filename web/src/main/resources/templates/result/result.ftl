@@ -157,6 +157,10 @@
 
         $(function () {
 
+            $("#pNo").change(function() {
+                getFilterData();
+            });
+
             var lastRow = 0;
 
             var interactive_plot = $.plot("#interactive", [], {
@@ -183,7 +187,58 @@
                 }
             });
 
-            interactive_plot.draw();
+            var data = [];              // y축 데이터
+            var chartData = [];         // 서버에서 조회해서 y축 데이터에 0.5마다 1건씩 넘겨준다.
+            var tempChartData = [];     // chartData가 소진되면 바로 넘겨주기 위해 50건 남았을때 서버에서 조회
+            var totalPoints = 100;      // 그래프에 보여줄 Point 개수
+            var eof = false;            // Data EOF 체크
+            var isSearching = false;    // Ajax 처리중 Check
+
+            function setChartData() {
+
+                /*
+                    1. 그래프 데이터의 첫번째 데이터를 제거한다. 이동하는 효과를 표현하기 위해서
+                       데이터를 현행화 한다.
+                    2. Ajax를 통해서 서버에 비동기로 데이터를 받아오기 때문에 데이터가 끝나기 전에
+                       서버에서 데이터를 조회해서 임시 배열에 보관한다.
+                    3. 조회해온 데이터가 모두 제거 되면 임시 배열 tempChartData를 chartData에 바인딩한다.
+                    4. y축 data 배열에 chartData를 100건에 모자란 만큼 채워넣는다.
+                    5. 최종 그래프 데이터 res임시 배열에 넣고 그래프에 바인딩한다.
+                */
+
+                // 1
+                if (data.length > 0) {
+                    data = data.slice(1);
+
+                    if (chartData.length > 0) {
+                        chartData = chartData.slice(1);
+                    }
+                }
+
+                // 2,3
+                if (chartData.length == 50 && isSearching == false) {
+                    getFilterData();
+                }
+                else if (chartData.length == 0) {
+                    chartData = tempChartData;
+                }
+
+                // 4
+                var k = 0;
+                while (data.length < totalPoints && chartData.length > 0) {
+                    //var y = ;
+                    data.push(chartData[k][1]);
+                    k++;
+                }
+
+                // 5
+                var res = [];
+                for (var i = 0; i < data.length; ++i) {
+                    res.push([i, data[i]]);
+                }
+
+                interactive_plot.setData([res]);
+            }
 
             function getFilterData() {
 
@@ -194,6 +249,7 @@
                 if (caId == "" || pNo == "" )
                     return;
 
+                isSearching = true;
                 $.ajax({
                     type: "GET",
                     url: "/result/filter",
@@ -205,15 +261,19 @@
                     },
                     success: function (data) {
 
-                        var chartData = [];
+                        tempChartData = [];
 
                         $.each(data, function(index, item) {
-                            chartData.push([index, item.meVal]);
+                            tempChartData.push([index, item.meVal]);
                         });
 
-                        interactive_plot.setData([chartData]);
-                        interactive_plot.draw();
+                        if (data.length < 100)
+                            eof = true;
+
                         lastRow = lastRow + 100;
+
+                        isSearching = false;
+
                     },
                     error: function (request, status, error) {
                         alert("결과 조회 실패 " + request.status + "\n" + "error message: " + error + "\n");
@@ -222,17 +282,19 @@
             }
 
 
-            var updateInterval = 500; //Fetch data ever x milliseconds
+            var updateInterval = 100; //Fetch data ever x milliseconds
             var realtime = "on"; //If == to on then fetch data every x seconds. else stop fetching
             function update() {
 
-                getFilterData();
-                // Since the axes don't change, we don't need to call plot.setupGrid()
-                //interactive_plot.draw();
+                setChartData();
 
-                if (realtime === "on")
+                // Since the axes don't change, we don't need to call plot.setupGrid()
+                interactive_plot.draw();
+
+                if (realtime === "on" && eof == false)
                     setTimeout(update, updateInterval);
             }
+
 
             //INITIALIZE REALTIME DATA FETCHING
             if (realtime === "on") {

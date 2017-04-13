@@ -452,6 +452,6 @@
                and c1.p_no = #{pNo}
             ) a
           order by num
-          LIMIT #{lastRow}, #{lastRowEnd}
+          LIMIT #{lastRow}, #{rowCount}
     </select>
 </mapper>

@@ -124,7 +124,7 @@ public class Page006Controller extends RootController {
         params.put("pNo", pNo);
         params.put("egCd", egCd);
         params.put("lastRow", lastRow);
-        params.put("lastRowEnd", lastRow+100);
+        params.put("rowCount", 100);
 
         //List<AbsmFilter> filters = page006Mapper.selectFilters(params);
         List<AbsmMeasure> filters = page006Mapper.selectGraph2(params);
