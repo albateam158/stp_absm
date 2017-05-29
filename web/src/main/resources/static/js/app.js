@@ -895,3 +895,32 @@ function getPrivateList(formName, caId) {
     });
 
 }
+
+// 리포트 엑셀 파일 생성
+function excelDown() {
+
+    var form = $('#ResultForm')[0];
+    var formData = new FormData(form);
+
+    /*var caId    = $('#caId option:selected').val();
+    var caseNm  = $('#caId option:selected').text();
+
+    var pNo     = $('#pNo option:selected').val();
+    var pName   = $('#pNo option:selected').text();
+    var chartId = $('#filter option:selected').val();
+    */
+    $.ajax({
+        type : "GET",
+        url : "/result/measureReport",
+        data: {
+            "caId": formData.get("caId"),
+            "pNo": formData.get("pNo")
+        },
+        success: function(data) {
+            alert("excelDown 성공");
+        },
+        error: function(request, status, error) {
+            alert("excelDown 실패 " + request.status + "\n" + "error message: " + error + "\n");
+        }
+    });
+}

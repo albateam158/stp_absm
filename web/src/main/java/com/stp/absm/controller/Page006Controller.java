@@ -1,11 +1,15 @@
 package com.stp.absm.controller;
 
+import com.stp.absm.common.ExcelUtil;
 import com.stp.absm.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +21,11 @@ import java.util.Map;
 @RestController
 public class Page006Controller extends RootController {
 
+    @Value(value = "${upload.fileLocation}")
+    private String fileLocation;
+
+    @Value(value = "${upload.fileUrl}")
+    private String fileUrl;
     /**
      * 조회화면
      * @param request
@@ -179,5 +188,64 @@ public class Page006Controller extends RootController {
     }
 
 
+    /**
+     * Report 파일 생성 ajax
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/result/measureReport", method = RequestMethod.GET)
+    public void measureReportAjax(
+            @RequestParam(value = "caId", required = false) Integer caId,
+            @RequestParam(value = "pNo", required = false) Integer pNo,
 
+            HttpServletRequest request, HttpServletResponse response
+    ) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("caId"   , caId);
+        params.put("pNo"    , pNo);
+
+        AbsmPrivate absmPrivate  = page006Mapper.selectPrivate(params);
+        List<AbsmOrg> reportData = page006Mapper.selectReportData(params);
+
+        List excelparamList = new ArrayList();
+        excelparamList.add(absmPrivate);
+        excelparamList.add(reportData);
+        ExcelUtil excelUtil = ExcelUtil.getInstance();
+
+        String fileName = "absm_report_"+ absmPrivate.getName() +"("+absmPrivate.getAge()+").xls";
+        excelUtil.makeFile(fileLocation, fileName, excelparamList);
+
+        try {
+
+            /* 생성된 파일 */
+            File file = new File(fileLocation+fileName);
+            InputStream is = new FileInputStream(file);
+
+            /* 브라우저를 통해서 다운로드 될 파일명 */
+            String downFile = "absm_report_"+ absmPrivate.getName() +"("+absmPrivate.getAge()+")";
+
+            /* 파일명 한글 Encoding */
+            downFile = new String(downFile.getBytes("UTF-8"), "ISO-8859-1");
+            String fileExtension = ".xls";
+
+            int bytelength = (int) file.length();
+            byte fileByte[] = new byte[bytelength];
+
+            response.reset();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileUrl + downFile + fileExtension + "\"");
+
+            OutputStream output = response.getOutputStream();
+
+            for (int nChunk = is.read(fileByte); nChunk!=-1; nChunk = is.read(fileByte)) {
+                output.write(fileByte);
+            }
+
+            is.close();
+            output.close();
+        }
+        catch (IOException ie) {
+            ie.printStackTrace();
+        }
+    }
 }

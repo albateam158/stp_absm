@@ -182,6 +182,7 @@
         <result property="moPre3" column="mo_pre3"/>
         <result property="moPre4" column="mo_pre4"/>
         <result property="stLevel" column="st_level"/>
+        <result property="eventTime" column="event_time"/>
     </resultMap>
     <!--========================================== SELECT ============================================== -->
     <sql id="selectFilterSql">
@@ -454,4 +455,80 @@
           order by num
           LIMIT #{lastRow}, #{rowCount}
     </select>
+
+    <select id="selectReportData" parameterType="map" resultMap="GraphMap">
+
+        	select
+                 c3.code_name
+                ,case
+                    when c1.se_cd = '1' then c1.ev_dt1
+                    when c1.se_cd = '2' then c1.ev_dt2
+                    when c1.se_cd = '3' then c1.ev_dt3
+                    when c1.se_cd = '4' then c1.ev_dt4
+                    when c1.se_cd = '5' then c1.ev_dt5
+                    when c1.se_cd = '6' then c1.ev_dt6
+                    when c1.se_cd = '7' then c1.ev_dt7
+                    when c1.se_cd = '8' then c1.ev_dt8
+                    when c1.se_cd = '9' then c1.ev_dt9
+                    when c1.se_cd = '10' then c1.ev_dt10
+                    end event_time
+                , c2.std_rri m_std_rri
+                , c2.mean_hrv m_mean_hrv
+                , c2.pnn50 m_pnn50
+                , c2.scl m_scl
+                , round(c2.st_level)  st_level
+            from(
+                select
+                      b1.*
+                    , case when b1.cur_dt between b1.ev_dt1 and b1.ev_dt2 then '1'
+                       when b1.cur_dt between b1.ev_dt2 and b1.ev_dt3 then '2'
+                       when b1.cur_dt between b1.ev_dt3 and b1.ev_dt4 then '3'
+                       when b1.cur_dt between b1.ev_dt4 and b1.ev_dt5 then '4'
+                       when b1.cur_dt between b1.ev_dt5 and b1.ev_dt6 then '5'
+                       when b1.cur_dt between b1.ev_dt6 and b1.ev_dt7 then '6'
+                       when b1.cur_dt between b1.ev_dt7 and b1.ev_dt8 then '7'
+                       when b1.cur_dt between b1.ev_dt8 and b1.ev_dt9 then '8'
+                       when b1.cur_dt between b1.ev_dt9 and b1.ev_dt10 then '9'
+                       else '10'
+                       end se_cd
+                  from
+                    (
+                      SELECT a1.*,a2.p_no,a2.name,a2.age,
+                            STR_TO_DATE(a2.ev_dt1,'%H:%i:%s') as ev_dt1,
+                            STR_TO_DATE(a2.ev_dt2,'%H:%i:%s') as ev_dt2,
+                            STR_TO_DATE(a2.ev_dt3,'%H:%i:%s') as ev_dt3,
+                            STR_TO_DATE(a2.ev_dt4,'%H:%i:%s') as ev_dt4,
+                            STR_TO_DATE(a2.ev_dt5,'%H:%i:%s') as ev_dt5,
+                            STR_TO_DATE(a2.ev_dt6,'%H:%i:%s') as ev_dt6,
+                            STR_TO_DATE(a2.ev_dt7,'%H:%i:%s') as ev_dt7,
+                            STR_TO_DATE(a2.ev_dt8,'%H:%i:%s') as ev_dt8,
+                            STR_TO_DATE(a2.ev_dt9,'%H:%i:%s') as ev_dt9,
+                            STR_TO_DATE(a2.ev_dt10,'%H:%i:%s') as ev_dt10,
+                            DATE_ADD(STR_TO_DATE(a2.ev_dt1,'%H:%i:%s'), interval a1.fi_tm MINUTE) as cur_dt
+                        FROM absm_org a1
+                      inner join
+                        (
+                        SELECT a.*,b.pr_id, b.name, b.age FROM absm_event a
+                         join absm_private b
+                        on a.p_no = b.p_no
+                        and a.ca_id = b.ca_id
+                        where a.ca_id = #{caId}
+                        and a.p_no = #{pNo}
+                        ) a2
+                        on a1.ca_id = a2.ca_id
+                        and a1.pr_id =a2.pr_id
+                        where a1.ca_id = #{caId}
+                        order by CAST(a1.fi_tm AS UNSIGNED)
+                    ) b1
+                ) c1
+            left join absm_model c2 on c1.ca_id = c2.ca_id
+            and c1.pr_id = c2.pr_id
+            and c1.se_cd = c2.se_cd
+            and c1.p_no = #{pNo}
+            inner join absm_code c3 on (CONCAT('E0',c1.se_cd) = c3.data  OR CONCAT('E',c1.se_cd) = c3.data)
+            group by event_time,c1.name,c1.age,c1.ca_id, c1.pr_id, c1.p_no, c1.se_cd, c3.code_name,
+                c2.mean_rri, c2.std_rri, c2.mean_hrv, c2.std_hrv, c2.rmssdd, c2.pnn50, c2.lfhf, c2.scl,st_level
+
+    </select>
+
 </mapper>

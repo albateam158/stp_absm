@@ -44,7 +44,8 @@
                     </select>
                     <div class="btns fr">
                         <button type="button" id="search" name="search" class="sch_btn fl" onclick="vaildationCheck();">조회</button><!-- fl 클래스명은 왼쪽으로 붙는 클래스명입니다. -->
-                        <button type="button" id="isShow" name="isShow" class="graph_btn fl">그래프2 보기</button>
+                        <button type="button" id="excel" name="excel" class="sch_btn fl" onclick="excelDown();">리포트 다운로드</button>
+                        <button type="button" id="isShow" name="isShow" class="graph_btn fl">그래프2 닫기</button>
                     </div>
                 </form>
                 <span class="line"></span>
@@ -122,6 +123,9 @@
 
         $(document).ready(function(){
 
+            //$("#realtime .btn").trigger(‘click’);
+            //$("#realtime .btn").trigger(‘click’);
+            //$(‘#btn’).trigger(‘click’);
 
             $('.stress_mark').css( 'left','11%');
             if($("#aPri").val() != '') {
@@ -159,6 +163,8 @@
 
             $("#pNo").change(function() {
                 getFilterData();
+                $('#isShow').trigger('click');
+                $('#isShow').trigger('click');
             });
 
             var lastRow = 0;
@@ -245,6 +251,9 @@
                 var caId   = $('#caId option:selected').val();
                 var pNo    = $('#pNo option:selected').val();
                 var egCd   = 'E';
+
+                console.log("caId : " + caId);
+                console.log("pNo : " + pNo);
 
                 if (caId == "" || pNo == "" )
                     return;
@@ -347,7 +356,7 @@
                     color: ["#3c8dbc", "#f56954"]
                 },
                 yaxis: {
-                    show: true,
+                    show: true
                 },
                 xaxis: {
                     show: true
