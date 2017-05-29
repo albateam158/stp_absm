@@ -193,16 +193,16 @@ public class Page006Controller extends RootController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/result/measureReport", method = RequestMethod.GET)
+    @RequestMapping(value = "/result/measureReport", method = RequestMethod.POST)
     public void measureReportAjax(
-            @RequestParam(value = "caId", required = false) Integer caId,
-            @RequestParam(value = "pNo", required = false) Integer pNo,
+            //@RequestParam(value = "caId", required = false) Integer caId,
+            //@RequestParam(value = "pNo", required = false) Integer pNo,
 
             HttpServletRequest request, HttpServletResponse response
     ) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("caId"   , caId);
-        params.put("pNo"    , pNo);
+        params.put("caId"   , request.getParameter("caId"));
+        params.put("pNo"    , request.getParameter("pNo"));
 
         AbsmPrivate absmPrivate  = page006Mapper.selectPrivate(params);
         List<AbsmOrg> reportData = page006Mapper.selectReportData(params);
@@ -222,18 +222,18 @@ public class Page006Controller extends RootController {
             InputStream is = new FileInputStream(file);
 
             /* 브라우저를 통해서 다운로드 될 파일명 */
-            String downFile = "absm_report_"+ absmPrivate.getName() +"("+absmPrivate.getAge()+")";
+            //String downFile = "absm_report_"+ absmPrivate.getName() +"("+absmPrivate.getAge()+")";
 
             /* 파일명 한글 Encoding */
-            downFile = new String(downFile.getBytes("UTF-8"), "ISO-8859-1");
-            String fileExtension = ".xls";
+            //downFile = new String(downFile.getBytes("UTF-8"), "ISO-8859-1");
+            //String fileExtension = ".xls";
 
             int bytelength = (int) file.length();
             byte fileByte[] = new byte[bytelength];
 
             response.reset();
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileUrl + downFile + fileExtension + "\"");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileUrl + fileName + "\"");
 
             OutputStream output = response.getOutputStream();
 

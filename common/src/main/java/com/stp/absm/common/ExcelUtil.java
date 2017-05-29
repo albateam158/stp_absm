@@ -7,9 +7,11 @@ import org.apache.poi.util.IOUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -114,23 +116,23 @@ public class ExcelUtil {
             String imageFullPath = fileLocation + "graph.jpeg";
             File chartImg = new File(imageFullPath);
 
-            JFreeChart stdRRIchart  = getLineChart("std Rri", stdRRIDataset);
-            ChartUtilities.saveChartAsJPEG(chartImg ,stdRRIchart, 500 ,300);
+            JFreeChart stdRRIchart  = getLineChart("std Rri 그래프", stdRRIDataset);
+            ChartUtilities.saveChartAsJPEG(chartImg ,stdRRIchart, 1000 ,300);
             insertImageIntoExcel(workBook, sheet, imageFullPath, i);
 
             i += additionNum;
-            JFreeChart meanHrvchart  = getLineChart("meav Hrv", meanHrvDataset);
-            ChartUtilities.saveChartAsJPEG(chartImg ,meanHrvchart, 500 ,300);
+            JFreeChart meanHrvchart  = getLineChart("meav Hrv 그래프", meanHrvDataset);
+            ChartUtilities.saveChartAsJPEG(chartImg ,meanHrvchart, 1000 ,300);
             insertImageIntoExcel(workBook, sheet, imageFullPath, i);
 
             i += additionNum;
-            JFreeChart pnn50chart  = getLineChart("pnn50", pnn50Dataset);
-            ChartUtilities.saveChartAsJPEG(chartImg ,pnn50chart, 500 ,300);
+            JFreeChart pnn50chart  = getLineChart("pnn50 그래프", pnn50Dataset);
+            ChartUtilities.saveChartAsJPEG(chartImg ,pnn50chart, 1000 ,300);
             insertImageIntoExcel(workBook, sheet, imageFullPath, i);
 
             i += additionNum;
-            JFreeChart sclchart  = getLineChart("scl", sclDataset);
-            ChartUtilities.saveChartAsJPEG(chartImg ,sclchart, 500 ,300);
+            JFreeChart sclchart  = getLineChart("scl 그래프", sclDataset);
+            ChartUtilities.saveChartAsJPEG(chartImg ,sclchart, 1000 ,300);
             insertImageIntoExcel(workBook, sheet, imageFullPath, i);
 
             workBook.write(stream);
@@ -150,10 +152,30 @@ public class ExcelUtil {
 
     private JFreeChart getLineChart(String chartTitle, DefaultCategoryDataset dataset) {
 
-        JFreeChart lineChart = ChartFactory.createLineChart(chartTitle,"event name","",
+        JFreeChart lineChart = ChartFactory.createLineChart(chartTitle,"이벤트명","측정값",
                                 dataset, PlotOrientation.VERTICAL,true,true,false);
-        System.out.println(lineChart.getTitle().getFont().getName());
 
+        /* 차트 범례 폰트 설정 */
+        lineChart.getLegend().setItemFont(new Font("맑은 고딕", Font.BOLD, 10));
+        /* 차트 타이틀 폰트 설정 */
+        lineChart.getTitle().setFont(new Font("맑은 고딕", Font.BOLD, 18));
+
+        CategoryPlot p = lineChart.getCategoryPlot();
+
+        // 차트의 배경색 설정
+        p.setBackgroundPaint(Color.white);
+        // 차트의 배경 라인 색상 설정
+        p.setRangeGridlinePaint(Color.gray);
+        // X 축의 라벨 설정 (보조 타이틀)
+        p.getDomainAxis().setLabelFont(new Font("맑은 고딕", Font.BOLD, 13));
+        // X 축의 도메인 설정
+        p.getDomainAxis().setTickLabelFont(new Font("맑은 고딕", Font.BOLD, 10));
+        // Y 축의 라벨 설정 (보조 타이틀)
+        p.getRangeAxis().setLabelFont(new Font("맑은 고딕", Font.BOLD, 13));
+        // Y 축의 도메인 설정
+        p.getRangeAxis().setTickLabelFont(new Font("맑은 고딕", Font.BOLD, 10));
+
+        //출처: http://annotations.tistory.com/67 [Annotation]
         return lineChart;
     }
 
@@ -169,7 +191,7 @@ public class ExcelUtil {
                     for (int i = 0; i < reportData.size(); i++) {
                         AbsmOrg absmOrg = reportData.get(i);
                         dataset.addValue( absmOrg.getMStdRri(), "std Rri" , absmOrg.getCodeName());
-                        dataset.addValue( absmOrg.getStLevel(), "Stress Lv" , absmOrg.getCodeName());
+                        dataset.addValue( absmOrg.getStLevel(), "예측 스트레스" , absmOrg.getCodeName());
                     }
                     break;
                 case 2:
@@ -177,7 +199,7 @@ public class ExcelUtil {
                     for (int i = 0; i < reportData.size(); i++) {
                         AbsmOrg absmOrg = reportData.get(i);
                         dataset.addValue( absmOrg.getMMeanHrv(), "mean Hrv" , absmOrg.getCodeName());
-                        dataset.addValue( absmOrg.getStLevel(), "Stress Lv" , absmOrg.getCodeName());
+                        dataset.addValue( absmOrg.getStLevel(), "예측 스트레스" , absmOrg.getCodeName());
                     }
                     break;
                 case 3:
@@ -185,7 +207,7 @@ public class ExcelUtil {
                     for (int i = 0; i < reportData.size(); i++) {
                         AbsmOrg absmOrg = reportData.get(i);
                         dataset.addValue( absmOrg.getMPnn50(), "pnn50" , absmOrg.getCodeName());
-                        dataset.addValue( absmOrg.getStLevel(), "Stress Lv" , absmOrg.getCodeName());
+                        dataset.addValue( absmOrg.getStLevel(), "예측 스트레스" , absmOrg.getCodeName());
                     }
                     break;
                 case 4:
@@ -193,7 +215,7 @@ public class ExcelUtil {
                     for (int i = 0; i < reportData.size(); i++) {
                         AbsmOrg absmOrg = reportData.get(i);
                         dataset.addValue( absmOrg.getMScl(), "scl" , absmOrg.getCodeName());
-                        dataset.addValue( absmOrg.getStLevel(), "Stress Lv" , absmOrg.getCodeName());
+                        dataset.addValue( absmOrg.getStLevel(), "예측 스트레스" , absmOrg.getCodeName());
                     }
                     break;
             }
