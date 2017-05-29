@@ -116,6 +116,10 @@ public class AbsmOrg implements Serializable {
     @Transient
     private String name;
     @Transient
+    private String age;
+    @Transient
+    private String eventTime;
+    @Transient
     private String caseNm;
     @Transient
     private int pNo;

@@ -100,6 +100,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.13'
     compile group: 'org.apache.poi', name: 'poi', version: '3.13'
+    compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
+    compile group: 'org.jfree', name: 'jcommon', version: '1.0.23'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.9'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
 
 
     // social

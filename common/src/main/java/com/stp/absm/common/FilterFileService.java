@@ -75,9 +75,9 @@ public class FilterFileService implements DataFileService{
                     Bnri Sheet의 이름 정보에서 추출한 참가번호로 대체함
                      */
                     String[] rowDatas = row.getCell(1).toString().split("_");
-//                    String prId = rowDatas[0].substring(1,rowDatas[0].length());
-                    AbsmPrivate absmPrivate = absmPrivateRepository.findByCaIdAndPNo(caId, Integer.valueOf(CommonUtil.removeDot(row.getCell(0).toString())));
-
+                    String prId = rowDatas[0].substring(1,rowDatas[0].length());
+                    //AbsmPrivate absmPrivate = absmPrivateRepository.findByCaIdAndPNo(caId, Integer.valueOf(CommonUtil.removeDot(row.getCell(0).toString())));
+                    AbsmPrivate absmPrivate = absmPrivateRepository.findByCaIdAndPNo(caId, Integer.valueOf(prId));
                     logger.info("Pr_id : " + absmPrivate.getPrId());
 
                     int startIdx = 2;
