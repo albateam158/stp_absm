@@ -900,7 +900,7 @@ function getPrivateList(formName, caId) {
 function excelDown() {
 
     var form = $('#ResultForm')[0];
-    var formData = new FormData(form);
+    //var formData = new FormData(form);
 
     /*var caId    = $('#caId option:selected').val();
     var caseNm  = $('#caId option:selected').text();
@@ -910,12 +910,13 @@ function excelDown() {
     var chartId = $('#filter option:selected').val();
     */
     $.ajax({
-        type : "GET",
+        type : "POST",
         url : "/result/measureReport",
-        data: {
+        /*data: {
             "caId": formData.get("caId"),
             "pNo": formData.get("pNo")
-        },
+        },*/
+        data : $('#ResultForm').serialize(),
         success: function(data) {
             alert("excelDown 성공");
         },
